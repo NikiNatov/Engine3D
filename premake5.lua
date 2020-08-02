@@ -13,7 +13,9 @@ workspace "Engine3D"
 	IncludeDirs = {}
 	IncludeDirs["spdlog"] = "Engine3D/vendor/spdlog/include"
 	IncludeDirs["glm"] = "Engine3D/vendor/glm"
+	IncludeDirs["GLFW"] = "Engine3D/vendor/GLFW/include"
 
+	include "Engine3D/vendor/GLFW"
 project "Engine3D"
 	location "Engine3D"
 	kind "StaticLib"
@@ -24,6 +26,9 @@ project "Engine3D"
 
 	targetdir("bin/" .. outputdir .. "/%{prj.name}")
 	objdir("bin-int/" .. outputdir .. "/%{prj.name}")
+
+	pchheader "pch.h"
+	pchsource "%{prj.name}/src/pch.cpp"
 
 	files
 	{
@@ -37,12 +42,18 @@ project "Engine3D"
 	{
 		"%{prj.name}/src",
 		"%{IncludeDirs.spdlog}",
-		"%{IncludeDirs.glm}"
+		"%{IncludeDirs.glm}",
+		"%{IncludeDirs.GLFW}"
 	}
 
 	defines
 	{
 		"_CRT_SECURE_NO_WARNINGS"
+	}
+
+	links
+	{
+		"GLFW"
 	}
 
 	filter "configurations:Debug"

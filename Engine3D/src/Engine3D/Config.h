@@ -13,3 +13,5 @@
 	#define E3D_CORE_ASSERT(x,...)
 	#define E3D_ASSERT(x,...)
 #endif
+
+#define BIT(x) (1 << x)
