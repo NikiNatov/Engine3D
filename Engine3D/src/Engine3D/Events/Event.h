@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Engine3D\Config.h"
+#include "Engine3D\Core\Config.h"
 
 #include <functional>
 
@@ -47,7 +47,7 @@ namespace E3D
 			return GetEventCategoryFlags() & category;
 		}
 
-		bool Handled;
+		bool Handled = false;
 	};
 
 	class EventDispatcher

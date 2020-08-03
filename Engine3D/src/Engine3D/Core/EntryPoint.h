@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Engine3D\Application.h"
-#include "Engine3D\Log.h"
-#include "Engine3D\Config.h"
+#include "Engine3D\Core\Application.h"
+#include "Engine3D\Core\Log.h"
+#include "Engine3D\Core\Config.h"
 
 extern E3D::Application* E3D::Create();
 

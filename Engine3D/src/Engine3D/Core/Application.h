@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Engine3D\Window.h"
+#include "Engine3D\Core\Window.h"
 #include "Engine3D\Events\Event.h"
 #include "Engine3D\Events\ApplicationEvent.h"
 
-#include "Engine3D\LayerStack.h"
+#include "Engine3D\Core\LayerStack.h"
 #include "Engine3D\ImGui\ImGuiLayer.h"
 
 #include <memory>

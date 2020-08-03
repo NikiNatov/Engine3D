@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "WindowGLFW.h"
 
-#include "Engine3D\Config.h"
+#include "Engine3D\Core\Config.h"
 
 #include "Engine3D\Events\ApplicationEvent.h"
 #include "Engine3D\Events\KeyEvent.h"

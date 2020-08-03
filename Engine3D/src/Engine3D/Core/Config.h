@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Engine3D\Log.h"
+#include "Engine3D\Core\Log.h"
 
 #ifdef E3D_DEBUG
 	#define E3D_ENABLE_ASSERTS

@@ -10,7 +10,7 @@ public:
 
 	virtual void OnUpdate() override
 	{
-
+		
 	}
 
 	virtual void OnEvent(E3D::Event& event) override

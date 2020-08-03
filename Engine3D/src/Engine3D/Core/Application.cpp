@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "Application.h"
 
-#include "Engine3D\Config.h"
-#include "Engine3D\Log.h"
+#include "Engine3D\Core\Config.h"
+#include "Engine3D\Core\Log.h"
 
 #include <glad\glad.h>
 
