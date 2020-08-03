@@ -84,10 +84,4 @@ namespace E3D
 
 		EVENT_CLASS_TYPE(KeyTyped)
 	};
-
-	inline std::ostream& operator<<(std::ostream& stream, const Event& event)
-	{
-		stream << event.ToString();
-		return stream;
-	}
 }

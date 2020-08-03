@@ -64,7 +64,7 @@ namespace E3D
 		{
 			if (m_Event.GetEventType() == T::GetStaticType())
 			{
-				m_Event.Handled = func(static_cast<T&> m_Event);
+				m_Event.Handled = func(static_cast<T&>(m_Event));
 				return true;
 			}
 
@@ -74,4 +74,10 @@ namespace E3D
 	private:
 		Event& m_Event;
 	};
+
+	inline std::ostream& operator<<(std::ostream& stream, const Event& event)
+	{
+		stream << event.ToString();
+		return stream;
+	}
 }

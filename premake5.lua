@@ -14,8 +14,11 @@ workspace "Engine3D"
 	IncludeDirs["spdlog"] = "Engine3D/vendor/spdlog/include"
 	IncludeDirs["glm"] = "Engine3D/vendor/glm"
 	IncludeDirs["GLFW"] = "Engine3D/vendor/GLFW/include"
+	IncludeDirs["Glad"] = "Engine3D/vendor/Glad/include"
+
 
 	include "Engine3D/vendor/GLFW"
+	include "Engine3D/vendor/Glad"
 project "Engine3D"
 	location "Engine3D"
 	kind "StaticLib"
@@ -43,17 +46,20 @@ project "Engine3D"
 		"%{prj.name}/src",
 		"%{IncludeDirs.spdlog}",
 		"%{IncludeDirs.glm}",
-		"%{IncludeDirs.GLFW}"
+		"%{IncludeDirs.GLFW}",
+		"%{IncludeDirs.Glad}"
 	}
 
 	defines
 	{
-		"_CRT_SECURE_NO_WARNINGS"
+		"_CRT_SECURE_NO_WARNINGS",
+		"GLFW_INCLUDE_NONE"
 	}
 
 	links
 	{
-		"GLFW"
+		"GLFW",
+		"Glad"
 	}
 
 	filter "configurations:Debug"
