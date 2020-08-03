@@ -4,6 +4,8 @@
 #include "Engine3D\Events\Event.h"
 #include "Engine3D\Events\ApplicationEvent.h"
 
+#include "Engine3D\LayerStack.h"
+
 #include <memory>
 
 namespace E3D {
@@ -18,6 +20,11 @@ namespace E3D {
 
 		void OnUpdate();
 		void OnEvent(Event& event);
+
+		void PushOverlay(Layer* layer);
+		void PushLayer(Layer* layer);
+		void PopLayer(Layer* layer);
+		void PopOverlay(Layer* layer);
 	private:
 		bool OnWindowClosed(WindowClosedEvent& event);
 	public:
@@ -26,6 +33,7 @@ namespace E3D {
 		bool m_Running = true;
 
 		std::unique_ptr<Window> m_Window;
+		LayerStack m_LayerStack;
 	private:
 		static Application* s_Instance;
 	};

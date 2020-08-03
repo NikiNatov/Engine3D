@@ -24,6 +24,7 @@ namespace E3D {
 	WindowGLFW::~WindowGLFW()
 	{
 		glfwDestroyWindow(m_Window);
+		glfwTerminate();
 	}
 
 	void WindowGLFW::OnUpdate()
