@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "OpenGLGraphicsContext.h"
 
-#include "Engine3D\Config.h"
+#include "Engine3D\Core\Config.h"
 
 #include <glad\glad.h>
 
