@@ -15,10 +15,11 @@ workspace "Engine3D"
 	IncludeDirs["glm"] = "Engine3D/vendor/glm"
 	IncludeDirs["GLFW"] = "Engine3D/vendor/GLFW/include"
 	IncludeDirs["Glad"] = "Engine3D/vendor/Glad/include"
-
+	IncludeDirs["ImGui"] = "Engine3D/vendor/ImGui"
 
 	include "Engine3D/vendor/GLFW"
 	include "Engine3D/vendor/Glad"
+	include "Engine3D/vendor/ImGui"
 project "Engine3D"
 	location "Engine3D"
 	kind "StaticLib"
@@ -47,7 +48,8 @@ project "Engine3D"
 		"%{IncludeDirs.spdlog}",
 		"%{IncludeDirs.glm}",
 		"%{IncludeDirs.GLFW}",
-		"%{IncludeDirs.Glad}"
+		"%{IncludeDirs.Glad}",
+		"%{IncludeDirs.ImGui}"
 	}
 
 	defines
@@ -59,7 +61,9 @@ project "Engine3D"
 	links
 	{
 		"GLFW",
-		"Glad"
+		"Glad",
+		"ImGui",
+		"opengl32.lib"
 	}
 
 	filter "configurations:Debug"

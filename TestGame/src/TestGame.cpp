@@ -41,7 +41,7 @@ class TestGame : public E3D::Application
 public:
 	TestGame()
 	{
-		PushOverlay(new ExampleLayer());
+		PushLayer(new ExampleLayer());
 	}
 
 	~TestGame()

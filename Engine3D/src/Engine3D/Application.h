@@ -5,6 +5,7 @@
 #include "Engine3D\Events\ApplicationEvent.h"
 
 #include "Engine3D\LayerStack.h"
+#include "Engine3D\ImGui\ImGuiLayer.h"
 
 #include <memory>
 
@@ -18,13 +19,14 @@ namespace E3D {
 
 		void Run();
 
-		void OnUpdate();
 		void OnEvent(Event& event);
 
 		void PushOverlay(Layer* layer);
 		void PushLayer(Layer* layer);
 		void PopLayer(Layer* layer);
 		void PopOverlay(Layer* layer);
+
+		inline Window& GetWindow() const { return *m_Window; }
 	private:
 		bool OnWindowClosed(WindowClosedEvent& event);
 	public:
@@ -34,6 +36,7 @@ namespace E3D {
 
 		std::unique_ptr<Window> m_Window;
 		LayerStack m_LayerStack;
+		ImGuiLayer* m_ImGuiLayer;
 	private:
 		static Application* s_Instance;
 	};
