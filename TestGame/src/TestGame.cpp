@@ -5,7 +5,8 @@ class ExampleLayer : public E3D::Layer
 public:
 	ExampleLayer()
 		: Layer("Example")
-	{
+	{	
+		
 	}
 
 	virtual void OnUpdate() override
@@ -15,7 +16,7 @@ public:
 
 	virtual void OnEvent(E3D::Event& event) override
 	{
-		E3D_LOG_TRACE(event);
+		
 	}
 
 	virtual void OnImGuiRender() override
@@ -33,6 +34,7 @@ public:
 
 	}
 private:
+	
 };
 
 

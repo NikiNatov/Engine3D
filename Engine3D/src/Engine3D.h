@@ -16,3 +16,5 @@
 #include "Engine3D\Core\Input.h"
 #include "Engine3D\Core\KeyCodes.h"
 #include "Engine3D\Core\MouseCodes.h"
+
+#include "Engine3D\Renderer\Shader.h"

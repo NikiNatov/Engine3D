@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "Application.h"
 
-#include "Engine3D\Core\Config.h"
 #include "Engine3D\Core\Log.h"
 
 #include <glad\glad.h>
@@ -20,6 +19,27 @@ namespace E3D {
 
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
+
+		m_PositionColorShader = E3D::Shader::Create("src/assets/shaders/PositionColorShader.glsl");
+
+		float vertices[] = {
+			-0.5f, -0.5f, 0.0f,
+			0.5f, -0.5f, 0.0f,
+			0.0f, 0.5f, 0.0f
+		};
+
+		uint32_t vao;
+		glGenVertexArrays(1, &vao);
+		glBindVertexArray(vao);
+
+		uint32_t vbo;
+		glGenBuffers(1, &vbo);
+		glBindBuffer(GL_ARRAY_BUFFER, vbo);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+
 	}
 
 	Application::~Application()
@@ -35,6 +55,9 @@ namespace E3D {
 			glClearColor(0.2, 0.2, 0.2, 1.0);
 			glClear(GL_COLOR_BUFFER_BIT);
 
+			m_PositionColorShader->Bind();
+			glDrawArrays(GL_TRIANGLES, 0, 3);
+
 			for (auto layer : m_LayerStack)
 				layer->OnUpdate();
 
@@ -48,7 +71,6 @@ namespace E3D {
 	void Application::OnEvent(Event& event)
 	{
 		EventDispatcher dispatcher(event);
-		E3D_CORE_LOG_INFO(event);
 
 		dispatcher.Dispatch<WindowClosedEvent>(E3D_BIND_EVENT_FN(Application::OnWindowClosed));
 

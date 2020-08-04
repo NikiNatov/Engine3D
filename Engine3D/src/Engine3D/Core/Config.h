@@ -2,6 +2,8 @@
 
 #include "Engine3D\Core\Log.h"
 
+#include <memory>
+
 #ifdef E3D_DEBUG
 	#define E3D_ENABLE_ASSERTS
 #endif
@@ -17,3 +19,12 @@
 #define BIT(x) (1 << x)
 
 #define E3D_BIND_EVENT_FN(x) std::bind(&x, this, std::placeholders::_1)
+
+namespace E3D
+{
+	template<typename T>
+	using Ref = std::shared_ptr<T>;
+
+	template<typename T>
+	using Scope = std::unique_ptr<T>;
+}
