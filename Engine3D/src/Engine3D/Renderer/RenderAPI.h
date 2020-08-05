@@ -1,5 +1,9 @@
 #pragma once
 
+#include "Engine3D\Renderer\VertexArray.h"
+
+#include <glm\glm.hpp>
+
 namespace E3D
 {
 	class RenderAPI
@@ -10,7 +14,12 @@ namespace E3D
 			None = 0, OpenGL = 1
 		};
 	public:
-		static API GetAPI();
+		virtual void SetClearColor(const glm::vec4& color) = 0;
+		virtual void ClearScreen() = 0;
+
+		virtual void DrawIndexed(const Ref<VertexArray>& vertexArray) = 0;
+
+		inline static API GetAPI() { return s_API; }
 	private:
 		static API s_API;
 	};

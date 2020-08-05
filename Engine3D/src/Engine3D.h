@@ -21,6 +21,7 @@
 #include "Engine3D\Core\MouseCodes.h"
 
 // Renderer
+#include "Engine3D\Renderer\Renderer.h"
 #include "Engine3D\Renderer\Shader.h"
 #include "Engine3D\Renderer\Buffer.h"
 #include "Engine3D\Renderer\VertexArray.h"

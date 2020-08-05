@@ -3,8 +3,6 @@
 
 #include "Engine3D\Core\Log.h"
 
-#include <glad\glad.h>
-
 namespace E3D {
 
 	Application* Application::s_Instance = nullptr;
@@ -19,42 +17,6 @@ namespace E3D {
 
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
-
-		// Temporary //////////////////////////////////////////////////////////////////////////////////////////////////////////
-		m_PositionColorShader = E3D::Shader::Create("src/assets/shaders/PositionColorShader.glsl");
-
-		float triangle[] = {
-			-0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,
-			 0.5f, -0.5f, 0.0f,	 0.0f, 1.0f, 0.0f,
-			 0.0f,  0.5f, 0.0f,	 0.0f, 0.0f, 1.0f
-		};
-
-		float quad[] = {
-			-0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,
-			 0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,
-			 0.5f,  0.5f, 0.0f,	 0.0f, 0.0f, 1.0f,
-			-0.5f,  0.5f, 0.0f,	 0.5f, 0.5f, 0.0f
-		};
-
-		uint32_t quadIndices[] = { 0, 1, 2, 2, 3, 0 };
-
-		BufferLayout layout = {
-			{ "a_Position", DataType::Float3, false },
-			{ "a_Color", DataType::Float3, false }
-		};
-
-		m_QuadVertexArray = VertexArray::Create();
-		m_QuadVertexArray->Bind();
-
-		m_QuadVertexBuffer = VertexBuffer::Create(quad, sizeof(quad));
-		m_QuadVertexBuffer->SetLayout(layout);
-
-		m_QuadIndexBuffer = IndexBuffer::Create(quadIndices, 6);
-
-		m_QuadVertexArray->AddVertexBuffer(m_QuadVertexBuffer);
-		m_QuadVertexArray->SetIndexBuffer(m_QuadIndexBuffer);
-
-		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	}
 
 	Application::~Application()
@@ -66,17 +28,6 @@ namespace E3D {
 		while (m_Running)
 		{
 			m_Window->OnUpdate();
-
-			// Temporary //////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-			glClearColor(0.2, 0.2, 0.2, 1.0);
-			glClear(GL_COLOR_BUFFER_BIT);
-
-			m_PositionColorShader->Bind();
-			m_QuadVertexArray->Bind();
-			glDrawElements(GL_TRIANGLES, m_QuadVertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
-
-			///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 			for (auto layer : m_LayerStack)
 				layer->OnUpdate();
