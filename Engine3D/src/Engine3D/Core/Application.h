@@ -13,6 +13,8 @@
 
 // Temporary
 #include "Engine3D\Renderer\Shader.h"
+#include "Engine3D\Renderer\Buffer.h"
+#include "Engine3D\Renderer\VertexArray.h"
 
 namespace E3D {
 
@@ -45,6 +47,9 @@ namespace E3D {
 
 		// To be moved in TestGame
 		E3D::Ref<E3D::Shader> m_PositionColorShader;
+		E3D::Ref<E3D::VertexBuffer> m_QuadVertexBuffer;
+		E3D::Ref<E3D::IndexBuffer> m_QuadIndexBuffer;
+		E3D::Ref<E3D::VertexArray> m_QuadVertexArray;
 	private:
 		static Application* s_Instance;
 	};

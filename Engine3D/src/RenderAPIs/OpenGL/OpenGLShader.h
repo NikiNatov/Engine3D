@@ -27,7 +27,7 @@ namespace E3D
 		virtual void SetFloat3(const std::string& name, const glm::vec3& data) override;
 		virtual void SetFloat4(const std::string& name, const glm::vec4& data) override;
 		virtual void SetMat4(const std::string& name, const glm::mat4& data) override;
-	private:
+
 		void UploadUniformInt(const std::string& name, int data);
 		void UploadUniformFloat(const std::string& name, float data);
 		void UploadUniformFloat2(const std::string& name, const glm::vec2& data);
@@ -35,6 +35,7 @@ namespace E3D
 		void UploadUniformFloat4(const std::string& name, const glm::vec4& data);
 		void UploadUniformMat4(const std::string& name, const glm::mat4& data);
 
+	private:
 		ShaderSource ReadFromFile(const std::string& filepath);
 		void Compile(const ShaderSource& source);
 	private:
