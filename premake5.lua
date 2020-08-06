@@ -16,6 +16,7 @@ workspace "Engine3D"
 	IncludeDirs["GLFW"] = "Engine3D/vendor/GLFW/include"
 	IncludeDirs["Glad"] = "Engine3D/vendor/Glad/include"
 	IncludeDirs["ImGui"] = "Engine3D/vendor/ImGui"
+	IncludeDirs["stb_image"] = "Engine3D/vendor/stb_image"
 
 	include "Engine3D/vendor/GLFW"
 	include "Engine3D/vendor/Glad"
@@ -38,6 +39,8 @@ project "Engine3D"
 	{
 		"%{prj.name}/src/**.cpp",
 		"%{prj.name}/src/**.h",
+		"%{prj.name}/vendor/stb_image/**.h",
+		"%{prj.name}/vendor/stb_image/**.cpp",
 		"%{prj.name}/vendor/glm/glm/**.hpp",
 		"%{prj.name}/vendor/glm/glm/**.inl"
 	}
@@ -49,7 +52,8 @@ project "Engine3D"
 		"%{IncludeDirs.glm}",
 		"%{IncludeDirs.GLFW}",
 		"%{IncludeDirs.Glad}",
-		"%{IncludeDirs.ImGui}"
+		"%{IncludeDirs.ImGui}",
+		"%{IncludeDirs.stb_image}"
 	}
 
 	defines

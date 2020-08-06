@@ -12,18 +12,23 @@ public:
 		m_PositionColorShader = E3D::Shader::Create("assets/shaders/PositionColorShader.glsl");
 		m_PositionColorShader->SetMat4("u_ViewProjection", m_CameraController->GetCamera().GetViewProjection());
 
+		m_ExampleTexture = E3D::Texture2D::Create("assets/textures/container.jpg");
+
+		m_TextureShader = E3D::Shader::Create("assets/shaders/TextureShader.glsl");
+		m_TextureShader->SetMat4("u_ViewProjection", m_CameraController->GetCamera().GetViewProjection());
+		m_TextureShader->SetInt("u_Texture", 0);
 
 		float cubeVertices[] =
 		{
-					-0.5f, 0.5f,-3.5f,  1.0f, 0.0f, 0.0f,
-					-0.5f,-0.5f,-3.5f,	0.0f, 1.0f, 0.0f,
-					 0.5f,-0.5f,-3.5f,	0.0f, 0.0f, 1.0f,
-					 0.5f, 0.5f,-3.5f,	0.5f, 0.5f, 0.0f,
+			-0.5f, 0.5f,-3.5f,  0.0f, 1.0f,
+			-0.5f,-0.5f,-3.5f,	0.0f, 0.0f,
+			 0.5f,-0.5f,-3.5f,	1.0f, 0.0f,
+			 0.5f, 0.5f,-3.5f,	1.0f, 1.0f,
 
-					-0.5f, 0.5f, -2.5f, 1.0f, 0.0f, 0.0f,
-					-0.5f,-0.5f, -2.5f, 0.0f, 1.0f, 0.0f,
-					 0.5f,-0.5f, -2.5f, 0.0f, 0.0f, 1.0f,
-					 0.5f, 0.5f, -2.5f, 0.5f, 0.5f, 0.0f,		
+			-0.5f, 0.5f, -2.5f, 0.0f, 1.0f,
+			-0.5f,-0.5f, -2.5f, 0.0f, 0.0f,
+			 0.5f,-0.5f, -2.5f, 1.0f, 0.0f,
+			 0.5f, 0.5f, -2.5f, 1.0f, 1.0f		
 		};
 
 		uint32_t cubeIndices[] = { 
@@ -48,7 +53,7 @@ public:
 
 		E3D::BufferLayout layout = {
 			{ "a_Position", E3D::DataType::Float3, false },
-			{ "a_Color", E3D::DataType::Float3, false }
+			{ "a_TexCoord", E3D::DataType::Float2, false }
 		};
 
 		m_CubeVertexArray = E3D::VertexArray::Create();
@@ -66,12 +71,13 @@ public:
 	virtual void OnUpdate(E3D::Timestep ts) override
 	{
 		m_CameraController->OnUpdate(ts);
-		m_PositionColorShader->SetMat4("u_ViewProjection", m_CameraController->GetCamera().GetViewProjection());
 
 		E3D::RenderCommand::SetClearColor({ 0.2f, 0.2f, 0.2f, 1.0f });
 		E3D::RenderCommand::ClearScreen();
 
-		m_PositionColorShader->Bind();
+		m_TextureShader->Bind();
+		m_ExampleTexture->Bind(0);
+		m_TextureShader->SetMat4("u_ViewProjection", m_CameraController->GetCamera().GetViewProjection());
 		E3D::Renderer::Submit(m_CubeVertexArray);
 	}
 
@@ -97,11 +103,13 @@ public:
 	}
 private:
 	E3D::Ref<E3D::Shader> m_PositionColorShader;
+	E3D::Ref<E3D::Shader> m_TextureShader;
 	E3D::Ref<E3D::VertexBuffer> m_CubeVertexBuffer;
 	E3D::Ref<E3D::IndexBuffer> m_CubeIndexBuffer;
 	E3D::Ref<E3D::VertexArray> m_CubeVertexArray;
 
 	E3D::Scope<E3D::PerspectiveCameraController> m_CameraController;
+	E3D::Ref<E3D::Texture2D> m_ExampleTexture;
 };
 
 
