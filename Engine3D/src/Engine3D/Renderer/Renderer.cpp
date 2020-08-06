@@ -13,8 +13,8 @@ namespace E3D
 	void Renderer::EndScene()
 	{
 	}
-	void Renderer::Submit(const Ref<VertexArray>& vertexArray)
+	void Renderer::Submit(const Ref<VertexArray>& vertexArray, const Ref<Shader>& shader, const glm::mat4& transform)
 	{
-		RenderCommand::DrawIndexed(vertexArray);
+		RenderCommand::DrawIndexed(vertexArray, shader, transform);
 	}
 }

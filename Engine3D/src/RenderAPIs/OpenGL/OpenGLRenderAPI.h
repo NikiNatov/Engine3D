@@ -11,6 +11,6 @@ namespace E3D
 		virtual void SetClearColor(const glm::vec4& color) override;
 		virtual void ClearScreen() override;
 
-		virtual void DrawIndexed(const Ref<VertexArray>& vertexArray) override;
+		virtual void DrawIndexed(const Ref<VertexArray>& vertexArray, const Ref<Shader>& shader, const glm::mat4& transform = glm::mat4(1.0f)) override;
 	};
 }

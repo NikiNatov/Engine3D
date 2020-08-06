@@ -98,6 +98,7 @@ project "TestGame"
 	includedirs
 	{
 		"Engine3D/src",
+		"Engine3D/vendor",
 		"%{IncludeDirs.spdlog}",
 		"%{IncludeDirs.glm}"
 	}
