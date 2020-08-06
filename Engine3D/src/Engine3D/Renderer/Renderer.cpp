@@ -3,6 +3,10 @@
 
 namespace E3D
 {
+	void Renderer::Init()
+	{
+		RenderCommand::Init();
+	}
 	void Renderer::BeginScene()
 	{
 	}

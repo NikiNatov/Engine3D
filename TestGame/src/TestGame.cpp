@@ -6,52 +6,79 @@ public:
 	ExampleLayer()
 		: Layer("Example")
 	{	
-		m_PositionColorShader = E3D::Shader::Create("src/assets/shaders/PositionColorShader.glsl");
+		E3D::Renderer::Init();
+		m_CameraController = std::make_unique<E3D::PerspectiveCameraController>(45.0f, (float)1280 / (float)720);
 
-		float triangle[] = {
-			-0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,
-			 0.5f, -0.5f, 0.0f,	 0.0f, 1.0f, 0.0f,
-			 0.0f,  0.5f, 0.0f,	 0.0f, 0.0f, 1.0f
+		m_PositionColorShader = E3D::Shader::Create("assets/shaders/PositionColorShader.glsl");
+		m_PositionColorShader->SetMat4("u_ViewProjection", m_CameraController->GetCamera().GetViewProjection());
+
+
+		float cubeVertices[] =
+		{
+					-0.5f, 0.5f,-3.5f,  1.0f, 0.0f, 0.0f,
+					-0.5f,-0.5f,-3.5f,	0.0f, 1.0f, 0.0f,
+					 0.5f,-0.5f,-3.5f,	0.0f, 0.0f, 1.0f,
+					 0.5f, 0.5f,-3.5f,	0.5f, 0.5f, 0.0f,
+
+					-0.5f, 0.5f, -2.5f, 1.0f, 0.0f, 0.0f,
+					-0.5f,-0.5f, -2.5f, 0.0f, 1.0f, 0.0f,
+					 0.5f,-0.5f, -2.5f, 0.0f, 0.0f, 1.0f,
+					 0.5f, 0.5f, -2.5f, 0.5f, 0.5f, 0.0f,		
 		};
 
-		float quad[] = {
-			-0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,
-			 0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,
-			 0.5f,  0.5f, 0.0f,	 0.0f, 0.0f, 1.0f,
-			-0.5f,  0.5f, 0.0f,	 0.5f, 0.5f, 0.0f
-		};
+		uint32_t cubeIndices[] = { 
+				0, 2, 1,
+				0, 3, 2,
 
-		uint32_t quadIndices[] = { 0, 1, 2, 2, 3, 0 };
+				1, 2, 6,
+				6, 5, 1,
+				     
+				4, 5, 6,
+				6, 7, 4,
+				     
+				2, 3, 6,
+				6, 3, 7,
+				     
+				0, 7, 3,
+				0, 4, 7,
+				     
+				0, 1, 5,
+				0, 5, 4
+		};
 
 		E3D::BufferLayout layout = {
 			{ "a_Position", E3D::DataType::Float3, false },
 			{ "a_Color", E3D::DataType::Float3, false }
 		};
 
-		m_QuadVertexArray = E3D::VertexArray::Create();
-		m_QuadVertexArray->Bind();
+		m_CubeVertexArray = E3D::VertexArray::Create();
+		m_CubeVertexArray->Bind();
 
-		m_QuadVertexBuffer = E3D::VertexBuffer::Create(quad, sizeof(quad));
-		m_QuadVertexBuffer->SetLayout(layout);
+		m_CubeVertexBuffer = E3D::VertexBuffer::Create(cubeVertices, sizeof(cubeVertices));
+		m_CubeVertexBuffer->SetLayout(layout);
 
-		m_QuadIndexBuffer = E3D::IndexBuffer::Create(quadIndices, 6);
+		m_CubeIndexBuffer = E3D::IndexBuffer::Create(cubeIndices, 36);
 
-		m_QuadVertexArray->AddVertexBuffer(m_QuadVertexBuffer);
-		m_QuadVertexArray->SetIndexBuffer(m_QuadIndexBuffer);
+		m_CubeVertexArray->AddVertexBuffer(m_CubeVertexBuffer);
+		m_CubeVertexArray->SetIndexBuffer(m_CubeIndexBuffer);
 	}
 
-	virtual void OnUpdate() override
+	virtual void OnUpdate(E3D::Timestep ts) override
 	{
-		E3D::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
+		m_CameraController->OnUpdate(ts);
+		m_PositionColorShader->SetMat4("u_ViewProjection", m_CameraController->GetCamera().GetViewProjection());
+
+		E3D::RenderCommand::SetClearColor({ 0.2f, 0.2f, 0.2f, 1.0f });
 		E3D::RenderCommand::ClearScreen();
 
 		m_PositionColorShader->Bind();
-		E3D::Renderer::Submit(m_QuadVertexArray);
+		E3D::Renderer::Submit(m_CubeVertexArray);
 	}
 
 	virtual void OnEvent(E3D::Event& event) override
 	{
-		
+	
+		m_CameraController->OnEvent(event);
 	}
 
 	virtual void OnImGuiRender() override
@@ -70,9 +97,11 @@ public:
 	}
 private:
 	E3D::Ref<E3D::Shader> m_PositionColorShader;
-	E3D::Ref<E3D::VertexBuffer> m_QuadVertexBuffer;
-	E3D::Ref<E3D::IndexBuffer> m_QuadIndexBuffer;
-	E3D::Ref<E3D::VertexArray> m_QuadVertexArray;
+	E3D::Ref<E3D::VertexBuffer> m_CubeVertexBuffer;
+	E3D::Ref<E3D::IndexBuffer> m_CubeIndexBuffer;
+	E3D::Ref<E3D::VertexArray> m_CubeVertexArray;
+
+	E3D::Scope<E3D::PerspectiveCameraController> m_CameraController;
 };
 
 

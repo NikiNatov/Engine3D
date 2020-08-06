@@ -5,6 +5,10 @@
 
 namespace E3D
 {
+	void OpenGLRenderAPI::Init()
+	{
+		glEnable(GL_DEPTH_TEST);
+	}
 	void OpenGLRenderAPI::SetClearColor(const glm::vec4& color)
 	{
 		glClearColor(color.r, color.g, color.b, color.a);

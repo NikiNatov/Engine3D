@@ -4,6 +4,7 @@
 #include "Engine3D\Core\EntryPoint.h"
 #include "Engine3D\Core\Application.h"
 #include "Engine3D\Core\Log.h"
+#include "Engine3D\Core\Timestep.h"
 
 // Events
 #include "Engine3D\Events\Event.h"
@@ -25,3 +26,5 @@
 #include "Engine3D\Renderer\Shader.h"
 #include "Engine3D\Renderer\Buffer.h"
 #include "Engine3D\Renderer\VertexArray.h"
+#include "Engine3D\Renderer\PerspectiveCamera.h"
+#include "Engine3D\Renderer\PerspectiveCameraController.h"

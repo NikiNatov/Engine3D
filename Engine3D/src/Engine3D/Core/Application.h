@@ -7,7 +7,8 @@
 #include "Engine3D\Core\LayerStack.h"
 #include "Engine3D\ImGui\ImGuiLayer.h"
 
-#include <Engine3D\Core\Config.h>
+#include "Engine3D\Core\Config.h"
+#include "Engine3D\Core\Timestep.h"
 
 #include <memory>
 
@@ -39,6 +40,8 @@ namespace E3D {
 		E3D::Scope<Window> m_Window;
 		LayerStack m_LayerStack;
 		ImGuiLayer* m_ImGuiLayer;
+		float m_LastFrameTime = 0.0f;
+		float m_CurrentFrameTime = 0.0f;
 	private:
 		static Application* s_Instance;
 	};

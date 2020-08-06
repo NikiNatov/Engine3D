@@ -7,6 +7,7 @@ namespace E3D
 	class Renderer
 	{
 	public:
+		static void Init();
 		static void BeginScene();
 		static void EndScene();
 		static void Submit(const Ref<VertexArray>& vertexArray);

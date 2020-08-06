@@ -3,6 +3,11 @@
 
 #include "Engine3D\Core\Log.h"
 
+#include "Engine3D\Core\Input.h"
+#include "Engine3D\Core\KeyCodes.h"
+
+#include <GLFW\glfw3.h>
+
 namespace E3D {
 
 	Application* Application::s_Instance = nullptr;
@@ -27,10 +32,21 @@ namespace E3D {
 	{	
 		while (m_Running)
 		{
+			Timestep ts;
+			m_CurrentFrameTime = (float)glfwGetTime();
+			ts = m_CurrentFrameTime - m_LastFrameTime;
+			m_LastFrameTime = m_CurrentFrameTime;
+
+			if (Input::IsKeyPressed(E3D_KEY_ESCAPE))
+			{
+				m_Running = false;
+				break;
+			}
+
 			m_Window->OnUpdate();
 
 			for (auto layer : m_LayerStack)
-				layer->OnUpdate();
+				layer->OnUpdate(ts);
 
 			m_ImGuiLayer->Begin();
 			for (auto layer : m_LayerStack)

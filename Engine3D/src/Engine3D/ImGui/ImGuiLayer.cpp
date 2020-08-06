@@ -22,7 +22,7 @@ namespace E3D
 		
 	}
 
-	void ImGuiLayer::OnUpdate()
+	void ImGuiLayer::OnUpdate(Timestep ts)
 	{
 	}
 
