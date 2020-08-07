@@ -9,28 +9,27 @@ public:
 		: Layer("Example")
 	{	
 		E3D::Renderer::Init();
-		m_CameraController = std::make_unique<E3D::PerspectiveCameraController>(45.0f, (float)1280 / (float)720);
 
-		auto posColorShader = m_ShaderLibrary.Load("assets/shaders/PositionColorShader.glsl");
-		posColorShader->SetMat4("u_ViewProjection", m_CameraController->GetCamera().GetViewProjection());
+		auto posColorShader = m_ShaderLibrary.Load("assets/shaders/FlatColorShader.glsl");
+		posColorShader->SetMat4("u_ViewProjection", m_CameraController.GetCamera().GetViewProjection());
 
 		m_ExampleTexture = E3D::Texture2D::Create("assets/textures/container.jpg");
 
 		auto textureShader = m_ShaderLibrary.Load("assets/shaders/TextureShader.glsl");
-		textureShader->SetMat4("u_ViewProjection", m_CameraController->GetCamera().GetViewProjection());
+		textureShader->SetMat4("u_ViewProjection", m_CameraController.GetCamera().GetViewProjection());
 		textureShader->SetInt("u_Texture", 0);
 
 		float cubeVertices[] =
 		{
-			-0.5f,  0.5f, -3.5f, 0.0f, 1.0f,
-			-0.5f, -0.5f, -3.5f, 0.0f, 0.0f,
-			 0.5f, -0.5f, -3.5f, 1.0f, 0.0f,
-			 0.5f,  0.5f, -3.5f, 1.0f, 1.0f,
-
-			-0.5f,  0.5f, -2.5f, 0.0f, 1.0f,
-			-0.5f, -0.5f, -2.5f, 0.0f, 0.0f,
-			 0.5f, -0.5f, -2.5f, 1.0f, 0.0f,
-			 0.5f,  0.5f, -2.5f, 1.0f, 1.0f		
+			-0.5f,  0.5f, -3.5f,   0.0f, 1.0f,
+			-0.5f, -0.5f, -3.5f,   0.0f, 0.0f,
+			 0.5f, -0.5f, -3.5f,   1.0f, 0.0f,
+			 0.5f,  0.5f, -3.5f,   1.0f, 1.0f,
+								 
+			-0.5f,  0.5f, -2.5f,   0.0f, 1.0f,
+			-0.5f, -0.5f, -2.5f,   0.0f, 0.0f,
+			 0.5f, -0.5f, -2.5f,   1.0f, 0.0f,
+			 0.5f,  0.5f, -2.5f,   1.0f, 1.0f		
 		};
 
 		uint32_t cubeIndices[] = { 
@@ -78,21 +77,25 @@ public:
 			glm::rotate(glm::mat4(1.0f), glm::radians(m_CubeRotation.z), glm::vec3(0.0f, 0.0f, 1.0f)) *
 			glm::scale(glm::mat4(1.0f), m_CubeScale);
 
-		m_CameraController->OnUpdate(ts);
+		m_CameraController.OnUpdate(ts);
+
+		E3D::Renderer::BeginScene(m_CameraController.GetCamera());
 
 		E3D::RenderCommand::SetClearColor({ 0.2f, 0.2f, 0.2f, 1.0f });
 		E3D::RenderCommand::ClearScreen();
 
 		m_ExampleTexture->Bind(0);
-		auto textureShader = m_ShaderLibrary.Get("TextureShader");
-		textureShader->SetMat4("u_ViewProjection", m_CameraController->GetCamera().GetViewProjection());
-		E3D::Renderer::Submit(m_CubeVertexArray, textureShader, m_CubeTransform);
+		auto shader = m_ShaderLibrary.Get("FlatColorShader");
+		shader->SetFloat3("u_Color", m_CubeColor);
+		E3D::Renderer::Submit(m_CubeVertexArray, shader, m_CubeTransform);
+
+		E3D::Renderer::EndScene();
 	}
 
 	virtual void OnEvent(E3D::Event& event) override
 	{
 	
-		m_CameraController->OnEvent(event);
+		m_CameraController.OnEvent(event);
 	}
 
 	virtual void OnImGuiRender() override
@@ -101,6 +104,7 @@ public:
 		ImGui::SliderFloat3("Translation", &m_CubePosition.x, -10.0f, 10.0f);
 		ImGui::SliderFloat3("Rotation", &m_CubeRotation.x, -180.0f, 180.0f);
 		ImGui::SliderFloat3("Scale", &m_CubeScale.x, 0.5f, 3.0f);
+		ImGui::ColorEdit3("Color", &m_CubeColor.x);
 		ImGui::End();
 	}
 
@@ -121,9 +125,10 @@ private:
 	glm::vec3 m_CubePosition{ 0.0f };
 	glm::vec3 m_CubeRotation{ 0.0f };
 	glm::vec3 m_CubeScale{ 1.0f };
+	glm::vec3 m_CubeColor{ 1.0f };
 	glm::mat4 m_CubeTransform = glm::mat4(1.0f);
 
-	E3D::Scope<E3D::PerspectiveCameraController> m_CameraController;
+	E3D::PerspectiveCameraController m_CameraController{ 45.0f, (float)1280 / (float)720 };
 	E3D::Ref<E3D::Texture2D> m_ExampleTexture;
 
 };

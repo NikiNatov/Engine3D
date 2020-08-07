@@ -21,10 +21,6 @@ namespace E3D
 	}
 	void OpenGLRenderAPI::DrawIndexed(const Ref<VertexArray>& vertexArray, const Ref<Shader>& shader, const glm::mat4& transform)
 	{
-		shader->Bind();
-		shader->SetMat4("u_Transform", transform);
-
-		vertexArray->Bind();
 		glDrawElements(GL_TRIANGLES, vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
 	}
 }
