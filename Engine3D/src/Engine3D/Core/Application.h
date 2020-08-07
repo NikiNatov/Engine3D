@@ -29,14 +29,17 @@ namespace E3D {
 		void PopLayer(Layer* layer);
 		void PopOverlay(Layer* layer);
 
+		void Close();
+
 		inline Window& GetWindow() const { return *m_Window; }
 	private:
 		bool OnWindowClosed(WindowClosedEvent& event);
+		bool OnWindowResize(WindowResizedEvent& event);
 	public:
 		inline static Application& GetInstance() { return *s_Instance; }
 	private:
 		bool m_Running = true;
-
+		bool m_Minimized = false;
 		E3D::Scope<Window> m_Window;
 		LayerStack m_LayerStack;
 		ImGuiLayer* m_ImGuiLayer;

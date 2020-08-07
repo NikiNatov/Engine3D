@@ -9,6 +9,10 @@ namespace E3D
 	{
 		RenderCommand::Init();
 	}
+	void Renderer::WindowResize(uint32_t width, uint32_t height)
+	{
+		RenderCommand::SetViewport(0, 0, width, height);
+	}
 	void Renderer::BeginScene(PerspectiveCamera& camera)
 	{
 		m_SceneData->m_ViewProjectionMatrix = camera.GetViewProjection();

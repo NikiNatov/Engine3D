@@ -19,6 +19,8 @@ namespace E3D
 		void OnUpdate(Timestep ts);
 		void OnEvent(Event& event);
 
+		void Resize(float width, float height);
+
 		inline const PerspectiveCamera& GetCamera() const { return m_Camera; }
 		inline PerspectiveCamera& GetCamera() { return m_Camera; }
 

@@ -35,6 +35,13 @@ namespace E3D
 		dispatcher.Dispatch<MouseScrolledEvent>(E3D_BIND_EVENT_FN(PerspectiveCameraController::OnMouseScrolled));
 		dispatcher.Dispatch<WindowResizedEvent>(E3D_BIND_EVENT_FN(PerspectiveCameraController::OnWindowResized));
 	}
+
+	void PerspectiveCameraController::Resize(float width, float height)
+	{
+		m_AspectRatio = width / height;
+		m_Camera.SetProjection(m_Fov, m_AspectRatio);
+	}
+
 	bool PerspectiveCameraController::OnMouseMoved(MouseMovedEvent& event)
 	{
 		static bool first = true;
@@ -79,11 +86,11 @@ namespace E3D
 	}
 	bool PerspectiveCameraController::OnWindowResized(WindowResizedEvent& event)
 	{
-		// Temporary
-		glViewport(0, 0, event.GetWidth(), event.GetHeight());
+		uint32_t width = event.GetWidth(), height = event.GetHeight();
+		if (width == 0 || height == 0)
+			return false;
 
-		m_AspectRatio = (float)event.GetWidth() / (float)event.GetHeight();
-		m_Camera.SetProjection(m_Fov, m_AspectRatio);
+		Resize((float)width, (float)height);
 
 		return false;
 	}

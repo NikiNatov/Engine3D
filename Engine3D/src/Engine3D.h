@@ -29,3 +29,4 @@
 #include "Engine3D\Renderer\PerspectiveCamera.h"
 #include "Engine3D\Renderer\PerspectiveCameraController.h"
 #include "Engine3D\Renderer\Texture.h"
+#include "Engine3D\Renderer\Framebuffer.h"

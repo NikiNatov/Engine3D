@@ -8,8 +8,6 @@ public:
 	ExampleLayer()
 		: Layer("Example")
 	{	
-		E3D::Renderer::Init();
-
 		auto posColorShader = m_ShaderLibrary.Load("assets/shaders/FlatColorShader.glsl");
 		posColorShader->SetMat4("u_ViewProjection", m_CameraController.GetCamera().GetViewProjection());
 
@@ -18,6 +16,11 @@ public:
 		auto textureShader = m_ShaderLibrary.Load("assets/shaders/TextureShader.glsl");
 		textureShader->SetMat4("u_ViewProjection", m_CameraController.GetCamera().GetViewProjection());
 		textureShader->SetInt("u_Texture", 0);
+
+		E3D::FramebufferSpecification fbSpec;
+		fbSpec.Width = 1280;
+		fbSpec.Height = 720;
+		m_Framebuffer = E3D::Framebuffer::Create(fbSpec);
 
 		float cubeVertices[] =
 		{
@@ -79,6 +82,7 @@ public:
 
 		m_CameraController.OnUpdate(ts);
 
+		m_Framebuffer->Bind();
 		E3D::Renderer::BeginScene(m_CameraController.GetCamera());
 
 		E3D::RenderCommand::SetClearColor({ 0.2f, 0.2f, 0.2f, 1.0f });
@@ -90,6 +94,7 @@ public:
 		E3D::Renderer::Submit(m_CubeVertexArray, shader, m_CubeTransform);
 
 		E3D::Renderer::EndScene();
+		m_Framebuffer->Unbind();
 	}
 
 	virtual void OnEvent(E3D::Event& event) override
@@ -99,12 +104,79 @@ public:
 	}
 
 	virtual void OnImGuiRender() override
-	{
+	{	
+		static bool dockSpaceOpen = true;
+		static bool opt_fullscreen_persistant = true;
+		bool opt_fullscreen = opt_fullscreen_persistant;
+		static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
+
+		ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
+		if (opt_fullscreen)
+		{
+			ImGuiViewport* viewport = ImGui::GetMainViewport();
+			ImGui::SetNextWindowPos(viewport->GetWorkPos());
+			ImGui::SetNextWindowSize(viewport->GetWorkSize());
+			ImGui::SetNextWindowViewport(viewport->ID);
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+			window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
+			window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
+		}
+
+		if (dockspace_flags & ImGuiDockNodeFlags_PassthruCentralNode)
+			window_flags |= ImGuiWindowFlags_NoBackground;
+
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+		ImGui::Begin("DockSpace Demo", &dockSpaceOpen, window_flags);
+		ImGui::PopStyleVar();
+
+		if (opt_fullscreen)
+			ImGui::PopStyleVar(2);
+
+		ImGuiIO& io = ImGui::GetIO();
+		if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
+		{
+			ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
+			ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
+		}
+
+		if (ImGui::BeginMenuBar())
+		{
+			if (ImGui::BeginMenu("File"))
+			{
+				if (ImGui::MenuItem("Exit")) 
+					E3D::Application::GetInstance().Close();
+
+				ImGui::EndMenu();
+			}
+
+			ImGui::EndMenuBar();
+		}
+
+		
+
 		ImGui::Begin("Transform");
 		ImGui::SliderFloat3("Translation", &m_CubePosition.x, -10.0f, 10.0f);
 		ImGui::SliderFloat3("Rotation", &m_CubeRotation.x, -180.0f, 180.0f);
 		ImGui::SliderFloat3("Scale", &m_CubeScale.x, 0.5f, 3.0f);
 		ImGui::ColorEdit3("Color", &m_CubeColor.x);
+		ImGui::End();
+
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0.0f, 0.0f });
+		ImGui::Begin("Viewport");
+		ImVec2 panelSize = ImGui::GetContentRegionAvail();
+		if (m_ViewportSize != *((glm::vec2*)&panelSize))
+		{
+			m_ViewportSize = { panelSize.x, panelSize.y };
+			m_Framebuffer->Resize(m_ViewportSize.x, m_ViewportSize.y);
+
+			m_CameraController.Resize(m_ViewportSize.x, m_ViewportSize.y);
+		}
+		uint32_t texture = m_Framebuffer->GetColorAttachment();
+		ImGui::Image((void*)texture, { m_ViewportSize.x , m_ViewportSize.y }, { 0, 1 }, { 1, 0 });
+		ImGui::End();
+		ImGui::PopStyleVar();
+
 		ImGui::End();
 	}
 
@@ -130,7 +202,9 @@ private:
 
 	E3D::PerspectiveCameraController m_CameraController{ 45.0f, (float)1280 / (float)720 };
 	E3D::Ref<E3D::Texture2D> m_ExampleTexture;
+	E3D::Ref<E3D::Framebuffer> m_Framebuffer;
 
+	glm::vec2 m_ViewportSize;
 };
 
 

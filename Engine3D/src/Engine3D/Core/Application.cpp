@@ -3,8 +3,7 @@
 
 #include "Engine3D\Core\Log.h"
 
-#include "Engine3D\Core\Input.h"
-#include "Engine3D\Core\KeyCodes.h"
+#include "Engine3D\Renderer\Renderer.h"
 
 #include <GLFW\glfw3.h>
 
@@ -17,8 +16,10 @@ namespace E3D {
 		E3D_CORE_ASSERT(!s_Instance, "Application already exists!");
 		s_Instance = this;
 
+
 		m_Window = std::unique_ptr<Window>(Window::Create());
 		m_Window->SetEventCallback(E3D_BIND_EVENT_FN(Application::OnEvent));
+		Renderer::Init();
 
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
@@ -37,21 +38,18 @@ namespace E3D {
 			ts = m_CurrentFrameTime - m_LastFrameTime;
 			m_LastFrameTime = m_CurrentFrameTime;
 
-			if (Input::IsKeyPressed(E3D_KEY_ESCAPE))
+			if (!m_Minimized)
 			{
-				m_Running = false;
-				break;
+				for (auto layer : m_LayerStack)
+					layer->OnUpdate(ts);
 			}
-
-			m_Window->OnUpdate();
-
-			for (auto layer : m_LayerStack)
-				layer->OnUpdate(ts);
 
 			m_ImGuiLayer->Begin();
 			for (auto layer : m_LayerStack)
 				layer->OnImGuiRender();
 			m_ImGuiLayer->End();
+
+			m_Window->OnUpdate();
 		}
 	}
 
@@ -60,13 +58,14 @@ namespace E3D {
 		EventDispatcher dispatcher(event);
 
 		dispatcher.Dispatch<WindowClosedEvent>(E3D_BIND_EVENT_FN(Application::OnWindowClosed));
+		dispatcher.Dispatch<WindowResizedEvent>(E3D_BIND_EVENT_FN(Application::OnWindowResize));
 
 		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
 		{
-			(*--it)->OnEvent(event);
-
 			if (event.Handled == true)
 				break;
+
+			(*--it)->OnEvent(event);
 		}
 	}
 
@@ -90,10 +89,28 @@ namespace E3D {
 	{
 	}
 
-	bool Application::OnWindowClosed(WindowClosedEvent& event)
+	void Application::Close()
 	{
 		m_Running = false;
+	}
+
+	bool Application::OnWindowClosed(WindowClosedEvent& event)
+	{
+		Close();
 
 		return true;
+	}
+	bool Application::OnWindowResize(WindowResizedEvent& event)
+	{
+		if (event.GetWidth() == 0 || event.GetHeight() == 0)
+		{
+			m_Minimized = true;
+			return false;
+		}
+
+		m_Minimized = false;
+		Renderer::WindowResize(event.GetWidth(), event.GetHeight());
+
+		return false;
 	}
 }
