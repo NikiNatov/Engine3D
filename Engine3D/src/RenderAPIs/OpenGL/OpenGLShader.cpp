@@ -22,6 +22,12 @@ namespace E3D
 	{
 		ShaderSource& source = ReadFromFile(filepath);
 		Compile(source);
+
+		auto lastSlash = filepath.find_last_of("/\\");
+		lastSlash = lastSlash == std::string::npos ? 0 : lastSlash + 1;
+		auto lastDot = filepath.rfind('.');
+		int count = lastDot == std::string::npos ? filepath.size() - lastSlash : lastDot - lastSlash;
+		m_Name = filepath.substr(lastSlash, count);
 	}
 	OpenGLShader::~OpenGLShader()
 	{

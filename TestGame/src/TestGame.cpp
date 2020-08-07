@@ -11,14 +11,14 @@ public:
 		E3D::Renderer::Init();
 		m_CameraController = std::make_unique<E3D::PerspectiveCameraController>(45.0f, (float)1280 / (float)720);
 
-		m_PositionColorShader = E3D::Shader::Create("assets/shaders/PositionColorShader.glsl");
-		m_PositionColorShader->SetMat4("u_ViewProjection", m_CameraController->GetCamera().GetViewProjection());
+		auto posColorShader = m_ShaderLibrary.Load("assets/shaders/PositionColorShader.glsl");
+		posColorShader->SetMat4("u_ViewProjection", m_CameraController->GetCamera().GetViewProjection());
 
 		m_ExampleTexture = E3D::Texture2D::Create("assets/textures/container.jpg");
 
-		m_TextureShader = E3D::Shader::Create("assets/shaders/TextureShader.glsl");
-		m_TextureShader->SetMat4("u_ViewProjection", m_CameraController->GetCamera().GetViewProjection());
-		m_TextureShader->SetInt("u_Texture", 0);
+		auto textureShader = m_ShaderLibrary.Load("assets/shaders/TextureShader.glsl");
+		textureShader->SetMat4("u_ViewProjection", m_CameraController->GetCamera().GetViewProjection());
+		textureShader->SetInt("u_Texture", 0);
 
 		float cubeVertices[] =
 		{
@@ -84,8 +84,9 @@ public:
 		E3D::RenderCommand::ClearScreen();
 
 		m_ExampleTexture->Bind(0);
-		m_TextureShader->SetMat4("u_ViewProjection", m_CameraController->GetCamera().GetViewProjection());
-		E3D::Renderer::Submit(m_CubeVertexArray, m_TextureShader, m_CubeTransform);
+		auto textureShader = m_ShaderLibrary.Get("TextureShader");
+		textureShader->SetMat4("u_ViewProjection", m_CameraController->GetCamera().GetViewProjection());
+		E3D::Renderer::Submit(m_CubeVertexArray, textureShader, m_CubeTransform);
 	}
 
 	virtual void OnEvent(E3D::Event& event) override
@@ -113,8 +114,7 @@ public:
 
 	}
 private:
-	E3D::Ref<E3D::Shader> m_PositionColorShader;
-	E3D::Ref<E3D::Shader> m_TextureShader;
+	E3D::ShaderLibrary m_ShaderLibrary;
 	E3D::Ref<E3D::VertexBuffer> m_CubeVertexBuffer;
 	E3D::Ref<E3D::IndexBuffer> m_CubeIndexBuffer;
 	E3D::Ref<E3D::VertexArray> m_CubeVertexArray;

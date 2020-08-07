@@ -35,11 +35,13 @@ namespace E3D
 		void UploadUniformFloat4(const std::string& name, const glm::vec4& data);
 		void UploadUniformMat4(const std::string& name, const glm::mat4& data);
 
+		virtual const std::string& GetName() const override { return m_Name; }
 	private:
 		ShaderSource ReadFromFile(const std::string& filepath);
 		void Compile(const ShaderSource& source);
 	private:
 		uint32_t m_ProgramID;
 		std::unordered_map<std::string, int> m_UniformCache;
+		std::string m_Name;
 	};
 }
