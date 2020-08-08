@@ -17,7 +17,7 @@ namespace E3D {
 	class Application
 	{
 	public:
-		Application();
+		Application(const std::string& name = "Engine3D Application");
 		virtual ~Application();
 
 		void Run();

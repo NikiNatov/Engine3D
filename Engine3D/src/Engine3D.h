@@ -1,7 +1,6 @@
 #pragma once
 
 // Core
-#include "Engine3D\Core\EntryPoint.h"
 #include "Engine3D\Core\Application.h"
 #include "Engine3D\Core\Log.h"
 #include "Engine3D\Core\Timestep.h"

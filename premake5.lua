@@ -116,3 +116,41 @@ project "TestGame"
 		defines "E3D_RELEASE"
 		runtime "Release"
 		optimize "on"
+
+project "Engine3D-Editor"
+	location "Engine3D-Editor"
+	kind "ConsoleApp"
+	language "C++"
+	cppdialect "C++17"
+	staticruntime "on"
+
+	targetdir("bin/" .. outputdir .. "/%{prj.name}")
+	objdir("bin-int/" .. outputdir .. "/%{prj.name}")
+
+	files
+	{
+		"%{prj.name}/src/**.cpp",
+		"%{prj.name}/src/**.h"
+	}
+
+	includedirs
+	{
+		"Engine3D/src",
+		"Engine3D/vendor",
+		"%{IncludeDirs.spdlog}",
+		"%{IncludeDirs.glm}"
+	}
+
+	links
+	{
+		"Engine3D"
+	}
+
+	filter "configurations:Debug"
+		defines "E3D_DEBUG"
+		runtime "Debug"
+		symbols "on"
+	filter "configurations:Release"
+		defines "E3D_RELEASE"
+		runtime "Release"
+		optimize "on"
