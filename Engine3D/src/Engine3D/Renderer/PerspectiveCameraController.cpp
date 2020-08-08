@@ -39,21 +39,20 @@ namespace E3D
 	void PerspectiveCameraController::Resize(float width, float height)
 	{
 		m_AspectRatio = width / height;
-		m_Camera.SetProjection(m_Fov, m_AspectRatio);
+		m_Camera.SetProjection(m_Fov + m_Zoom, m_AspectRatio);
 	}
 
 	bool PerspectiveCameraController::OnMouseMoved(MouseMovedEvent& event)
 	{
-		static bool first = true;
-	
 		float currentX = event.GetXPosition();
 		float currentY = event.GetYPosition();
 
-		if (first)
+		if (!m_ViewportFocused)
 		{
 			m_LastScreenXPosition = currentX;
 			m_LastScreenYPosition = currentY;
-			first = false;
+
+			m_ViewportFocused = true;
 		}
 
 		float xOffset = currentX - m_LastScreenXPosition;

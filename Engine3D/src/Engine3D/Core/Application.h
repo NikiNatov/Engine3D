@@ -31,6 +31,8 @@ namespace E3D {
 
 		void Close();
 
+		inline ImGuiLayer* GetImGuiLayer() { return m_ImGuiLayer; }
+
 		inline Window& GetWindow() const { return *m_Window; }
 	private:
 		bool OnWindowClosed(WindowClosedEvent& event);

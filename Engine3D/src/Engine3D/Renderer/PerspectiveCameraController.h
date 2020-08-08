@@ -26,6 +26,8 @@ namespace E3D
 
 		inline const glm::vec3& GetPosition() const { return m_CameraPosition; }
 		inline glm::vec3& GetPosition() { return m_CameraPosition; }
+
+		inline void SetViewportFocus(bool state) { m_ViewportFocused = state; }
 	private:
 		bool OnMouseMoved(MouseMovedEvent& event);
 		bool OnMouseScrolled(MouseScrolledEvent& event);
@@ -44,5 +46,7 @@ namespace E3D
 
 		float m_LastScreenXPosition = 0.0f;
 		float m_LastScreenYPosition = 0.0f;
+
+		bool m_ViewportFocused = false;
 	};
 }

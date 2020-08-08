@@ -18,6 +18,9 @@ namespace E3D
 
 		void Begin();
 		void End();
+
+		inline void BlockEvents(bool block) { m_BlockEvents = block; }
 	private:
+		bool m_BlockEvents = true;
 	};
 }

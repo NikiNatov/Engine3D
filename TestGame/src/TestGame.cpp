@@ -80,7 +80,8 @@ public:
 			glm::rotate(glm::mat4(1.0f), glm::radians(m_CubeRotation.z), glm::vec3(0.0f, 0.0f, 1.0f)) *
 			glm::scale(glm::mat4(1.0f), m_CubeScale);
 
-		m_CameraController.OnUpdate(ts);
+		if(m_ViewportFocused)
+			m_CameraController.OnUpdate(ts);
 
 		m_Framebuffer->Bind();
 		E3D::Renderer::BeginScene(m_CameraController.GetCamera());
@@ -164,6 +165,14 @@ public:
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0.0f, 0.0f });
 		ImGui::Begin("Viewport");
+
+		if (m_ViewportFocused != ImGui::IsWindowFocused() && m_ViewportFocused == true)
+			m_CameraController.SetViewportFocus(false);
+
+		m_ViewportFocused = ImGui::IsWindowFocused();
+		m_ViewportHovered = ImGui::IsWindowHovered();
+		E3D::Application::GetInstance().GetImGuiLayer()->BlockEvents(!m_ViewportFocused || !m_ViewportHovered);
+
 		ImVec2 panelSize = ImGui::GetContentRegionAvail();
 		if (m_ViewportSize != *((glm::vec2*)&panelSize))
 		{
@@ -204,6 +213,8 @@ private:
 	E3D::Ref<E3D::Texture2D> m_ExampleTexture;
 	E3D::Ref<E3D::Framebuffer> m_Framebuffer;
 
+	bool m_ViewportFocused = false;
+	bool m_ViewportHovered = false;
 	glm::vec2 m_ViewportSize;
 };
 
