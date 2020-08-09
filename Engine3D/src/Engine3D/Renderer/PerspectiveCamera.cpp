@@ -5,8 +5,8 @@
 
 namespace E3D
 {
-	PerspectiveCamera::PerspectiveCamera(float fov, float aspectRatio)
-		: m_Position(0.0f, 0.0f, 0.0f), m_Direction(0.0f, 0.0f, -1.0f), m_Fov(fov), m_AspectRatio(aspectRatio)
+	PerspectiveCamera::PerspectiveCamera(float fov, float aspectRatio, const glm::vec3& position, float pitch, float yaw)
+		: m_Position(position), m_Direction(0.0f, 0.0f, -1.0f), m_Fov(fov), m_AspectRatio(aspectRatio), m_Pitch(pitch), m_Yaw(yaw)
 	{
 		SetProjection(fov, aspectRatio);
 		UpdateVectors();
@@ -15,7 +15,7 @@ namespace E3D
 	void PerspectiveCamera::SetProjection(float fov, float aspectRatio)
 	{
 		m_AspectRatio = aspectRatio;
-		m_ProjectionMatrix = glm::perspective(glm::radians(fov), aspectRatio, 0.1f, 100.0f);
+		m_ProjectionMatrix = glm::perspective(glm::radians(fov), aspectRatio, 0.1f, 10000.0f);
 		m_ViewProjection = m_ProjectionMatrix * m_ViewMatrix;
 	}
 

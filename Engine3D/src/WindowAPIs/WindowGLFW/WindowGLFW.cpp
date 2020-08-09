@@ -11,9 +11,9 @@
 
 namespace E3D {
 
-	Window* Window::Create(const WindowProperties& properties)
+	Scope<Window> Window::Create(const WindowProperties& properties)
 	{
-		return new WindowGLFW(properties);
+		return std::make_unique<WindowGLFW>(properties);
 	}
 
 	WindowGLFW::WindowGLFW(const WindowProperties& properties)

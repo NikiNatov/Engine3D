@@ -17,7 +17,7 @@ namespace E3D {
 		s_Instance = this;
 
 
-		m_Window = std::unique_ptr<Window>(Window::Create(name));
+		m_Window = Window::Create(name);
 		m_Window->SetEventCallback(E3D_BIND_EVENT_FN(Application::OnEvent));
 		Renderer::Init();
 

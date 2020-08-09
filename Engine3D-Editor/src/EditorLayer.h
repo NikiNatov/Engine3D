@@ -24,7 +24,6 @@ namespace E3D
 		glm::vec3 m_CubePosition{ 0.0f };
 		glm::vec3 m_CubeRotation{ 0.0f };
 		glm::vec3 m_CubeScale{ 1.0f };
-		glm::vec3 m_CubeColor{ 1.0f };
 		glm::mat4 m_CubeTransform = glm::mat4(1.0f);
 
 		PerspectiveCameraController m_CameraController{ 45.0f, (float)1280 / (float)720 };
@@ -34,5 +33,8 @@ namespace E3D
 		bool m_ViewportFocused = false;
 		bool m_ViewportHovered = false;
 		glm::vec2 m_ViewportSize = { 0.0f, 0.0f };
+		
+		Entity m_CubeEntity;
+		Ref<Scene> m_Scene;
 	};
 }

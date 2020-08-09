@@ -30,7 +30,8 @@ namespace E3D
 
 		m_ExampleTexture->Bind(0);
 		auto shader = m_ShaderLibrary.Get("FlatColorShader");
-		shader->SetFloat3("u_Color", m_CubeColor);
+		auto& color = m_CubeEntity.GetComponent<ColorComponent>().Color;
+		shader->SetFloat3("u_Color", color);
 		Renderer::Submit(m_CubeVertexArray, shader, m_CubeTransform);
 
 		Renderer::EndScene();
@@ -93,12 +94,15 @@ namespace E3D
 		}
 
 
-
 		ImGui::Begin("Transform");
-		ImGui::SliderFloat3("Translation", &m_CubePosition.x, -10.0f, 10.0f);
-		ImGui::SliderFloat3("Rotation", &m_CubeRotation.x, -180.0f, 180.0f);
-		ImGui::SliderFloat3("Scale", &m_CubeScale.x, 0.5f, 3.0f);
-		ImGui::ColorEdit3("Color", &m_CubeColor.x);
+		auto& name = m_CubeEntity.GetComponent<NameComponent>().Name;
+		ImGui::Text("ID: %s", name.c_str());
+		ImGui::DragFloat3("Translation", &m_CubePosition.x, 0.5f, -10.0f, 10.0f);
+		ImGui::DragFloat3("Rotation", &m_CubeRotation.x, 0.5f, -180.0f, 180.0f);
+		ImGui::DragFloat3("Scale", &m_CubeScale.x, 0.5f, 0.5f, 3.0f);
+
+		auto& color = m_CubeEntity.GetComponent<ColorComponent>().Color;
+		ImGui::ColorEdit3("Color", &color.x);
 		ImGui::End();
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0.0f, 0.0f });
@@ -187,10 +191,15 @@ namespace E3D
 		m_CubeVertexBuffer = VertexBuffer::Create(cubeVertices, sizeof(cubeVertices));
 		m_CubeVertexBuffer->SetLayout(layout);
 
-		m_CubeIndexBuffer = IndexBuffer::Create(cubeIndices, 36);
+		m_CubeIndexBuffer = IndexBuffer::Create(cubeIndices, sizeof(cubeIndices) / sizeof(uint32_t));
 
 		m_CubeVertexArray->AddVertexBuffer(m_CubeVertexBuffer);
 		m_CubeVertexArray->SetIndexBuffer(m_CubeIndexBuffer);
+
+		m_Scene = CreateRef<Scene>();
+
+		m_CubeEntity = m_Scene->CreateEntity("Cube Entity");
+		m_CubeEntity.AddComponent<ColorComponent>(glm::vec3{ 0.8f, 0.3f, 0.2f });
 	}
 
 	void EditorLayer::OnDetach()

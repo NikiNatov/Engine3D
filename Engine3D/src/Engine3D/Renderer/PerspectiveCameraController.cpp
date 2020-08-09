@@ -10,7 +10,7 @@
 namespace E3D
 {
 	PerspectiveCameraController::PerspectiveCameraController(float fov, float aspectRatio)
-		: m_Fov(fov), m_AspectRatio(aspectRatio), m_Camera(m_Fov, m_AspectRatio)
+		: m_Fov(fov), m_AspectRatio(aspectRatio), m_Camera(m_Fov, m_AspectRatio, m_CameraPosition, m_Pitch, m_Yaw)
 	{
 	}
 	void PerspectiveCameraController::OnUpdate(Timestep ts)
@@ -78,7 +78,7 @@ namespace E3D
 	}
 	bool PerspectiveCameraController::OnMouseScrolled(MouseScrolledEvent& event)
 	{
-		m_Zoom -= event.GetYOffset();
+		m_Zoom -= event.GetYOffset() * m_ZoomSensitivity;
 		m_Camera.SetProjection(m_Fov + m_Zoom, m_AspectRatio);
 
 		return false;

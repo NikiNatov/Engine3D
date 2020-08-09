@@ -1,6 +1,6 @@
 workspace "Engine3D"
 	architecture "x64"
-	startproject "TestGame"
+	startproject "Engine3D-Editor"
 
 	configurations 
 	{
@@ -17,6 +17,7 @@ workspace "Engine3D"
 	IncludeDirs["Glad"] = "Engine3D/vendor/Glad/include"
 	IncludeDirs["ImGui"] = "Engine3D/vendor/ImGui"
 	IncludeDirs["stb_image"] = "Engine3D/vendor/stb_image"
+	IncludeDirs["entt"] = "Engine3D/vendor/entt/include"
 
 	include "Engine3D/vendor/GLFW"
 	include "Engine3D/vendor/Glad"
@@ -53,7 +54,8 @@ project "Engine3D"
 		"%{IncludeDirs.GLFW}",
 		"%{IncludeDirs.Glad}",
 		"%{IncludeDirs.ImGui}",
-		"%{IncludeDirs.stb_image}"
+		"%{IncludeDirs.stb_image}",
+		"%{IncludeDirs.entt}"
 	}
 
 	defines
@@ -100,7 +102,8 @@ project "TestGame"
 		"Engine3D/src",
 		"Engine3D/vendor",
 		"%{IncludeDirs.spdlog}",
-		"%{IncludeDirs.glm}"
+		"%{IncludeDirs.glm}",
+		"%{IncludeDirs.entt}"
 	}
 
 	links
@@ -138,7 +141,8 @@ project "Engine3D-Editor"
 		"Engine3D/src",
 		"Engine3D/vendor",
 		"%{IncludeDirs.spdlog}",
-		"%{IncludeDirs.glm}"
+		"%{IncludeDirs.glm}",
+		"%{IncludeDirs.entt}"
 	}
 
 	links

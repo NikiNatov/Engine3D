@@ -7,7 +7,7 @@ namespace E3D
 	class PerspectiveCamera
 	{
 	public:
-		PerspectiveCamera(float fov, float aspectRatio);
+		PerspectiveCamera(float fov, float aspectRatio, const glm::vec3& position = glm::vec3(0.0f), float pitch = 0.0f, float yaw = -89.0f);
 		~PerspectiveCamera() = default;
 
 		void SetProjection(float fov, float aspectRatio);
@@ -39,7 +39,7 @@ namespace E3D
 		float m_Fov;
 		float m_AspectRatio;
 
-		float m_Pitch = 0.0f;
-		float m_Yaw = -89.0f;
+		float m_Pitch;
+		float m_Yaw;
 	};
 }
