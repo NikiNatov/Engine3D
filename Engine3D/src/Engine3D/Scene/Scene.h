@@ -19,6 +19,8 @@ namespace E3D
 		Entity CreateEntity(const std::string& name = "Entity");
 
 		void OnUpdate(Timestep ts);
+
+		void OnViewportResize(uint32_t width, uint32_t height);
 	private:
 		entt::registry m_Registry;
 	};

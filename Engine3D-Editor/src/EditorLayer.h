@@ -35,6 +35,10 @@ namespace E3D
 		glm::vec2 m_ViewportSize = { 0.0f, 0.0f };
 		
 		Entity m_CubeEntity;
+		Entity m_MainCamera;
+		Entity m_SecondCamera;
 		Ref<Scene> m_Scene;
+
+		bool m_PrimaryCamera = true;
 	};
 }

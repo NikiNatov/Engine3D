@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Engine3D\Scene\SceneCamera.h"
+
 #include <glm\glm.hpp>
 
 #include <string>
@@ -28,6 +30,16 @@ namespace E3D
 			: Name(name)
 		{
 		}
+	};
+
+	struct CameraComponent
+	{
+		SceneCamera Camera;
+		bool Primary = false;
+		bool FixedAspectRatio = false;
+
+		CameraComponent() = default;
+		CameraComponent(const CameraComponent & other) = default;
 	};
 
 	struct MeshComponent

@@ -2,6 +2,7 @@
 
 #include <ImGui\imgui.h>
 #include <glm\gtc\matrix_transform.hpp>
+#include <glm\gtc\type_ptr.hpp>
 
 namespace E3D
 {
@@ -19,14 +20,16 @@ namespace E3D
 			glm::rotate(glm::mat4(1.0f), glm::radians(m_CubeRotation.z), glm::vec3(0.0f, 0.0f, 1.0f)) *
 			glm::scale(glm::mat4(1.0f), m_CubeScale);
 
-		if (m_ViewportFocused)
-			m_CameraController.OnUpdate(ts);
+		/*if (m_ViewportFocused)
+			m_CameraController.OnUpdate(ts);*/
 
 		m_Framebuffer->Bind();
-		Renderer::BeginScene(m_CameraController.GetCamera());
+		//Renderer::BeginScene(m_CameraController.GetCamera());
 
 		RenderCommand::SetClearColor({ 0.2f, 0.2f, 0.2f, 1.0f });
 		RenderCommand::ClearScreen();
+
+		m_Scene->OnUpdate(ts);
 
 		m_ExampleTexture->Bind(0);
 		auto shader = m_ShaderLibrary.Get("FlatColorShader");
@@ -94,19 +97,36 @@ namespace E3D
 		}
 
 
-		ImGui::Begin("Transform");
-		auto& name = m_CubeEntity.GetComponent<NameComponent>().Name;
-		ImGui::Text("ID: %s", name.c_str());
-		ImGui::DragFloat3("Translation", &m_CubePosition.x, 0.5f, -10.0f, 10.0f);
-		ImGui::DragFloat3("Rotation", &m_CubeRotation.x, 0.5f, -180.0f, 180.0f);
-		ImGui::DragFloat3("Scale", &m_CubeScale.x, 0.5f, 0.5f, 3.0f);
+		ImGui::Begin("Properties");
+		if (m_CubeEntity)
+		{
+			ImGui::Separator();
+			auto& name = m_CubeEntity.GetComponent<NameComponent>().Name;
+			ImGui::Text("ID: %s", name.c_str());
+			ImGui::DragFloat3("Translation", &m_CubePosition.x, 0.5f, -10.0f, 10.0f);
+			ImGui::DragFloat3("Rotation", &m_CubeRotation.x, 0.5f, -180.0f, 180.0f);
+			ImGui::DragFloat3("Scale", &m_CubeScale.x, 0.5f, 0.5f, 3.0f);
 
-		auto& color = m_CubeEntity.GetComponent<ColorComponent>().Color;
-		ImGui::ColorEdit3("Color", &color.x);
+			auto& color = m_CubeEntity.GetComponent<ColorComponent>().Color;
+			ImGui::ColorEdit3("Color", &color.x);
+			ImGui::Separator();
+		}
+
+		if (ImGui::Checkbox("Main Camera", &m_PrimaryCamera))
+		{
+			m_MainCamera.GetComponent<CameraComponent>().Primary = m_PrimaryCamera;
+			m_SecondCamera.GetComponent<CameraComponent>().Primary = !m_PrimaryCamera;
+		}
+
+		ImGui::DragFloat3("Main", glm::value_ptr(m_MainCamera.GetComponent<TransformComponent>().Transform[3]));
+		ImGui::DragFloat3("Secondary", glm::value_ptr(m_SecondCamera.GetComponent<TransformComponent>().Transform[3]));
+		ImGui::Separator();
+
 		ImGui::End();
 
+
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0.0f, 0.0f });
-		ImGui::Begin("Viewport");
+		ImGui::Begin("Scene");
 
 		if (m_ViewportFocused != ImGui::IsWindowFocused() && m_ViewportFocused == true)
 			m_CameraController.SetViewportFocus(false);
@@ -116,12 +136,13 @@ namespace E3D
 		Application::GetInstance().GetImGuiLayer()->BlockEvents(!m_ViewportFocused || !m_ViewportHovered);
 
 		ImVec2 panelSize = ImGui::GetContentRegionAvail();
-		if (m_ViewportSize != *((glm::vec2*) & panelSize))
+		if (m_ViewportSize != *((glm::vec2*)&panelSize))
 		{
 			m_ViewportSize = { panelSize.x, panelSize.y };
 			m_Framebuffer->Resize(m_ViewportSize.x, m_ViewportSize.y);
 
-			m_CameraController.Resize(m_ViewportSize.x, m_ViewportSize.y);
+			m_Scene->OnViewportResize(m_ViewportSize.x, m_ViewportSize.y);
+			//m_CameraController.Resize(m_ViewportSize.x, m_ViewportSize.y);
 		}
 		uint32_t texture = m_Framebuffer->GetColorAttachment();
 		ImGui::Image((void*)texture, { m_ViewportSize.x , m_ViewportSize.y }, { 0, 1 }, { 1, 0 });
@@ -200,6 +221,14 @@ namespace E3D
 
 		m_CubeEntity = m_Scene->CreateEntity("Cube Entity");
 		m_CubeEntity.AddComponent<ColorComponent>(glm::vec3{ 0.8f, 0.3f, 0.2f });
+
+		m_MainCamera = m_Scene->CreateEntity("Main Camera");
+		m_MainCamera.AddComponent<CameraComponent>().Primary = true;
+
+		m_SecondCamera = m_Scene->CreateEntity("Second Camera");
+		auto& cameraComponent = m_SecondCamera.AddComponent<CameraComponent>();
+		cameraComponent.Primary = false;
+		cameraComponent.Camera.SetFov(30.0f);
 	}
 
 	void EditorLayer::OnDetach()

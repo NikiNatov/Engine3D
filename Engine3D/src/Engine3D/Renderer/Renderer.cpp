@@ -13,6 +13,10 @@ namespace E3D
 	{
 		RenderCommand::SetViewport(0, 0, width, height);
 	}
+	void Renderer::BeginScene(Camera& camera, const glm::mat4& transform)
+	{
+		m_SceneData->m_ViewProjectionMatrix = camera.GetProjection() * glm::inverse(transform);
+	}
 	void Renderer::BeginScene(PerspectiveCamera& camera)
 	{
 		m_SceneData->m_ViewProjectionMatrix = camera.GetViewProjection();
