@@ -20,22 +20,23 @@ namespace E3D
 			glm::rotate(glm::mat4(1.0f), glm::radians(m_CubeRotation.z), glm::vec3(0.0f, 0.0f, 1.0f)) *
 			glm::scale(glm::mat4(1.0f), m_CubeScale);
 
-		/*if (m_ViewportFocused)
-			m_CameraController.OnUpdate(ts);*/
 
 		m_Framebuffer->Bind();
-		//Renderer::BeginScene(m_CameraController.GetCamera());
 
 		RenderCommand::SetClearColor({ 0.2f, 0.2f, 0.2f, 1.0f });
 		RenderCommand::ClearScreen();
 
-		m_Scene->OnUpdate(ts);
+		if(m_RunScene)
+			m_Scene->OnUpdate(ts);
+		else
+		{
+			if (m_ViewportFocused)
+				m_CameraController.OnUpdate(ts);
 
-		m_ExampleTexture->Bind(0);
-		auto shader = m_ShaderLibrary.Get("FlatColorShader");
-		auto& color = m_CubeEntity.GetComponent<ColorComponent>().Color;
-		shader->SetFloat3("u_Color", color);
-		Renderer::Submit(m_CubeVertexArray, shader, m_CubeTransform);
+			Renderer::BeginScene(m_CameraController.GetCamera());
+		}
+
+		Renderer::Submit(m_CubeVertexArray, m_RubyMaterial, m_CubeTransform);
 
 		Renderer::EndScene();
 		m_Framebuffer->Unbind();
@@ -43,7 +44,8 @@ namespace E3D
 
 	void EditorLayer::OnEvent(Event& event)
 	{
-		m_CameraController.OnEvent(event);
+		if(!m_RunScene)
+			m_CameraController.OnEvent(event);
 	}
 
 	void EditorLayer::OnImGuiRender()
@@ -103,12 +105,10 @@ namespace E3D
 			ImGui::Separator();
 			auto& name = m_CubeEntity.GetComponent<NameComponent>().Name;
 			ImGui::Text("ID: %s", name.c_str());
+			ImGui::Separator();
 			ImGui::DragFloat3("Translation", &m_CubePosition.x, 0.5f, -10.0f, 10.0f);
 			ImGui::DragFloat3("Rotation", &m_CubeRotation.x, 0.5f, -180.0f, 180.0f);
 			ImGui::DragFloat3("Scale", &m_CubeScale.x, 0.5f, 0.5f, 3.0f);
-
-			auto& color = m_CubeEntity.GetComponent<ColorComponent>().Color;
-			ImGui::ColorEdit3("Color", &color.x);
 			ImGui::Separator();
 		}
 
@@ -118,8 +118,44 @@ namespace E3D
 			m_SecondCamera.GetComponent<CameraComponent>().Primary = !m_PrimaryCamera;
 		}
 
+		ImGui::Separator();
 		ImGui::DragFloat3("Main", glm::value_ptr(m_MainCamera.GetComponent<TransformComponent>().Transform[3]));
 		ImGui::DragFloat3("Secondary", glm::value_ptr(m_SecondCamera.GetComponent<TransformComponent>().Transform[3]));
+		ImGui::Separator();
+
+		ImGui::End();
+
+		ImGui::Begin("Materials");
+		ImGui::DragFloat3("Ambient", &m_RubyMaterial->GetAmbientColor().x, 0.03f, 0.0f, 1.0f);
+		ImGui::DragFloat3("Diffuse", &m_RubyMaterial->GetDiffuseColor().x, 0.03f, 0.0f, 1.0f);
+		ImGui::DragFloat3("Specular", &m_RubyMaterial->GetSpecularColor().x, 0.03f, 0.0f, 1.0f);
+		ImGui::DragFloat("Shininess", &m_RubyMaterial->GetShininess(), 0.5f, 0.0f, 180.0f);
+		ImGui::DragFloat("Transparency", &m_RubyMaterial->GetTransparency(), 0.03f, 0.0f, 1.0f);
+		ImGui::Separator();
+		static bool diffuseTex = false;
+		static bool specularTex = false;
+		ImGui::Text("Diffuse Texture");
+		if (m_RubyMaterial->HasDiffuseTexture())
+		{
+			ImGui::Image((void*)m_RubyMaterial->GetDiffuseTexture()->GetTextureID(), ImVec2{ 64.0f, 64.0f }, { 0, 1 }, { 1, 0 });
+			ImGui::SameLine();
+			if (ImGui::Checkbox("Use##DiffuseTexture", &diffuseTex))
+				m_RubyMaterial->UseDiffuseTexture(diffuseTex);
+		}
+		else
+			ImGui::Image((void*)m_CheckerboardTexture->GetTextureID(), ImVec2{ 64.0f, 64.0f }, { 0, 1 }, { 1, 0 });
+
+		ImGui::Text("Specular Texture");
+		if (m_RubyMaterial->HasSpecularTexture())
+		{
+			ImGui::Image((void*)m_RubyMaterial->GetSpecularTexture()->GetTextureID(), ImVec2{ 64.0f, 64.0f }, { 0, 1 }, { 1, 0 });
+			ImGui::SameLine();
+			if (ImGui::Checkbox("Use##SpecularTexture", &specularTex))
+				m_RubyMaterial->UseSpecularTexture(specularTex);
+		}
+		else
+			ImGui::Image((void*)m_CheckerboardTexture->GetTextureID(), ImVec2{ 64.0f, 64.0f }, { 0, 1 }, { 1, 0 });
+		
 		ImGui::Separator();
 
 		ImGui::End();
@@ -127,6 +163,7 @@ namespace E3D
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0.0f, 0.0f });
 		ImGui::Begin("Scene");
+		ImGui::Checkbox("Run Scene", &m_RunScene);
 
 		if (m_ViewportFocused != ImGui::IsWindowFocused() && m_ViewportFocused == true)
 			m_CameraController.SetViewportFocus(false);
@@ -142,7 +179,7 @@ namespace E3D
 			m_Framebuffer->Resize(m_ViewportSize.x, m_ViewportSize.y);
 
 			m_Scene->OnViewportResize(m_ViewportSize.x, m_ViewportSize.y);
-			//m_CameraController.Resize(m_ViewportSize.x, m_ViewportSize.y);
+			m_CameraController.Resize(m_ViewportSize.x, m_ViewportSize.y);
 		}
 		uint32_t texture = m_Framebuffer->GetColorAttachment();
 		ImGui::Image((void*)texture, { m_ViewportSize.x , m_ViewportSize.y }, { 0, 1 }, { 1, 0 });
@@ -154,14 +191,22 @@ namespace E3D
 
 	void EditorLayer::OnAttach()
 	{
-		auto posColorShader = m_ShaderLibrary.Load("assets/shaders/FlatColorShader.glsl");
-		posColorShader->SetMat4("u_ViewProjection", m_CameraController.GetCamera().GetViewProjection());
+		m_ShaderLibrary.Load("assets/shaders/FlatColorShader.glsl");
 
-		m_ExampleTexture = Texture2D::Create("assets/textures/container.jpg");
+		m_DiffuseTexture = Texture2D::Create("assets/textures/diffuse.png");
+		m_CheckerboardTexture = Texture2D::Create("assets/textures/checkerboard.png");
+		m_SpecularTexture = Texture2D::Create("assets/textures/specular.png");
 
-		auto textureShader = m_ShaderLibrary.Load("assets/shaders/TextureShader.glsl");
-		textureShader->SetMat4("u_ViewProjection", m_CameraController.GetCamera().GetViewProjection());
-		textureShader->SetInt("u_Texture", 0);
+		auto materialShader = m_ShaderLibrary.Load("assets/shaders/MaterialShader.glsl");
+
+		m_RubyMaterial = CreateRef<Material>(materialShader);
+		m_RubyMaterial->SetAmbientColor({ 0.1745f, 0.01175f, 0.01175f });
+		m_RubyMaterial->SetDiffuseColor({ 0.61424f, 0.04136f, 0.04136f });
+		m_RubyMaterial->SetSpecularColor({ 0.727811f, 0.626959f, 0.626959f });
+		m_RubyMaterial->SetShininess(76.8f);
+		m_RubyMaterial->SetTransparency(1.0f);
+		m_RubyMaterial->SetDiffuseTexture(m_DiffuseTexture);
+		m_RubyMaterial->SetSpecularTexture(m_SpecularTexture);
 
 		FramebufferSpecification fbSpec;
 		fbSpec.Width = 1280;
@@ -170,15 +215,15 @@ namespace E3D
 
 		float cubeVertices[] =
 		{
-			-0.5f,  0.5f, -3.5f,   0.0f, 1.0f,
-			-0.5f, -0.5f, -3.5f,   0.0f, 0.0f,
-			 0.5f, -0.5f, -3.5f,   1.0f, 0.0f,
-			 0.5f,  0.5f, -3.5f,   1.0f, 1.0f,
-
-			-0.5f,  0.5f, -2.5f,   0.0f, 1.0f,
-			-0.5f, -0.5f, -2.5f,   0.0f, 0.0f,
-			 0.5f, -0.5f, -2.5f,   1.0f, 0.0f,
-			 0.5f,  0.5f, -2.5f,   1.0f, 1.0f
+			-0.5f,  0.5f, -3.5f,   0.0f, 1.0f,    0.0f, 0.0f, -1.0f,
+			-0.5f, -0.5f, -3.5f,   0.0f, 0.0f,    0.0f, 0.0f, -1.0f,
+			 0.5f, -0.5f, -3.5f,   1.0f, 0.0f,    0.0f, 0.0f, -1.0f,
+			 0.5f,  0.5f, -3.5f,   1.0f, 1.0f,    0.0f, 0.0f, -1.0f,
+											      
+			-0.5f,  0.5f, -2.5f,   0.0f, 1.0f,    0.0f, 0.0f, 1.0f,
+			-0.5f, -0.5f, -2.5f,   0.0f, 0.0f,    0.0f, 0.0f, 1.0f,
+			 0.5f, -0.5f, -2.5f,   1.0f, 0.0f,    0.0f, 0.0f, 1.0f,
+			 0.5f,  0.5f, -2.5f,   1.0f, 1.0f,    0.0f, 0.0f, 1.0f,
 		};
 
 		uint32_t cubeIndices[] = {
@@ -203,7 +248,8 @@ namespace E3D
 
 		BufferLayout layout = {
 			{ "a_Position", DataType::Float3, false },
-			{ "a_TexCoord", DataType::Float2, false }
+			{ "a_TexCoord", DataType::Float2, false },
+			{ "a_Normal", DataType::Float3, false },
 		};
 
 		m_CubeVertexArray = VertexArray::Create();
@@ -220,7 +266,6 @@ namespace E3D
 		m_Scene = CreateRef<Scene>();
 
 		m_CubeEntity = m_Scene->CreateEntity("Cube Entity");
-		m_CubeEntity.AddComponent<ColorComponent>(glm::vec3{ 0.8f, 0.3f, 0.2f });
 
 		m_MainCamera = m_Scene->CreateEntity("Main Camera");
 		m_MainCamera.AddComponent<CameraComponent>().Primary = true;
@@ -228,7 +273,6 @@ namespace E3D
 		m_SecondCamera = m_Scene->CreateEntity("Second Camera");
 		auto& cameraComponent = m_SecondCamera.AddComponent<CameraComponent>();
 		cameraComponent.Primary = false;
-		cameraComponent.Camera.SetFov(30.0f);
 	}
 
 	void EditorLayer::OnDetach()

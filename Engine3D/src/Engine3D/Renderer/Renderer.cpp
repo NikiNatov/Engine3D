@@ -15,21 +15,31 @@ namespace E3D
 	}
 	void Renderer::BeginScene(Camera& camera, const glm::mat4& transform)
 	{
-		m_SceneData->m_ViewProjectionMatrix = camera.GetProjection() * glm::inverse(transform);
+		m_SceneData->ViewProjectionMatrix = camera.GetProjection() * glm::inverse(transform);
 	}
 	void Renderer::BeginScene(PerspectiveCamera& camera)
 	{
-		m_SceneData->m_ViewProjectionMatrix = camera.GetViewProjection();
+		m_SceneData->ViewProjectionMatrix = camera.GetViewProjection();
 	}
 	void Renderer::EndScene()
 	{
 	}
-	void Renderer::Submit(const Ref<VertexArray>& vertexArray, const Ref<Shader>& shader, const glm::mat4& transform)
+	void Renderer::Submit(const Ref<VertexArray>& vertexArray, const Ref<Material>& material, const glm::mat4& transform)
 	{
+		auto& shader = material->GetShader();
 		shader->Bind();
-		shader->SetMat4("u_ViewProjection", m_SceneData->m_ViewProjectionMatrix);
+		shader->SetMat4("u_ViewProjection", m_SceneData->ViewProjectionMatrix);
 		shader->SetMat4("u_Transform", transform);
+
+		shader->SetFloat3("u_CameraPosition", glm::vec3(0.0f, 0.0f, 0.0f));
+		shader->SetFloat3("u_Light.Position", glm::vec3(0.0f, 0.0f, -2.0f));
+		shader->SetFloat3("u_Light.Ambient", glm::vec3(1.0f, 1.0f, 1.0f));
+		shader->SetFloat3("u_Light.Diffuse", glm::vec3(1.0f, 1.0f, 1.0f));
+		shader->SetFloat3("u_Light.Specular", glm::vec3(1.0f, 1.0f, 1.0f));
+
+		material->Bind();
+
 		vertexArray->Bind();
-		RenderCommand::DrawIndexed(vertexArray, shader, transform);
+		RenderCommand::DrawIndexed(vertexArray);
 	}
 }

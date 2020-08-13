@@ -98,6 +98,12 @@ namespace E3D
 		style.Colors[ImGuiCol_TextSelectedBg] = ImVec4(0.25f, 1.00f, 0.00f, 0.43f);
 		style.Colors[ImGuiCol_ModalWindowDarkening] = ImVec4(1.00f, 0.98f, 0.95f, 0.73f);
 
+		style.Colors[ImGuiCol_TabActive] = ImVec4(0.6f, 0.0f, 0.1f, 1.0f);
+		style.Colors[ImGuiCol_Tab] = ImVec4(0.6f, 0.0f, 0.1f, 1.0f);
+		style.Colors[ImGuiCol_TabHovered] = ImVec4(1.0f, 0.0f, 0.1f, 1.0f);
+		style.Colors[ImGuiCol_TabUnfocused] = ImVec4(0.6f, 0.0f, 0.1f, 1.0f);
+		style.Colors[ImGuiCol_TabUnfocusedActive] = ImVec4(0.6f, 0.0f, 0.1f, 1.0f);
+
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		auto& app = Application::GetInstance();

@@ -10,7 +10,7 @@ namespace E3D
 		SceneCamera();
 		~SceneCamera() = default;
 
-		void SetPerspective(float fov, float aspectRatio, float nearPlane, float farPlane);
+		void SetPerspective(float fov, float nearPlane, float farPlane);
 
 		void SetViewportSize(uint32_t width, uint32_t height);
 

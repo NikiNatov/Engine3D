@@ -27,9 +27,9 @@ namespace E3D
 			s_RenderAPI->ClearScreen();
 		}
 
-		inline static void DrawIndexed(const Ref<VertexArray>& vertexArray, const Ref<Shader>& shader, const glm::mat4& transform = glm::mat4(1.0f))
+		inline static void DrawIndexed(const Ref<VertexArray>& vertexArray)
 		{
-			s_RenderAPI->DrawIndexed(vertexArray, shader, transform);
+			s_RenderAPI->DrawIndexed(vertexArray);
 		}
 
 	private:

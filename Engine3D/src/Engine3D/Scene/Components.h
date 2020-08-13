@@ -47,16 +47,4 @@ namespace E3D
 
 	};
 
-	// Temporary
-	struct ColorComponent
-	{
-		glm::vec3 Color{ 1.0f };
-
-		ColorComponent() = default;
-		ColorComponent(const ColorComponent& other) = default;
-		ColorComponent(const glm::vec3& color)
-			: Color(color)
-		{
-		}
-	};
 }

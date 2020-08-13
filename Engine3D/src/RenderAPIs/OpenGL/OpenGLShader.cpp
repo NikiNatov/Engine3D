@@ -45,6 +45,10 @@ namespace E3D
 	{
 		UploadUniformInt(name, data);
 	}
+	void OpenGLShader::SetBool(const std::string& name, bool data)
+	{
+		UploadUniformBool(name, data);
+	}
 	void OpenGLShader::SetFloat(const std::string& name, float data)
 	{
 		UploadUniformFloat(name, data);
@@ -66,6 +70,22 @@ namespace E3D
 		UploadUniformMat4(name, data);
 	}
 	void OpenGLShader::UploadUniformInt(const std::string& name, int data)
+	{
+		glUseProgram(m_ProgramID);
+
+		if (m_UniformCache.find(name) != m_UniformCache.end())
+		{
+			int location = m_UniformCache[name];
+			glUniform1i(location, data);
+		}
+		else
+		{
+			int location = glGetUniformLocation(m_ProgramID, name.c_str());
+			m_UniformCache[name] = location;
+			glUniform1i(location, data);
+		}
+	}
+	void OpenGLShader::UploadUniformBool(const std::string& name, bool data)
 	{
 		glUseProgram(m_ProgramID);
 

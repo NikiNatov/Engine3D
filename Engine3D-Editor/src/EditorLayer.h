@@ -27,18 +27,23 @@ namespace E3D
 		glm::mat4 m_CubeTransform = glm::mat4(1.0f);
 
 		PerspectiveCameraController m_CameraController{ 45.0f, (float)1280 / (float)720 };
-		Ref<Texture2D> m_ExampleTexture;
+		Ref<Texture2D> m_DiffuseTexture;
+		Ref<Texture2D> m_SpecularTexture;
+		Ref<Texture2D> m_CheckerboardTexture;
 		Ref<Framebuffer> m_Framebuffer;
 
 		bool m_ViewportFocused = false;
 		bool m_ViewportHovered = false;
 		glm::vec2 m_ViewportSize = { 0.0f, 0.0f };
 		
+		Ref<Scene> m_Scene;
 		Entity m_CubeEntity;
 		Entity m_MainCamera;
 		Entity m_SecondCamera;
-		Ref<Scene> m_Scene;
 
 		bool m_PrimaryCamera = true;
+		bool m_RunScene = false;
+
+		Ref<Material> m_RubyMaterial;
 	};
 }

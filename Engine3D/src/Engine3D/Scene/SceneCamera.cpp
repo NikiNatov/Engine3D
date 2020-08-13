@@ -10,10 +10,9 @@ namespace E3D
 		RecalculateProjection();
 	}
 
-	void SceneCamera::SetPerspective(float fov, float aspectRatio, float nearPlane, float farPlane)
+	void SceneCamera::SetPerspective(float fov, float nearPlane, float farPlane)
 	{
 		m_Fov = fov;
-		m_AspectRatio = aspectRatio;
 		m_NearPlane = nearPlane;
 		m_FarPlane = farPlane;
 

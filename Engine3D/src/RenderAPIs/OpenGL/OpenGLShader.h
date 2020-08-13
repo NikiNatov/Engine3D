@@ -22,6 +22,7 @@ namespace E3D
 		virtual void Unbind() override;
 
 		virtual void SetInt(const std::string& name, int data) override;
+		virtual void SetBool(const std::string& name, bool data) override;
 		virtual void SetFloat(const std::string& name, float data) override;
 		virtual void SetFloat2(const std::string& name, const glm::vec2& data) override;
 		virtual void SetFloat3(const std::string& name, const glm::vec3& data) override;
@@ -29,6 +30,7 @@ namespace E3D
 		virtual void SetMat4(const std::string& name, const glm::mat4& data) override;
 
 		void UploadUniformInt(const std::string& name, int data);
+		void UploadUniformBool(const std::string& name, bool data);
 		void UploadUniformFloat(const std::string& name, float data);
 		void UploadUniformFloat2(const std::string& name, const glm::vec2& data);
 		void UploadUniformFloat3(const std::string& name, const glm::vec3& data);
