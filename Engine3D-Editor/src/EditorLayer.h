@@ -21,15 +21,13 @@ namespace E3D
 		Ref<VertexBuffer> m_CubeVertexBuffer;
 		Ref<IndexBuffer> m_CubeIndexBuffer;
 		Ref<VertexArray> m_CubeVertexArray;
-		glm::vec3 m_CubePosition{ 0.0f };
-		glm::vec3 m_CubeRotation{ 0.0f };
-		glm::vec3 m_CubeScale{ 1.0f };
-		glm::mat4 m_CubeTransform = glm::mat4(1.0f);
 
 		PerspectiveCameraController m_CameraController{ 45.0f, (float)1280 / (float)720 };
 		Ref<Texture2D> m_DiffuseTexture;
 		Ref<Texture2D> m_SpecularTexture;
 		Ref<Texture2D> m_CheckerboardTexture;
+		Ref<Texture2D> m_PlayButtonTexture;
+		Ref<Texture2D> m_StopButtonTexture;
 		Ref<Framebuffer> m_Framebuffer;
 
 		bool m_ViewportFocused = false;

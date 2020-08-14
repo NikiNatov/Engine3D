@@ -79,6 +79,12 @@ namespace E3D
 	bool PerspectiveCameraController::OnMouseScrolled(MouseScrolledEvent& event)
 	{
 		m_Zoom -= event.GetYOffset() * m_ZoomSensitivity;
+
+		if (m_Zoom < -20.0f)
+			m_Zoom = -20.0f;
+		if (m_Zoom > 20.0f)
+			m_Zoom = 20.0f;
+
 		m_Camera.SetProjection(m_Fov + m_Zoom, m_AspectRatio);
 
 		return false;

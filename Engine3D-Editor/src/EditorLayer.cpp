@@ -1,6 +1,7 @@
 #include "EditorLayer.h"
 
 #include <ImGui\imgui.h>
+#include <ImGuizmo\include\ImGuizmo.h>
 #include <glm\gtc\matrix_transform.hpp>
 #include <glm\gtc\type_ptr.hpp>
 
@@ -14,13 +15,6 @@ namespace E3D
 
 	void EditorLayer::OnUpdate(Timestep ts)
 	{
-		m_CubeTransform = glm::translate(glm::mat4(1.0f), m_CubePosition) *
-			glm::rotate(glm::mat4(1.0f), glm::radians(m_CubeRotation.x), glm::vec3(1.0f, 0.0f, 0.0f)) *
-			glm::rotate(glm::mat4(1.0f), glm::radians(m_CubeRotation.y), glm::vec3(0.0f, 1.0f, 0.0f)) *
-			glm::rotate(glm::mat4(1.0f), glm::radians(m_CubeRotation.z), glm::vec3(0.0f, 0.0f, 1.0f)) *
-			glm::scale(glm::mat4(1.0f), m_CubeScale);
-
-
 		m_Framebuffer->Bind();
 
 		RenderCommand::SetClearColor({ 0.2f, 0.2f, 0.2f, 1.0f });
@@ -36,7 +30,8 @@ namespace E3D
 			Renderer::BeginScene(m_CameraController.GetCamera());
 		}
 
-		Renderer::Submit(m_CubeVertexArray, m_RubyMaterial, m_CubeTransform);
+		auto& transform = m_CubeEntity.GetComponent<TransformComponent>().Transform;
+		Renderer::Submit(m_CubeVertexArray, m_RubyMaterial, transform);
 
 		Renderer::EndScene();
 		m_Framebuffer->Unbind();
@@ -44,7 +39,7 @@ namespace E3D
 
 	void EditorLayer::OnEvent(Event& event)
 	{
-		if(!m_RunScene)
+		if(!m_RunScene && !ImGuizmo::IsUsing())
 			m_CameraController.OnEvent(event);
 	}
 
@@ -74,7 +69,7 @@ namespace E3D
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
 		ImGui::Begin("DockSpace Demo", &dockSpaceOpen, window_flags);
 		ImGui::PopStyleVar();
-
+		
 		if (opt_fullscreen)
 			ImGui::PopStyleVar(2);
 
@@ -100,16 +95,24 @@ namespace E3D
 
 
 		ImGui::Begin("Properties");
+	
 		if (m_CubeEntity)
 		{
 			ImGui::Separator();
 			auto& name = m_CubeEntity.GetComponent<NameComponent>().Name;
+			auto& transform = m_CubeEntity.GetComponent<TransformComponent>().Transform;
 			ImGui::Text("ID: %s", name.c_str());
 			ImGui::Separator();
-			ImGui::DragFloat3("Translation", &m_CubePosition.x, 0.5f, -10.0f, 10.0f);
-			ImGui::DragFloat3("Rotation", &m_CubeRotation.x, 0.5f, -180.0f, 180.0f);
-			ImGui::DragFloat3("Scale", &m_CubeScale.x, 0.5f, 0.5f, 3.0f);
+
+			glm::vec3 position, rotation, scale;
+			ImGuizmo::DecomposeMatrixToComponents(glm::value_ptr(transform), glm::value_ptr(position), glm::value_ptr(rotation), glm::value_ptr(scale));
+			
+			ImGui::DragFloat3("Translation", &position.x, 0.5f, -10.0f, 10.0f);
+			ImGui::DragFloat3("Rotation", &rotation.x, 0.5f, -180.0f, 180.0f);
+			ImGui::DragFloat3("Scale", &scale.x, 0.5f, 0.5f, 3.0f);
 			ImGui::Separator();
+
+			ImGuizmo::RecomposeMatrixFromComponents(glm::value_ptr(position), glm::value_ptr(rotation), glm::value_ptr(scale), glm::value_ptr(transform));
 		}
 
 		if (ImGui::Checkbox("Main Camera", &m_PrimaryCamera))
@@ -124,13 +127,7 @@ namespace E3D
 		ImGui::Separator();
 
 		ImGui::End();
-
 		ImGui::Begin("Materials");
-		ImGui::DragFloat3("Ambient", &m_RubyMaterial->GetAmbientColor().x, 0.03f, 0.0f, 1.0f);
-		ImGui::DragFloat3("Diffuse", &m_RubyMaterial->GetDiffuseColor().x, 0.03f, 0.0f, 1.0f);
-		ImGui::DragFloat3("Specular", &m_RubyMaterial->GetSpecularColor().x, 0.03f, 0.0f, 1.0f);
-		ImGui::DragFloat("Shininess", &m_RubyMaterial->GetShininess(), 0.5f, 0.0f, 180.0f);
-		ImGui::DragFloat("Transparency", &m_RubyMaterial->GetTransparency(), 0.03f, 0.0f, 1.0f);
 		ImGui::Separator();
 		static bool diffuseTex = false;
 		static bool specularTex = false;
@@ -139,8 +136,12 @@ namespace E3D
 		{
 			ImGui::Image((void*)m_RubyMaterial->GetDiffuseTexture()->GetTextureID(), ImVec2{ 64.0f, 64.0f }, { 0, 1 }, { 1, 0 });
 			ImGui::SameLine();
+			ImGui::BeginGroup();
 			if (ImGui::Checkbox("Use##DiffuseTexture", &diffuseTex))
 				m_RubyMaterial->UseDiffuseTexture(diffuseTex);
+			ImGui::SameLine();
+			ImGui::ColorEdit3("", &m_RubyMaterial->GetDiffuseColor().x, ImGuiColorEditFlags_NoInputs);
+			ImGui::EndGroup();
 		}
 		else
 			ImGui::Image((void*)m_CheckerboardTexture->GetTextureID(), ImVec2{ 64.0f, 64.0f }, { 0, 1 }, { 1, 0 });
@@ -150,20 +151,58 @@ namespace E3D
 		{
 			ImGui::Image((void*)m_RubyMaterial->GetSpecularTexture()->GetTextureID(), ImVec2{ 64.0f, 64.0f }, { 0, 1 }, { 1, 0 });
 			ImGui::SameLine();
+			ImGui::BeginGroup();
 			if (ImGui::Checkbox("Use##SpecularTexture", &specularTex))
-				m_RubyMaterial->UseSpecularTexture(specularTex);
+				m_RubyMaterial->UseSpecularTexture(true);
+
+			ImGui::SameLine();
+			ImGui::ColorEdit3("", &m_RubyMaterial->GetSpecularColor().x, ImGuiColorEditFlags_NoInputs);
+			ImGui::EndGroup();
 		}
 		else
 			ImGui::Image((void*)m_CheckerboardTexture->GetTextureID(), ImVec2{ 64.0f, 64.0f }, { 0, 1 }, { 1, 0 });
 		
+		ImGui::DragFloat("Shininess", &m_RubyMaterial->GetShininess(), 0.5f, 0.0f, 180.0f);
+		ImGui::DragFloat("Transparency", &m_RubyMaterial->GetTransparency(), 0.03f, 0.0f, 1.0f);
+
 		ImGui::Separator();
+		static bool gizmoEnabled = true;
+		ImGui::Checkbox("Gizmos Toggle", &gizmoEnabled);
+
+		static ImGuizmo::OPERATION operation = ImGuizmo::OPERATION::TRANSLATE;
+
+		if (ImGui::RadioButton("Translate", operation == ImGuizmo::TRANSLATE))
+			operation = ImGuizmo::TRANSLATE;
+		ImGui::SameLine();
+		if (ImGui::RadioButton("Rotate", operation == ImGuizmo::ROTATE))
+			operation = ImGuizmo::ROTATE;
+		ImGui::SameLine();
+		if (ImGui::RadioButton("Scale", operation == ImGuizmo::SCALE))
+			operation = ImGuizmo::SCALE;
 
 		ImGui::End();
 
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0.0f, 0.0f });
 		ImGui::Begin("Scene");
-		ImGui::Checkbox("Run Scene", &m_RunScene);
+		
+		if (gizmoEnabled && !m_RunScene)
+		{
+			ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, (float)ImGui::GetWindowWidth(), (float)ImGui::GetWindowHeight());
+
+			ImGuizmo::SetID(0);
+			auto& transform = m_CubeEntity.GetComponent<TransformComponent>().Transform;
+			
+			ImGuizmo::Manipulate(glm::value_ptr(m_CameraController.GetCamera().GetViewMatrix()), glm::value_ptr(m_CameraController.GetCamera().GetProjection()), operation, ImGuizmo::LOCAL, glm::value_ptr(transform));
+		}
+
+		ImGuizmo::DrawGrid(glm::value_ptr(m_CameraController.GetCamera().GetViewMatrix()), glm::value_ptr(m_CameraController.GetCamera().GetProjection()), glm::value_ptr(glm::mat4(1.0f)), 30.0f);
+
+		if (ImGui::ImageButton((void*)m_PlayButtonTexture->GetTextureID(), { 40.0f, 40.0f }, { 0, 1 }, { 1, 0 }))
+			m_RunScene = true;
+		ImGui::SameLine();
+		if(ImGui::ImageButton((void*)m_StopButtonTexture->GetTextureID(), { 40.0f, 40.0f }, { 0, 1 }, { 1, 0 }))
+			m_RunScene = false;
 
 		if (m_ViewportFocused != ImGui::IsWindowFocused() && m_ViewportFocused == true)
 			m_CameraController.SetViewportFocus(false);
@@ -181,8 +220,10 @@ namespace E3D
 			m_Scene->OnViewportResize(m_ViewportSize.x, m_ViewportSize.y);
 			m_CameraController.Resize(m_ViewportSize.x, m_ViewportSize.y);
 		}
+		ImGuizmo::SetDrawlist();
 		uint32_t texture = m_Framebuffer->GetColorAttachment();
 		ImGui::Image((void*)texture, { m_ViewportSize.x , m_ViewportSize.y }, { 0, 1 }, { 1, 0 });
+		
 		ImGui::End();
 		ImGui::PopStyleVar();
 
@@ -193,9 +234,11 @@ namespace E3D
 	{
 		m_ShaderLibrary.Load("assets/shaders/FlatColorShader.glsl");
 
-		m_DiffuseTexture = Texture2D::Create("assets/textures/diffuse.png");
+		m_DiffuseTexture = Texture2D::Create("assets/textures/rubyTexture.jpg");
 		m_CheckerboardTexture = Texture2D::Create("assets/textures/checkerboard.png");
 		m_SpecularTexture = Texture2D::Create("assets/textures/specular.png");
+		m_PlayButtonTexture = Texture2D::Create("assets/textures/playButton.png");
+		m_StopButtonTexture = Texture2D::Create("assets/textures/stopButton.png");
 
 		auto materialShader = m_ShaderLibrary.Load("assets/shaders/MaterialShader.glsl");
 
@@ -215,15 +258,15 @@ namespace E3D
 
 		float cubeVertices[] =
 		{
-			-0.5f,  0.5f, -3.5f,   0.0f, 1.0f,    0.0f, 0.0f, -1.0f,
-			-0.5f, -0.5f, -3.5f,   0.0f, 0.0f,    0.0f, 0.0f, -1.0f,
-			 0.5f, -0.5f, -3.5f,   1.0f, 0.0f,    0.0f, 0.0f, -1.0f,
-			 0.5f,  0.5f, -3.5f,   1.0f, 1.0f,    0.0f, 0.0f, -1.0f,
+			-0.5f,  0.5f, -0.5f,   0.0f, 1.0f,    0.0f, 0.0f, -1.0f,
+			-0.5f, -0.5f, -0.5f,   0.0f, 0.0f,    0.0f, 0.0f, -1.0f,
+			 0.5f, -0.5f, -0.5f,   1.0f, 0.0f,    0.0f, 0.0f, -1.0f,
+			 0.5f,  0.5f, -0.5f,   1.0f, 1.0f,    0.0f, 0.0f, -1.0f,
 											      
-			-0.5f,  0.5f, -2.5f,   0.0f, 1.0f,    0.0f, 0.0f, 1.0f,
-			-0.5f, -0.5f, -2.5f,   0.0f, 0.0f,    0.0f, 0.0f, 1.0f,
-			 0.5f, -0.5f, -2.5f,   1.0f, 0.0f,    0.0f, 0.0f, 1.0f,
-			 0.5f,  0.5f, -2.5f,   1.0f, 1.0f,    0.0f, 0.0f, 1.0f,
+			-0.5f,  0.5f, 0.5f,   0.0f, 1.0f,    0.0f, 0.0f, 1.0f,
+			-0.5f, -0.5f, 0.5f,   0.0f, 0.0f,    0.0f, 0.0f, 1.0f,
+			 0.5f, -0.5f, 0.5f,   1.0f, 0.0f,    0.0f, 0.0f, 1.0f,
+			 0.5f,  0.5f, 0.5f,   1.0f, 1.0f,    0.0f, 0.0f, 1.0f,
 		};
 
 		uint32_t cubeIndices[] = {
@@ -266,6 +309,8 @@ namespace E3D
 		m_Scene = CreateRef<Scene>();
 
 		m_CubeEntity = m_Scene->CreateEntity("Cube Entity");
+		auto& transform = m_CubeEntity.GetComponent<TransformComponent>().Transform;
+		transform = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -4.0f));
 
 		m_MainCamera = m_Scene->CreateEntity("Main Camera");
 		m_MainCamera.AddComponent<CameraComponent>().Primary = true;

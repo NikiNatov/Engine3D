@@ -18,6 +18,7 @@ workspace "Engine3D"
 	IncludeDirs["ImGui"] = "Engine3D/vendor/ImGui"
 	IncludeDirs["stb_image"] = "Engine3D/vendor/stb_image"
 	IncludeDirs["entt"] = "Engine3D/vendor/entt/include"
+	IncludeDirs["ImGuizmo"] = "Engine3D/vendor/ImGuizmo/include"
 
 	include "Engine3D/vendor/GLFW"
 	include "Engine3D/vendor/Glad"
@@ -55,7 +56,8 @@ project "Engine3D"
 		"%{IncludeDirs.Glad}",
 		"%{IncludeDirs.ImGui}",
 		"%{IncludeDirs.stb_image}",
-		"%{IncludeDirs.entt}"
+		"%{IncludeDirs.entt}",
+		"%{IncludeDirs.ImGuizmo}"
 	}
 
 	defines
@@ -103,7 +105,8 @@ project "TestGame"
 		"Engine3D/vendor",
 		"%{IncludeDirs.spdlog}",
 		"%{IncludeDirs.glm}",
-		"%{IncludeDirs.entt}"
+		"%{IncludeDirs.entt}",
+		"%{IncludeDirs.ImGuizmo}"
 	}
 
 	links
@@ -142,7 +145,8 @@ project "Engine3D-Editor"
 		"Engine3D/vendor",
 		"%{IncludeDirs.spdlog}",
 		"%{IncludeDirs.glm}",
-		"%{IncludeDirs.entt}"
+		"%{IncludeDirs.entt}",
+		"%{IncludeDirs.ImGuizmo}"
 	}
 
 	links
