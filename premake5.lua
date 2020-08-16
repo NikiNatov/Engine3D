@@ -19,6 +19,7 @@ workspace "Engine3D"
 	IncludeDirs["stb_image"] = "Engine3D/vendor/stb_image"
 	IncludeDirs["entt"] = "Engine3D/vendor/entt/include"
 	IncludeDirs["ImGuizmo"] = "Engine3D/vendor/ImGuizmo/include"
+	IncludeDirs["Assimp"] = "Engine3D/vendor/Assimp/include"
 
 	include "Engine3D/vendor/GLFW"
 	include "Engine3D/vendor/Glad"
@@ -57,7 +58,8 @@ project "Engine3D"
 		"%{IncludeDirs.ImGui}",
 		"%{IncludeDirs.stb_image}",
 		"%{IncludeDirs.entt}",
-		"%{IncludeDirs.ImGuizmo}"
+		"%{IncludeDirs.ImGuizmo}",
+		"%{IncludeDirs.Assimp}"
 	}
 
 	defines
@@ -71,17 +73,26 @@ project "Engine3D"
 		"GLFW",
 		"Glad",
 		"ImGui",
-		"opengl32.lib"
+		"opengl32.lib",
 	}
 
 	filter "configurations:Debug"
 		defines "E3D_DEBUG"
 		runtime "Debug"
 		symbols "on"
+
+		links
+		{
+			"Engine3D/vendor/Assimp/lib/Debug/assimp-vc142-mtd.lib" 
+		}
 	filter "configurations:Release"
 		defines "E3D_RELEASE"
 		runtime "Release"
 		optimize "on"
+		links
+		{
+			"Engine3D/vendor/Assimp/lib/Release/assimp-vc142-mt.lib" 
+		}
 
 project "TestGame"
 	location "TestGame"
@@ -118,8 +129,8 @@ project "TestGame"
 		defines "E3D_DEBUG"
 		runtime "Debug"
 		symbols "on"
-	filter "configurations:Release"
-		defines "E3D_RELEASE"
+	filter "configurations:Relse"
+		efines "E3D_RELEASE"
 		runtime "Release"
 		optimize "on"
 
@@ -146,7 +157,8 @@ project "Engine3D-Editor"
 		"%{IncludeDirs.spdlog}",
 		"%{IncludeDirs.glm}",
 		"%{IncludeDirs.entt}",
-		"%{IncludeDirs.ImGuizmo}"
+		"%{IncludeDirs.ImGuizmo}",
+		"%{IncludeDirs.Assimp}"
 	}
 
 	links

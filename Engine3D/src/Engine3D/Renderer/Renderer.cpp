@@ -24,22 +24,24 @@ namespace E3D
 	void Renderer::EndScene()
 	{
 	}
-	void Renderer::Submit(const Ref<VertexArray>& vertexArray, const Ref<Material>& material, const glm::mat4& transform)
+	void Renderer::Submit(const Ref<Mesh>& mesh, const glm::mat4& transform)
 	{
+		auto& material = mesh->GetMaterial();
 		auto& shader = material->GetShader();
 		shader->Bind();
 		shader->SetMat4("u_ViewProjection", m_SceneData->ViewProjectionMatrix);
 		shader->SetMat4("u_Transform", transform);
 
-		shader->SetFloat3("u_CameraPosition", glm::vec3(0.0f, 0.0f, 0.0f));
-		shader->SetFloat3("u_Light.Position", glm::vec3(0.0f, 0.0f, -2.0f));
-		shader->SetFloat3("u_Light.Ambient", glm::vec3(1.0f, 1.0f, 1.0f));
+		shader->SetFloat3("u_CameraPosition", glm::vec3(0.0f));
+		shader->SetFloat3("u_Light.Direction", glm::vec3(1.0f, -1.0f, -1.0f));
+		shader->SetFloat3("u_Light.Ambient", glm::vec3(0.1f, 0.1f, 0.1f));
 		shader->SetFloat3("u_Light.Diffuse", glm::vec3(1.0f, 1.0f, 1.0f));
 		shader->SetFloat3("u_Light.Specular", glm::vec3(1.0f, 1.0f, 1.0f));
 
 		material->Bind();
 
-		vertexArray->Bind();
-		RenderCommand::DrawIndexed(vertexArray);
+		auto& vao = mesh->GetVertexArray();
+		vao->Bind();
+		RenderCommand::DrawIndexed(vao);
 	}
 }

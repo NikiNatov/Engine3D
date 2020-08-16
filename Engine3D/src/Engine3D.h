@@ -30,6 +30,7 @@
 #include "Engine3D\Renderer\Texture.h"
 #include "Engine3D\Renderer\Framebuffer.h"
 #include "Engine3D\Renderer\Material.h"
+#include "Engine3D\Renderer\Mesh.h"
 
 // Scene
 #include "Engine3D\Scene\Scene.h"

@@ -28,10 +28,15 @@ namespace E3D
 				m_CameraController.OnUpdate(ts);
 
 			Renderer::BeginScene(m_CameraController.GetCamera());
+			auto& transform = m_TestEntity.GetComponent<TransformComponent>().Transform;
+			m_Model->Draw(transform);
+
+			auto& mesh = m_MainCamera.GetComponent<MeshComponent>().Mesh;
+			auto& cameraTransform = m_MainCamera.GetComponent<TransformComponent>().Transform;
+			mesh->Draw(cameraTransform);
 		}
 
-		auto& transform = m_CubeEntity.GetComponent<TransformComponent>().Transform;
-		Renderer::Submit(m_CubeVertexArray, m_RubyMaterial, transform);
+		m_Grid->Draw(glm::mat4(1.0f));
 
 		Renderer::EndScene();
 		m_Framebuffer->Unbind();
@@ -93,42 +98,71 @@ namespace E3D
 			ImGui::EndMenuBar();
 		}
 
+		ImGui::Begin("Model");
+		int nodeID1 = 0;
+		static int selectedNodeID1 = 0;
+		m_Model->GetRootNode()->RenderTree(nodeID1, selectedNodeID1);
+
+		auto& mesh = m_MainCamera.GetComponent<MeshComponent>().Mesh;
+		mesh->GetRootNode()->RenderTree(nodeID1, selectedNodeID1);
+		ImGui::End();
 
 		ImGui::Begin("Properties");
 	
-		if (m_CubeEntity)
+		if (m_TestEntity)
 		{
 			ImGui::Separator();
-			auto& name = m_CubeEntity.GetComponent<NameComponent>().Name;
-			auto& transform = m_CubeEntity.GetComponent<TransformComponent>().Transform;
-			ImGui::Text("ID: %s", name.c_str());
+			auto& name = m_TestEntity.GetComponent<NameComponent>().Name;
+			auto& transform = m_TestEntity.GetComponent<TransformComponent>().Transform;
+			ImGui::InputText("Tag##TestEntity", (char*)name.c_str(), 25);
 			ImGui::Separator();
+
 
 			glm::vec3 position, rotation, scale;
 			ImGuizmo::DecomposeMatrixToComponents(glm::value_ptr(transform), glm::value_ptr(position), glm::value_ptr(rotation), glm::value_ptr(scale));
 			
-			ImGui::DragFloat3("Translation", &position.x, 0.5f, -10.0f, 10.0f);
-			ImGui::DragFloat3("Rotation", &rotation.x, 0.5f, -180.0f, 180.0f);
-			ImGui::DragFloat3("Scale", &scale.x, 0.5f, 0.5f, 3.0f);
+			if (ImGui::CollapsingHeader("Transform##TestEntity"))
+			{
+				ImGui::DragFloat3("Translation##TestEntity", &position.x, 0.5f, -10.0f, 10.0f);
+				ImGui::DragFloat3("Rotation##TestEntity", &rotation.x, 0.5f, -180.0f, 180.0f);
+				ImGui::DragFloat3("Scale##TestEntity", &scale.x, 0.5f, 0.5f, 3.0f);
+			}
 			ImGui::Separator();
 
 			ImGuizmo::RecomposeMatrixFromComponents(glm::value_ptr(position), glm::value_ptr(rotation), glm::value_ptr(scale), glm::value_ptr(transform));
 		}
 
-		if (ImGui::Checkbox("Main Camera", &m_PrimaryCamera))
+		if (m_MainCamera)
 		{
-			m_MainCamera.GetComponent<CameraComponent>().Primary = m_PrimaryCamera;
-			m_SecondCamera.GetComponent<CameraComponent>().Primary = !m_PrimaryCamera;
-		}
+			ImGui::Separator();
+			auto& name = m_MainCamera.GetComponent<NameComponent>().Name;
+			auto& transform = m_MainCamera.GetComponent<TransformComponent>().Transform;
+			ImGui::InputText("Tag##CameraEntity", (char*)name.c_str(), 25);
+			ImGui::Separator();
 
-		ImGui::Separator();
-		ImGui::DragFloat3("Main", glm::value_ptr(m_MainCamera.GetComponent<TransformComponent>().Transform[3]));
-		ImGui::DragFloat3("Secondary", glm::value_ptr(m_SecondCamera.GetComponent<TransformComponent>().Transform[3]));
+
+			glm::vec3 position, rotation, scale;
+			ImGuizmo::DecomposeMatrixToComponents(glm::value_ptr(transform), glm::value_ptr(position), glm::value_ptr(rotation), glm::value_ptr(scale));
+
+			if (ImGui::CollapsingHeader("Transform##Camera"))
+			{
+				ImGui::DragFloat3("Translation##Camera", &position.x, 0.5f, -100.0f, 100.0f);
+				ImGui::DragFloat3("Rotation##Camera", &rotation.x, 0.5f, -180.0f, 180.0f);
+				ImGui::DragFloat3("Scale##Camera", &scale.x, 0.5f, 0.5f, 3.0f);
+			}
+			ImGui::Separator();
+
+			ImGuizmo::RecomposeMatrixFromComponents(glm::value_ptr(position), glm::value_ptr(rotation), glm::value_ptr(scale), glm::value_ptr(transform));
+		}
 		ImGui::Separator();
 
 		ImGui::End();
 		ImGui::Begin("Materials");
-		ImGui::Separator();
+		ImGui::Text("Diffuse Texture");
+		ImGui::Image((void*)m_CheckerboardTexture->GetTextureID(), ImVec2{ 64.0f, 64.0f }, { 0, 1 }, { 1, 0 });
+		ImGui::Text("Specular Texture");
+		ImGui::Image((void*)m_CheckerboardTexture->GetTextureID(), ImVec2{ 64.0f, 64.0f }, { 0, 1 }, { 1, 0 });
+		/*ImGui::Separator();
 		static bool diffuseTex = false;
 		static bool specularTex = false;
 		ImGui::Text("Diffuse Texture");
@@ -163,7 +197,7 @@ namespace E3D
 			ImGui::Image((void*)m_CheckerboardTexture->GetTextureID(), ImVec2{ 64.0f, 64.0f }, { 0, 1 }, { 1, 0 });
 		
 		ImGui::DragFloat("Shininess", &m_RubyMaterial->GetShininess(), 0.5f, 0.0f, 180.0f);
-		ImGui::DragFloat("Transparency", &m_RubyMaterial->GetTransparency(), 0.03f, 0.0f, 1.0f);
+		ImGui::DragFloat("Transparency", &m_RubyMaterial->GetTransparency(), 0.03f, 0.0f, 1.0f);*/
 
 		ImGui::Separator();
 		static bool gizmoEnabled = true;
@@ -191,12 +225,11 @@ namespace E3D
 			ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, (float)ImGui::GetWindowWidth(), (float)ImGui::GetWindowHeight());
 
 			ImGuizmo::SetID(0);
-			auto& transform = m_CubeEntity.GetComponent<TransformComponent>().Transform;
+			auto& transform = m_TestEntity.GetComponent<TransformComponent>().Transform;
 			
 			ImGuizmo::Manipulate(glm::value_ptr(m_CameraController.GetCamera().GetViewMatrix()), glm::value_ptr(m_CameraController.GetCamera().GetProjection()), operation, ImGuizmo::LOCAL, glm::value_ptr(transform));
 		}
 
-		ImGuizmo::DrawGrid(glm::value_ptr(m_CameraController.GetCamera().GetViewMatrix()), glm::value_ptr(m_CameraController.GetCamera().GetProjection()), glm::value_ptr(glm::mat4(1.0f)), 30.0f);
 
 		if (ImGui::ImageButton((void*)m_PlayButtonTexture->GetTextureID(), { 40.0f, 40.0f }, { 0, 1 }, { 1, 0 }))
 			m_RunScene = true;
@@ -242,82 +275,27 @@ namespace E3D
 
 		auto materialShader = m_ShaderLibrary.Load("assets/shaders/MaterialShader.glsl");
 
-		m_RubyMaterial = CreateRef<Material>(materialShader);
-		m_RubyMaterial->SetAmbientColor({ 0.1745f, 0.01175f, 0.01175f });
-		m_RubyMaterial->SetDiffuseColor({ 0.61424f, 0.04136f, 0.04136f });
-		m_RubyMaterial->SetSpecularColor({ 0.727811f, 0.626959f, 0.626959f });
-		m_RubyMaterial->SetShininess(76.8f);
-		m_RubyMaterial->SetTransparency(1.0f);
-		m_RubyMaterial->SetDiffuseTexture(m_DiffuseTexture);
-		m_RubyMaterial->SetSpecularTexture(m_SpecularTexture);
+		m_Model = CreateRef<Model>("assets/models/darth vader/darthVader.fbx");
+		m_Grid = CreateRef<Model>("assets/models/grid/grid.fbx");
 
 		FramebufferSpecification fbSpec;
 		fbSpec.Width = 1280;
 		fbSpec.Height = 720;
 		m_Framebuffer = Framebuffer::Create(fbSpec);
 
-		float cubeVertices[] =
-		{
-			-0.5f,  0.5f, -0.5f,   0.0f, 1.0f,    0.0f, 0.0f, -1.0f,
-			-0.5f, -0.5f, -0.5f,   0.0f, 0.0f,    0.0f, 0.0f, -1.0f,
-			 0.5f, -0.5f, -0.5f,   1.0f, 0.0f,    0.0f, 0.0f, -1.0f,
-			 0.5f,  0.5f, -0.5f,   1.0f, 1.0f,    0.0f, 0.0f, -1.0f,
-											      
-			-0.5f,  0.5f, 0.5f,   0.0f, 1.0f,    0.0f, 0.0f, 1.0f,
-			-0.5f, -0.5f, 0.5f,   0.0f, 0.0f,    0.0f, 0.0f, 1.0f,
-			 0.5f, -0.5f, 0.5f,   1.0f, 0.0f,    0.0f, 0.0f, 1.0f,
-			 0.5f,  0.5f, 0.5f,   1.0f, 1.0f,    0.0f, 0.0f, 1.0f,
-		};
-
-		uint32_t cubeIndices[] = {
-				0, 2, 1,
-				0, 3, 2,
-
-				1, 2, 6,
-				6, 5, 1,
-
-				4, 5, 6,
-				6, 7, 4,
-
-				2, 3, 6,
-				6, 3, 7,
-
-				0, 7, 3,
-				0, 4, 7,
-
-				0, 1, 5,
-				0, 5, 4
-		};
-
-		BufferLayout layout = {
-			{ "a_Position", DataType::Float3, false },
-			{ "a_TexCoord", DataType::Float2, false },
-			{ "a_Normal", DataType::Float3, false },
-		};
-
-		m_CubeVertexArray = VertexArray::Create();
-		m_CubeVertexArray->Bind();
-
-		m_CubeVertexBuffer = VertexBuffer::Create(cubeVertices, sizeof(cubeVertices));
-		m_CubeVertexBuffer->SetLayout(layout);
-
-		m_CubeIndexBuffer = IndexBuffer::Create(cubeIndices, sizeof(cubeIndices) / sizeof(uint32_t));
-
-		m_CubeVertexArray->AddVertexBuffer(m_CubeVertexBuffer);
-		m_CubeVertexArray->SetIndexBuffer(m_CubeIndexBuffer);
-
 		m_Scene = CreateRef<Scene>();
 
-		m_CubeEntity = m_Scene->CreateEntity("Cube Entity");
-		auto& transform = m_CubeEntity.GetComponent<TransformComponent>().Transform;
+		m_TestEntity = m_Scene->CreateEntity("Test Entity");
+		m_TestEntity.AddComponent<MeshComponent>(m_Model);
+
+		auto& transform = m_TestEntity.GetComponent<TransformComponent>().Transform;
 		transform = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -4.0f));
 
 		m_MainCamera = m_Scene->CreateEntity("Main Camera");
+		m_MainCamera.AddComponent<MeshComponent>("assets/models/camera/camera.obj");
 		m_MainCamera.AddComponent<CameraComponent>().Primary = true;
-
-		m_SecondCamera = m_Scene->CreateEntity("Second Camera");
-		auto& cameraComponent = m_SecondCamera.AddComponent<CameraComponent>();
-		cameraComponent.Primary = false;
+		auto& cameraTransform = m_MainCamera.GetComponent<TransformComponent>().Transform;
+		cameraTransform = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 10.0f, 35.0f));
 	}
 
 	void EditorLayer::OnDetach()

@@ -37,7 +37,7 @@ namespace E3D
 		float m_AspectRatio;
 		float m_Pitch = -35.0f;
 		float m_Yaw = -89.0f;
-		glm::vec3 m_CameraPosition = { 0.0f, 3.0f, 3.0f };
+		glm::vec3 m_CameraPosition = { 0.0f, 40.0f, 50.0f };
 
 		float m_MovementSpeed = 10.0f;
 		float m_MouseSensitivity = 0.2f;

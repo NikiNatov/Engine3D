@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Engine3D\Scene\SceneCamera.h"
+#include "Engine3D\Renderer\Mesh.h"
 
 #include <glm\glm.hpp>
 
@@ -44,7 +45,18 @@ namespace E3D
 
 	struct MeshComponent
 	{
+		Ref<Model> Mesh;
 
+		MeshComponent() = default;
+		MeshComponent(const MeshComponent& other) = default;
+		MeshComponent(const std::string& filepath)
+		{
+			Mesh = CreateRef<Model>(filepath);
+		}
+		MeshComponent(const Ref<Model>& mesh)
+			: Mesh(mesh)
+		{
+		}
 	};
 
 }

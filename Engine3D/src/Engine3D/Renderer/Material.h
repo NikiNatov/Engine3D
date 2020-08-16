@@ -9,6 +9,8 @@ namespace E3D
 {
 	struct MaterialProperties
 	{
+		std::string Name;
+
 		glm::vec3 Ambient{ 0.0f };
 		glm::vec3 Diffuse{ 1.0f };
 		glm::vec3 Specular{ 1.0f };
@@ -28,6 +30,8 @@ namespace E3D
 
 		void Bind();
 
+		void SetName(const std::string& name);
+
 		void SetAmbientColor(const glm::vec3& ambient);
 		void SetDiffuseColor(const glm::vec3& diffuse);
 		void SetSpecularColor(const glm::vec3& specular);
@@ -43,6 +47,8 @@ namespace E3D
 		inline bool HasSpecularTexture() const { return m_HasSpecularTexture; }
 
 		inline const Ref<Shader>& GetShader() const { return m_Shader; }
+
+		inline std::string& GetName() { return m_Properties.Name; }
 
 		inline glm::vec3& GetAmbientColor() { return m_Properties.Ambient; }
 		inline glm::vec3& GetDiffuseColor() { return m_Properties.Diffuse; }
@@ -68,6 +74,7 @@ namespace E3D
 
 		bool m_UseDiffuseTex = false;
 		bool m_UseSpecularTex = false;
+		bool m_UseNormalMap = false;
 
 		Ref<Shader> m_Shader;
 	};

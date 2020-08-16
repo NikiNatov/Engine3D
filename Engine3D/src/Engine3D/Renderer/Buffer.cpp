@@ -7,7 +7,7 @@
 
 namespace E3D
 {
-	Ref<VertexBuffer> VertexBuffer::Create(float* data, uint32_t size)
+	Ref<VertexBuffer> VertexBuffer::Create(void* data, uint32_t size)
 	{
 		switch (RenderAPI::GetAPI())
 		{

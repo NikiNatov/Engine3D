@@ -39,7 +39,7 @@ struct Material
 
 struct Light
 {
-	vec3 Position;
+	vec3 Direction;
 
 	vec3 Ambient;
 	vec3 Diffuse;
@@ -58,11 +58,13 @@ uniform vec3 u_CameraPosition;
 
 uniform bool u_UseDiffuseTexture;
 uniform bool u_UseSpecularTexture;
+uniform bool u_UseNormalMap;
 
 void main()
 {
+
 	// Diffuse light
-	vec3 posToLight = normalize(u_Light.Position - v_Position);
+	vec3 posToLight = normalize(-u_Light.Direction);
 	float diffuseIntensity = max(dot(posToLight, v_Normal), 0);
 	
 
@@ -94,6 +96,7 @@ void main()
 	{
 		specular = u_Light.Specular * u_Material.Specular * specularIntensity;
 	}
+	
     
 	vec3 finalColor = ambient + diffuse + specular;
 	color = vec4(finalColor, max(u_Material.Transparency, 0.0));

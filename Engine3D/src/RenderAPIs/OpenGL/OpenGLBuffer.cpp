@@ -7,7 +7,7 @@ namespace E3D
 {
 	// Vertex Buffer
 
-	OpenGLVertexBuffer::OpenGLVertexBuffer(float* data, uint32_t size)
+	OpenGLVertexBuffer::OpenGLVertexBuffer(void* data, uint32_t size)
 	{
 		glGenBuffers(1, &m_BufferID);
 		glBindBuffer(GL_ARRAY_BUFFER, m_BufferID);

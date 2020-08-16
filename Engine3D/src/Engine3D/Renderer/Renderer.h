@@ -5,6 +5,7 @@
 #include "Engine3D\Renderer\Camera.h"
 
 #include "Engine3D\Renderer\Material.h"
+#include "Engine3D\Renderer\Mesh.h"
 
 namespace E3D
 {
@@ -16,7 +17,7 @@ namespace E3D
 		static void BeginScene(Camera& camera, const glm::mat4& transform);
 		static void BeginScene(PerspectiveCamera& camera);
 		static void EndScene();
-		static void Submit(const Ref<VertexArray>& vertexArray, const Ref<Material>& material, const glm::mat4& transform = glm::mat4(1.0f));
+		static void Submit(const Ref<Mesh>& mesh, const glm::mat4& transform = glm::mat4(1.0f));
 
 		inline static RenderAPI::API GetRenderAPI() { return RenderAPI::GetAPI(); }
 	private:

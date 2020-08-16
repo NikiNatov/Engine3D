@@ -47,6 +47,14 @@ namespace E3D
 		if (mainCamera)
 		{
 			Renderer::BeginScene(*mainCamera, *cameraTransform);
+
+			auto view = m_Registry.view<TransformComponent, MeshComponent>();
+
+			for (auto entity : view)
+			{
+				auto& [transform, mesh] = view.get<TransformComponent, MeshComponent>(entity);
+				mesh.Mesh->Draw(transform.Transform);
+			}
 		}
 	}
 
