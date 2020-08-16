@@ -273,7 +273,7 @@ namespace E3D
 		m_PlayButtonTexture = Texture2D::Create("assets/textures/playButton.png");
 		m_StopButtonTexture = Texture2D::Create("assets/textures/stopButton.png");
 
-		auto materialShader = m_ShaderLibrary.Load("assets/shaders/MaterialShader.glsl");
+		//auto materialShader = m_ShaderLibrary.Load("assets/shaders/MaterialShader.glsl");
 
 		m_Model = CreateRef<Model>("assets/models/darth vader/darthVader.fbx");
 		m_Grid = CreateRef<Model>("assets/models/grid/grid.fbx");

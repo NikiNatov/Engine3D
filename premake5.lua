@@ -73,8 +73,9 @@ project "Engine3D"
 		"GLFW",
 		"Glad",
 		"ImGui",
-		"opengl32.lib",
+		"opengl32.lib"
 	}
+
 
 	filter "configurations:Debug"
 		defines "E3D_DEBUG"
@@ -85,6 +86,9 @@ project "Engine3D"
 		{
 			"Engine3D/vendor/Assimp/lib/Debug/assimp-vc142-mtd.lib" 
 		}
+
+		
+
 	filter "configurations:Release"
 		defines "E3D_RELEASE"
 		runtime "Release"
@@ -93,46 +97,6 @@ project "Engine3D"
 		{
 			"Engine3D/vendor/Assimp/lib/Release/assimp-vc142-mt.lib" 
 		}
-
-project "TestGame"
-	location "TestGame"
-	kind "ConsoleApp"
-	language "C++"
-	cppdialect "C++17"
-	staticruntime "on"
-
-	targetdir("bin/" .. outputdir .. "/%{prj.name}")
-	objdir("bin-int/" .. outputdir .. "/%{prj.name}")
-
-	files
-	{
-		"%{prj.name}/src/**.cpp",
-		"%{prj.name}/src/**.h"
-	}
-
-	includedirs
-	{
-		"Engine3D/src",
-		"Engine3D/vendor",
-		"%{IncludeDirs.spdlog}",
-		"%{IncludeDirs.glm}",
-		"%{IncludeDirs.entt}",
-		"%{IncludeDirs.ImGuizmo}"
-	}
-
-	links
-	{
-		"Engine3D"
-	}
-
-	filter "configurations:Debug"
-		defines "E3D_DEBUG"
-		runtime "Debug"
-		symbols "on"
-	filter "configurations:Relse"
-		efines "E3D_RELEASE"
-		runtime "Release"
-		optimize "on"
 
 project "Engine3D-Editor"
 	location "Engine3D-Editor"
@@ -170,7 +134,17 @@ project "Engine3D-Editor"
 		defines "E3D_DEBUG"
 		runtime "Debug"
 		symbols "on"
+
+		postbuildcommands
+		{
+			"XCOPY ..\\Engine3D\\vendor\\Assimp\\lib\\Debug\\assimp-vc142-mtd.dll \"%{cfg.targetdir}\"  /S /Y"
+		}
 	filter "configurations:Release"
 		defines "E3D_RELEASE"
 		runtime "Release"
 		optimize "on"
+
+		postbuildcommands
+		{
+			"XCOPY ..\\Engine3D\\vendor\\Assimp\\lib\\Release\\assimp-vc142-mt.dll \"%{cfg.targetdir}\"  /S /Y"
+		}

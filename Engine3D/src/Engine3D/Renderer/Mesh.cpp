@@ -115,13 +115,19 @@ namespace E3D
 
 			aiString name;
 			aiColor3D diffuse, ambient, specular;
-			ai_real shininess, transparency;
-			E3D_CORE_ASSERT(AI_SUCCESS == material->Get(AI_MATKEY_NAME, name), "Failed to load material name!");
-			E3D_CORE_ASSERT(AI_SUCCESS == material->Get(AI_MATKEY_COLOR_AMBIENT, ambient), "Failed to load material ambient color!");
-			E3D_CORE_ASSERT(AI_SUCCESS == material->Get(AI_MATKEY_COLOR_DIFFUSE, diffuse), "Failed to load material diffuse color!");
-			E3D_CORE_ASSERT(AI_SUCCESS == material->Get(AI_MATKEY_COLOR_SPECULAR, specular), "Failed to load material specular color!");
-			E3D_CORE_ASSERT(AI_SUCCESS == material->Get(AI_MATKEY_OPACITY, transparency), "Failed to load material transparency!");
-			E3D_CORE_ASSERT(AI_SUCCESS == material->Get(AI_MATKEY_SHININESS, shininess), "Failed to load material shininess!");
+			ai_real shininess = 0.0f, transparency = 0.0f;
+			if (!(AI_SUCCESS == material->Get(AI_MATKEY_NAME, name)))
+				E3D_CORE_ASSERT(false, "Failed to load material name!");
+			if (!(AI_SUCCESS == material->Get(AI_MATKEY_COLOR_AMBIENT, ambient)))
+				E3D_CORE_ASSERT(false, "Failed to load material ambient color!");
+			if(!(AI_SUCCESS == material->Get(AI_MATKEY_COLOR_DIFFUSE, diffuse)))
+				E3D_CORE_ASSERT(false, "Failed to load material diffuse color!");
+			if(!(AI_SUCCESS == material->Get(AI_MATKEY_COLOR_SPECULAR, specular)))
+				E3D_CORE_ASSERT(false, "Failed to load material specular color!");
+			if(!(AI_SUCCESS == material->Get(AI_MATKEY_OPACITY, transparency)))
+				E3D_CORE_ASSERT(false, "Failed to load material transparency!");
+			if(!(AI_SUCCESS == material->Get(AI_MATKEY_SHININESS, shininess)))
+				E3D_CORE_ASSERT(false, "Failed to load material shininess!");
 
 			newMeshMaterial->SetName(std::string(name.C_Str()));
 			newMeshMaterial->SetAmbientColor({ ambient.r, ambient.g, ambient.b });

@@ -49,6 +49,10 @@ namespace E3D {
 		m_Context = new OpenGLGraphicsContext(m_Window);
 		m_Context->Init();
 
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
+		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
 		SetVSync(true);
 
 		glfwSetWindowUserPointer(m_Window, &m_WindowData);
