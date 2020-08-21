@@ -26,7 +26,9 @@ namespace E3D
 		BufferLayout layout = {
 			{"a_Position",	DataType::Float3, false},
 			{"a_TexCoord",	DataType::Float2, false},
-			{"a_Normal",	DataType::Float3, false}
+			{"a_Normal",	DataType::Float3, false},
+			{"a_Tangent",	DataType::Float3, false},
+			{"a_Bitangent",	DataType::Float3, false}
 		};
 
 		m_VAO = VertexArray::Create();
@@ -52,7 +54,7 @@ namespace E3D
 	Model::Model(const std::string& filepath)
 		: m_Filepath(filepath)
 	{
-		m_Scene = m_Importer.ReadFile(filepath.c_str(), aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_GenNormals);
+		m_Scene = m_Importer.ReadFile(filepath.c_str(), aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_GenNormals | aiProcess_CalcTangentSpace);
 
 		E3D_CORE_ASSERT(m_Scene, "Failed to load the model file!");
 
@@ -96,6 +98,16 @@ namespace E3D
 			else
 				vertex.Normal = { 0.0f, 0.0f, 0.0f };
 
+			if (mesh->mTangents)
+				vertex.Tangent = { mesh->mTangents[i].x, mesh->mTangents[i].y, mesh->mTangents[i].z };
+			else
+				vertex.Tangent = { 0.0f, 0.0f, 0.0f };
+
+			if (mesh->mBitangents)
+				vertex.Bitangent = { mesh->mBitangents[i].x, mesh->mBitangents[i].y, mesh->mBitangents[i].z };
+			else
+				vertex.Bitangent = { 0.0f, 0.0f, 0.0f };
+
 			vertices.push_back(vertex);
 		}
 
@@ -115,7 +127,7 @@ namespace E3D
 
 			aiString name;
 			aiColor3D diffuse, ambient, specular;
-			ai_real shininess = 0.0f, transparency = 0.0f;
+			ai_real shininess = 1.0f, transparency = 1.0f;
 			if (!(AI_SUCCESS == material->Get(AI_MATKEY_NAME, name)))
 				E3D_CORE_ASSERT(false, "Failed to load material name!");
 			if (!(AI_SUCCESS == material->Get(AI_MATKEY_COLOR_AMBIENT, ambient)))
@@ -124,7 +136,7 @@ namespace E3D
 				E3D_CORE_ASSERT(false, "Failed to load material diffuse color!");
 			if(!(AI_SUCCESS == material->Get(AI_MATKEY_COLOR_SPECULAR, specular)))
 				E3D_CORE_ASSERT(false, "Failed to load material specular color!");
-			if(!(AI_SUCCESS == material->Get(AI_MATKEY_OPACITY, transparency)))
+			if (!(AI_SUCCESS == material->Get(AI_MATKEY_OPACITY, transparency)))
 				E3D_CORE_ASSERT(false, "Failed to load material transparency!");
 			if(!(AI_SUCCESS == material->Get(AI_MATKEY_SHININESS, shininess)))
 				E3D_CORE_ASSERT(false, "Failed to load material shininess!");

@@ -1,0 +1,114 @@
+# Blender MTL File: 'ModelRenderLighting2.blend'
+# Material Count: 8
+
+newmtl 40_body_0.1_16_16.005
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.703582 0.734610 0.403981
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd t_anakin_01_body_c.tga
+map_Bump t_anakin_01_body_n.tga
+map_Ks t_anakin_01_body_s.tga
+map_d t_anakin_01_body_c.tga
+
+newmtl 40_eyes_0.1_16_16
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.666902 0.665758 0.777831
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd FbxTemp_0006.png
+map_Bump eyes_bump.png
+map_Ks eyes_specular.png
+map_d FbxTemp_0006.png
+
+newmtl 40_glove_0.1_16_16
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.420986 0.534172 0.457528
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd t_anakin_01_glove_c.tga
+map_Bump t_anakin_01_glove_n.tga
+map_Ks t_anakin_01_glove_s.tga
+map_d t_anakin_01_glove_c.tga
+
+newmtl 40_hand_0.1_16_16
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.583145 0.554586 0.475291
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd t_anakin_hands_01_c.tga
+map_Bump t_anakin_hands_01_n.tga
+map_Ks t_anakin_hands_01_s.tga
+map_d t_anakin_hands_01_c.tga
+
+newmtl 40_head_0.1_16_16
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.560236 0.508008 0.708398
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd FbxTemp_0018.png
+map_Bump t_heads_anakin_01_n.tga
+map_Ks t_heads_anakin_01_s.tga
+map_d FbxTemp_0018.png
+
+newmtl 40_teeth_0.1_16_16
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.713316 0.498076 0.649782
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd t_teeth_c.tga
+map_Bump t_teeth_n.tga
+map_Ks t_teeth_s.tga
+map_d t_teeth_c.tga
+
+newmtl 41_haircap_0.1_16_16
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.742148 0.600757 0.468318
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd t_heads_anakin_01_haircap_ca.png
+map_Bump t_heads_anakin_01_haircap_n.tga
+map_Ks t_heads_anakin_01_haircap_s.tga
+map_d t_heads_anakin_01_haircap_ca.png
+
+newmtl 41_hairplanes_0.1_16_16
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.442034 0.532419 0.570730
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd t_heads_anakin_01_hairplanes_ca.png
+map_Bump t_heads_anakin_01_hairplanes_n.tga
+map_Ks t_heads_anakin_01_hairplanes_s.tga
+map_d t_heads_anakin_01_hairplanes_ca.png

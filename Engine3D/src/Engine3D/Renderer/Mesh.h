@@ -16,6 +16,8 @@ namespace E3D
 		glm::vec3 Position;
 		glm::vec2 TextureCoord;
 		glm::vec3 Normal;
+		glm::vec3 Tangent;
+		glm::vec3 Bitangent;
 	};
 
 	class Mesh

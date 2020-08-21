@@ -9,18 +9,6 @@
 
 namespace E3D
 {
-	struct TransformComponent
-	{
-		glm::mat4 Transform{ 1.0f };
-
-		TransformComponent() = default;
-		TransformComponent(const TransformComponent& other) = default;
-		TransformComponent(const glm::mat4& transform)
-			: Transform(transform)
-		{
-		}
-	};
-
 	struct NameComponent
 	{
 		std::string Name;
@@ -29,6 +17,18 @@ namespace E3D
 		NameComponent(const NameComponent& other) = default;
 		NameComponent(const std::string& name)
 			: Name(name)
+		{
+		}
+	};
+
+	struct TransformComponent
+	{
+		glm::mat4 Transform{ 1.0f };
+
+		TransformComponent() = default;
+		TransformComponent(const TransformComponent& other) = default;
+		TransformComponent(const glm::mat4& transform)
+			: Transform(transform)
 		{
 		}
 	};

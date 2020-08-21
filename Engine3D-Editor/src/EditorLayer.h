@@ -32,8 +32,6 @@ namespace E3D
 		glm::vec2 m_ViewportSize = { 0.0f, 0.0f };
 		
 		Ref<Scene> m_Scene;
-		Entity m_TestEntity;
-		Entity m_MainCamera;
 
 		bool m_PrimaryCamera = true;
 		bool m_RunScene = false;

@@ -84,6 +84,8 @@ namespace E3D
 	void Material::SetNormalMap(const Ref<Texture>& texture)
 	{
 		m_Properties.NormalMap = texture;
+		SetHasNormalMap(true);
+		UseNormalMap(true);
 	}
 
 	void Material::SetHasDiffuseTexture(bool state)
@@ -94,6 +96,11 @@ namespace E3D
 	void Material::SetHasSpecularTexture(bool state)
 	{
 		m_HasSpecularTexture = state;
+	}
+
+	void Material::SetHasNormalMap(bool state)
+	{
+		m_HasNormalMap = state;
 	}
 
 }

@@ -39,7 +39,7 @@ namespace E3D
 		float m_Yaw = -89.0f;
 		glm::vec3 m_CameraPosition = { 0.0f, 40.0f, 50.0f };
 
-		float m_MovementSpeed = 10.0f;
+		float m_MovementSpeed = 40.0f;
 		float m_MouseSensitivity = 0.2f;
 		float m_ZoomSensitivity = 3.0f;
 		float m_Zoom = 0.0f;

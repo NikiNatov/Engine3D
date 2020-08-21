@@ -1,13 +1,14 @@
 #pragma once
 
-#include "Engine3D\Scene\Scene.h"
-
 #include "Engine3D\Core\Config.h"
 
+#include <glm\glm.hpp>
 #include <entt.hpp>
 
 namespace E3D
 {
+	class Scene;
+
 	class Entity
 	{
 	public:
@@ -43,8 +44,17 @@ namespace E3D
 		}
 
 		operator bool() const { return m_Entity != entt::null; }
+
+		void AddChild(Ref<Entity>& child);
+		void RemoveChild(Ref<Entity>& child);
+
+		void DisplayTree(Entity*& selectedEntity);
+		void DisplayEntityProperties();
+
+		void Render(const glm::mat4& parentTransform);
 	private:
 		entt::entity m_Entity{ entt::null };
 		Scene* m_Scene = nullptr;
+		std::vector<Ref<Entity>> m_Children;
 	};
 }

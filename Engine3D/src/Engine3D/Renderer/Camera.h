@@ -16,6 +16,7 @@ namespace E3D
 		virtual ~Camera() = default;
 
 		const glm::mat4& GetProjection() const { return m_ProjectionMatrix; }
+		glm::mat4& GetProjection() { return m_ProjectionMatrix; }
 	protected:
 		glm::mat4 m_ProjectionMatrix = glm::mat4(1.0f);
 	};

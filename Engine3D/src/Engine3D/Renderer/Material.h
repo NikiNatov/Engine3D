@@ -63,14 +63,19 @@ namespace E3D
 		}
 		inline void UseSpecularTexture(bool state) { m_UseSpecularTex = state; m_Shader->SetBool("u_UseSpecularTexture", m_UseSpecularTex);
 		}
+		inline void UseNormalMap(bool state) {
+			m_UseNormalMap = state; m_Shader->SetBool("u_UseNormalMap", m_UseNormalMap);
+		}
 	protected:
 		void SetHasDiffuseTexture(bool state);
 		void SetHasSpecularTexture(bool state);
+		void SetHasNormalMap(bool state);
 	protected:
 		MaterialProperties m_Properties;
 
 		bool m_HasDiffuseTexture = false;
 		bool m_HasSpecularTexture = false;
+		bool m_HasNormalMap = false;
 
 		bool m_UseDiffuseTex = false;
 		bool m_UseSpecularTex = false;
