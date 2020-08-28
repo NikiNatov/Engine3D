@@ -6,60 +6,68 @@
 
 #include "Engine3D\Renderer\Renderer.h"
 
-#include "glm\gtc\type_ptr.hpp"
+#include <glm\gtc\type_ptr.hpp>
 
 #include <imgui.h>
 #include <ImGuizmo.h>
 
+#include "Engine3D\Core\Input.h"
+#include "Engine3D\Core\KeyCodes.h"
 
 namespace E3D
 {
 	Scene::Scene()
-		: m_SceneGraph(this)
 	{
-		m_TestEntity = CreateEntity("Darth Vader");
-		m_TestEntity->AddComponent<MeshComponent>("assets/models/starwars/darth vader/vaderModified.fbx");
-		auto& transform = m_TestEntity->GetComponent<TransformComponent>().Transform;
 
+		
 
-		m_MainCamera = CreateEntity("Main Camera");
-		m_MainCamera->AddComponent<MeshComponent>("assets/models/camera/camera.obj");
-		m_MainCamera->AddComponent<CameraComponent>().Primary = true;
-		auto& cameraTransform = m_MainCamera->GetComponent<TransformComponent>().Transform;
-		cameraTransform = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 10.0f, 35.0f));
-
-		m_SceneGraph.GetRoot()->AddChild(m_MainCamera);
-
-		m_AnotherEntity = CreateEntity("Tie-Fighter");
-		m_AnotherEntity->AddComponent<MeshComponent>("assets/models/starwars/spaceship/tie-fighter.fbx");
-		auto& transform2 = m_AnotherEntity->GetComponent<TransformComponent>().Transform;
-		transform2 = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -100.0f));
-
-		m_Anakin = CreateEntity("Anakin Skywalker");
-		m_Anakin->AddComponent<MeshComponent>("assets/models/starwars/anakin/0.dae");
-
-
-		m_SceneGraph.GetRoot()->AddChild(m_AnotherEntity);
-		m_SceneGraph.GetRoot()->AddChild(m_Anakin);
-		m_AnotherEntity->AddChild(m_TestEntity);
 	}
 
 	Scene::~Scene()
 	{
 	}
 
-	Ref<Entity> Scene::CreateEntity(const std::string& name)
+	Entity Scene::CreateEntity(const std::string& name)
 	{
-		Ref<Entity> entity = CreateRef<Entity>(m_Registry.create(), this);
-		entity->AddComponent<TransformComponent>();
-		entity->AddComponent<NameComponent>(name);
+		Entity entity(m_Registry.create(), this);
+		entity.AddComponent<TransformComponent>();
+		entity.AddComponent<NameComponent>(name);
+		entity.AddComponent<SceneNodeComponent>();
 
 		return entity;
 	}
 
+
+	void Scene::OnSceneStart()
+	{
+		m_Registry.view<ScriptComponent>().each([=](auto entity, auto& scriptComponent) {
+
+			if (!scriptComponent.Instance)
+			{
+				scriptComponent.Instance = scriptComponent.CreateScript();
+				scriptComponent.Instance->m_Entity = CreateRef<Entity>(entity, this);
+				scriptComponent.Instance->OnCreate();
+			}
+		});
+	}
+
 	void Scene::OnUpdate(Timestep ts)
 	{
-		
+		m_Registry.view<ScriptComponent>().each([=](auto entity, auto& scriptComponent) {
+			scriptComponent.Instance->OnUpdate(ts);
+		});
+	}
+
+	void Scene::OnSceneEnd()
+	{
+		m_Registry.view<ScriptComponent>().each([=](auto entity, auto& scriptComponent) {
+
+			if (scriptComponent.Instance)
+			{
+				scriptComponent.Instance->OnDestroy();
+				scriptComponent.DestroyScript(&scriptComponent);
+			}
+		});
 	}
 
 	void Scene::OnViewportResize(uint32_t width, uint32_t height)
@@ -78,14 +86,24 @@ namespace E3D
 
 	void Scene::OnEditRender()
 	{
-		m_SceneGraph.GetRoot()->Render(glm::mat4(1.0f));
-		/*auto view = m_Registry.view<TransformComponent, MeshComponent>();
+		Renderer::BeginScene(m_CameraController.GetCamera());
+
+		auto view = m_Registry.view<TransformComponent, MeshComponent, SceneNodeComponent>();
 
 		for (auto entity : view)
 		{
-			auto [transform, mesh] = view.get<TransformComponent, MeshComponent>(entity);
-			mesh.Mesh->Draw(transform.Transform);
-		}*/
+			auto [transform, mesh, node] = view.get<TransformComponent, MeshComponent, SceneNodeComponent>(entity);
+
+			if (node.Parent)
+			{
+				auto& parentTransform = node.Parent.GetComponent<TransformComponent>().Transform;
+
+				mesh.Mesh->Draw(parentTransform * transform.Transform);
+			}
+			else
+				mesh.Mesh->Draw(transform.Transform);
+
+		}
 	}
 
 	void Scene::OnRunningRender()
@@ -111,15 +129,22 @@ namespace E3D
 		{
 			Renderer::BeginScene(*mainCamera, *cameraTransform);
 
-			m_SceneGraph.GetRoot()->Render(glm::mat4(1.0f));
-
-			/*auto view = m_Registry.view<TransformComponent, MeshComponent>();
+			auto view = m_Registry.view<TransformComponent, MeshComponent, SceneNodeComponent>();
 
 			for (auto entity : view)
 			{
-				auto& [transform, mesh] = view.get<TransformComponent, MeshComponent>(entity);
-				mesh.Mesh->Draw(transform.Transform);
-			}*/
+				auto [transform, mesh, node] = view.get<TransformComponent, MeshComponent, SceneNodeComponent>(entity);
+
+				if (node.Parent)
+				{
+					auto& parentTransform = node.Parent.GetComponent<TransformComponent>().Transform;
+
+					mesh.Mesh->Draw(parentTransform * transform.Transform);
+				}
+				else
+					mesh.Mesh->Draw(transform.Transform);
+
+			}
 		}
 	}
 	

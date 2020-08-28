@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Engine3D\Core\Config.h"
+#include "Engine3D\Scene\Scene.h"
 
-#include <glm\glm.hpp>
 #include <entt.hpp>
 
 namespace E3D
@@ -11,6 +11,7 @@ namespace E3D
 
 	class Entity
 	{
+		friend class EntityInspector;
 	public:
 		Entity() = default;
 		Entity(entt::entity entity, Scene* scene);
@@ -43,18 +44,18 @@ namespace E3D
 			return m_Scene->m_Registry.has<T>(m_Entity);
 		}
 
+		bool HasComponent(uint32_t id);
+
 		operator bool() const { return m_Entity != entt::null; }
+		operator uint32_t() const { return (uint32_t)m_Entity; }
 
-		void AddChild(Ref<Entity>& child);
-		void RemoveChild(Ref<Entity>& child);
-
-		void DisplayTree(Entity*& selectedEntity);
-		void DisplayEntityProperties();
-
-		void Render(const glm::mat4& parentTransform);
+		bool operator==(const Entity& other) const 
+		{ 
+			return m_Entity == other.m_Entity && m_Scene == other.m_Scene; 
+		}
+		bool operator!= (const Entity& other) const { return !(*this == other); }
 	private:
 		entt::entity m_Entity{ entt::null };
 		Scene* m_Scene = nullptr;
-		std::vector<Ref<Entity>> m_Children;
 	};
 }

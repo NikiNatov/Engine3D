@@ -2,6 +2,7 @@
 
 #include "Engine3D\Scene\SceneCamera.h"
 #include "Engine3D\Renderer\Mesh.h"
+#include "Engine3D\Scene\ScriptableEntity.h"
 
 #include <glm\glm.hpp>
 
@@ -57,6 +58,34 @@ namespace E3D
 			: Mesh(mesh)
 		{
 		}
+	};
+
+	struct ScriptComponent
+	{
+		ScriptableEntity* Instance = nullptr;
+
+		ScriptableEntity* (*CreateScript)();
+		void (*DestroyScript)(ScriptComponent*);
+
+		template<typename T>
+		void Bind()
+		{
+			CreateScript = []() {return static_cast<ScriptableEntity*>(new T()); };
+			DestroyScript = [](ScriptComponent* script) { delete script->Instance; script->Instance = nullptr; };
+
+		}
+	};
+
+	struct SceneNodeComponent
+	{
+		size_t ChildrenCount = 0;
+		Entity Parent;
+		Entity FirstChild;
+		Entity PreviousSibling;
+		Entity NextSibling;
+
+		SceneNodeComponent() = default;
+		SceneNodeComponent(const SceneNodeComponent& other) = default;
 	};
 
 }

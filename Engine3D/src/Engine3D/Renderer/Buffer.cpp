@@ -7,7 +7,7 @@
 
 namespace E3D
 {
-	Ref<VertexBuffer> VertexBuffer::Create(void* data, uint32_t size)
+	Ref<VertexBuffer> VertexBuffer::Create(const void* data, uint32_t size)
 	{
 		switch (RenderAPI::GetAPI())
 		{
@@ -26,7 +26,7 @@ namespace E3D
 		return nullptr;
 	}
 
-	Ref<IndexBuffer> IndexBuffer::Create(uint32_t* data, uint32_t count)
+	Ref<IndexBuffer> IndexBuffer::Create(const uint32_t* data, uint32_t count)
 	{
 		switch (RenderAPI::GetAPI())
 		{

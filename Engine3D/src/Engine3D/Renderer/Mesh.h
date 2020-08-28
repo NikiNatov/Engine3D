@@ -26,6 +26,8 @@ namespace E3D
 		Mesh(std::vector<Vertex>& vertices, std::vector<uint32_t>& indices);
 		~Mesh();
 
+		void ShowMeshWindow();
+
 		inline Ref<Material>& GetMaterial() { return m_Material; }
 		inline const Ref<VertexArray>& GetVertexArray() const { return m_VAO; }
 	private:
@@ -41,7 +43,7 @@ namespace E3D
 		void AddChild(const Ref<Node>& child);
 		void Draw(const glm::mat4& parentTransform) const;
 
-		void RenderTree(int& nodeID, int& selectedNodeID) const;
+		void RenderTree(Node*& selectedNode);
 	private:
 		std::vector<Ref<Node>> m_Children;
 		std::vector<Ref<Mesh>> m_Meshes;

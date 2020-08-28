@@ -7,7 +7,7 @@ namespace E3D
 {
 	// Vertex Buffer
 
-	OpenGLVertexBuffer::OpenGLVertexBuffer(void* data, uint32_t size)
+	OpenGLVertexBuffer::OpenGLVertexBuffer(const void* data, uint32_t size)
 	{
 		glGenBuffers(1, &m_BufferID);
 		glBindBuffer(GL_ARRAY_BUFFER, m_BufferID);
@@ -37,7 +37,7 @@ namespace E3D
 
 	// Index Buffer
 
-	OpenGLIndexBuffer::OpenGLIndexBuffer(uint32_t* data, uint32_t count)
+	OpenGLIndexBuffer::OpenGLIndexBuffer(const uint32_t* data, uint32_t count)
 		: m_Count(count)
 	{
 		glGenBuffers(1, &m_BufferID);

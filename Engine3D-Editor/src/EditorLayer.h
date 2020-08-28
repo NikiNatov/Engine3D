@@ -1,6 +1,9 @@
 #pragma once
 #include "Engine3D.h"
 
+#include "Panels\SceneGraph.h"
+#include "Panels\EntityInspector.h"
+
 namespace E3D
 {
 	class EditorLayer : public Layer
@@ -19,7 +22,7 @@ namespace E3D
 	private:
 		ShaderLibrary m_ShaderLibrary;
 
-		PerspectiveCameraController m_CameraController{ 45.0f, (float)1280 / (float)720 };
+		
 		Ref<Texture2D> m_DiffuseTexture;
 		Ref<Texture2D> m_SpecularTexture;
 		Ref<Texture2D> m_CheckerboardTexture;
@@ -38,5 +41,18 @@ namespace E3D
 
 		Ref<Model> m_Model;
 		Ref<Model> m_Grid;
+
+		/*Entity m_Vader;
+		Entity m_SpaceShip;
+		Entity m_Terrain;*/
+		Entity m_MainCamera;
+		Entity m_Cube;
+		Entity m_Plane;
+		Entity m_Cone;
+		Entity m_Sphere;
+
+		EntityInspector m_InspectorPannel;
+		SceneGraph m_SceneGraphPannel;
+		Entity m_SelectedEntity;
 	};
 }

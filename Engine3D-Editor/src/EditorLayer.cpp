@@ -5,6 +5,8 @@
 #include <glm\gtc\matrix_transform.hpp>
 #include <glm\gtc\type_ptr.hpp>
 
+#include "../assets/scripts/Player.h"
+
 namespace E3D
 {
 	EditorLayer::EditorLayer()
@@ -27,14 +29,14 @@ namespace E3D
 		case Scene::SceneState::Edit:
 		{
 			if (m_ViewportFocused)
-				m_CameraController.OnUpdate(ts);
+				m_Scene->GetCameraController().OnUpdate(ts);
 
-			Renderer::BeginScene(m_CameraController.GetCamera());
-			
 			m_Scene->OnEditRender();
 			break;
 		}
 		case Scene::SceneState::Running:
+			if (m_ViewportFocused)
+				m_Scene->OnUpdate(ts);
 			m_Scene->OnRunningRender();
 			break;
 		}
@@ -46,7 +48,7 @@ namespace E3D
 	void EditorLayer::OnEvent(Event& event)
 	{
 		if(m_Scene->GetSceneState() != Scene::SceneState::Running && !ImGuizmo::IsUsing())
-			m_CameraController.OnEvent(event);
+			m_Scene->GetCameraController().OnEvent(event);
 	}
 
 	void EditorLayer::OnImGuiRender()
@@ -98,72 +100,76 @@ namespace E3D
 
 			ImGui::EndMenuBar();
 		}
-
-		m_Scene->GetSceneGraph().DisplaySceneHierarchy();
-
 		
-		ImGui::Begin("Materials");
-		ImGui::Text("Diffuse Texture");
-		ImGui::Image((void*)m_CheckerboardTexture->GetTextureID(), ImVec2{ 64.0f, 64.0f }, { 0, 1 }, { 1, 0 });
-		ImGui::Text("Specular Texture");
-		ImGui::Image((void*)m_CheckerboardTexture->GetTextureID(), ImVec2{ 64.0f, 64.0f }, { 0, 1 }, { 1, 0 });
-		
-		ImGui::Separator();
-		static bool gizmoEnabled = true;
-		ImGui::Checkbox("Gizmos Toggle", &gizmoEnabled);
+		m_SceneGraphPannel.OnImGuiRender();
+		m_SelectedEntity = m_SceneGraphPannel.GetSelectedEntity();
+		m_InspectorPannel.OnImGuiRender(m_SelectedEntity);
 
-		static ImGuizmo::OPERATION operation = ImGuizmo::OPERATION::TRANSLATE;
-		static ImGuizmo::MODE mode = ImGuizmo::MODE::LOCAL;
-
-		if (ImGui::RadioButton("Translate", operation == ImGuizmo::TRANSLATE))
-			operation = ImGuizmo::TRANSLATE;
+		ImGui::Begin("Scene Control", 0, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar);
+		if (ImGui::ImageButton((void*)m_PlayButtonTexture->GetTextureID(), { 40.0f, 40.0f }, { 0, 1 }, { 1, 0 }))
+		{
+			if (m_Scene->GetSceneState() != Scene::SceneState::Running)
+			{
+				m_Scene->SetSceneState(Scene::SceneState::Running);
+				m_Scene->OnSceneStart();
+			}
+		}
 		ImGui::SameLine();
-		if (ImGui::RadioButton("Rotate", operation == ImGuizmo::ROTATE))
-			operation = ImGuizmo::ROTATE;
-		ImGui::SameLine();
-		if (ImGui::RadioButton("Scale", operation == ImGuizmo::SCALE))
-			operation = ImGuizmo::SCALE;
-		if (ImGui::RadioButton("Local", mode == ImGuizmo::LOCAL))
-			mode = ImGuizmo::MODE::LOCAL;
-		ImGui::SameLine();
-		if (ImGui::RadioButton("World", mode == ImGuizmo::WORLD))
-			mode = ImGuizmo::MODE::WORLD;
-
+		if (ImGui::ImageButton((void*)m_StopButtonTexture->GetTextureID(), { 40.0f, 40.0f }, { 0, 1 }, { 1, 0 }))
+		{
+			if (m_Scene->GetSceneState() != Scene::SceneState::Edit)
+			{
+				m_Scene->SetSceneState(Scene::SceneState::Edit);
+				m_Scene->OnSceneEnd();
+			}
+		}
 		ImGui::End();
-
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0.0f, 0.0f });
 		ImGui::Begin("Scene");
 		
-		/*if (gizmoEnabled && m_Scene->GetSceneState() != Scene::SceneState::Running)
+		if (m_SelectedEntity && m_Scene->GetSceneState() == Scene::SceneState::Edit)
 		{
-			ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, (float)ImGui::GetWindowWidth(), (float)ImGui::GetWindowHeight());
+			static ImGuizmo::OPERATION currentGuizmoOp = ImGuizmo::OPERATION::TRANSLATE;
+			float snap[3] = { 1.0f, 1.0f, 1.0f };
+			bool useSnap = false;
 
-			auto& transform1 = m_TestEntity->GetComponent<TransformComponent>().Transform;
-			auto& transform2 = m_MainCamera->GetComponent<TransformComponent>().Transform;
-			auto& transform3 = m_AnotherEntity->GetComponent<TransformComponent>().Transform;
-			ImGuizmo::SetID(0);
-			
-			ImGuizmo::Manipulate(glm::value_ptr(m_CameraController.GetCamera().GetViewMatrix()), glm::value_ptr(m_CameraController.GetCamera().GetProjection()), operation, mode, glm::value_ptr(transform1));
+			auto& entityTransform = m_SelectedEntity.GetComponent<TransformComponent>().Transform;
+			glm::mat4 entityWorldTransform = entityTransform;
+			glm::mat4 parentWorldTransform = glm::mat4(1.0f);
 
-			ImGuizmo::SetID(1);
+			if (m_SelectedEntity.GetComponent<SceneNodeComponent>().Parent)
+			{
+				auto currentParent = m_SelectedEntity.GetComponent<SceneNodeComponent>().Parent;
+				while (currentParent)
+				{
+					auto& parentTransform = currentParent.GetComponent<TransformComponent>().Transform;
+					entityWorldTransform = parentTransform * entityWorldTransform;
+					currentParent = currentParent.GetComponent<SceneNodeComponent>().Parent;
+				}
 
-			ImGuizmo::Manipulate(glm::value_ptr(m_CameraController.GetCamera().GetViewMatrix()), glm::value_ptr(m_CameraController.GetCamera().GetProjection()), operation, mode, glm::value_ptr(transform2));
+				parentWorldTransform = entityWorldTransform * glm::inverse(entityTransform);
+			}
 
-			ImGuizmo::SetID(2);
+			if (Input::IsKeyPressed(E3D_KEY_T))
+				currentGuizmoOp = ImGuizmo::TRANSLATE;
+			if (Input::IsKeyPressed(E3D_KEY_R))
+				currentGuizmoOp = ImGuizmo::ROTATE;
+			if (Input::IsKeyPressed(E3D_KEY_E))
+				currentGuizmoOp = ImGuizmo::SCALE;
+			if (Input::IsKeyPressed(E3D_KEY_LEFT_SHIFT))
+				useSnap = true;
 
-			ImGuizmo::Manipulate(glm::value_ptr(m_CameraController.GetCamera().GetViewMatrix()), glm::value_ptr(m_CameraController.GetCamera().GetProjection()), operation, mode, glm::value_ptr(transform3));
-		}*/
+			ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, ImGui::GetWindowSize().x, ImGui::GetWindowSize().y);
+			auto& viewMatrix = m_Scene->GetCameraController().GetCamera().GetViewMatrix();
+			auto& projMatrix = m_Scene->GetCameraController().GetCamera().GetProjection();
+			ImGuizmo::Manipulate(glm::value_ptr(viewMatrix), glm::value_ptr(projMatrix), currentGuizmoOp, ImGuizmo::LOCAL, glm::value_ptr(entityWorldTransform), NULL, useSnap ? &snap[0] : NULL);
 
-
-		if (ImGui::ImageButton((void*)m_PlayButtonTexture->GetTextureID(), { 40.0f, 40.0f }, { 0, 1 }, { 1, 0 }))
-			m_Scene->SetSceneState(Scene::SceneState::Running);
-		ImGui::SameLine();
-		if(ImGui::ImageButton((void*)m_StopButtonTexture->GetTextureID(), { 40.0f, 40.0f }, { 0, 1 }, { 1, 0 }))
-			m_Scene->SetSceneState(Scene::SceneState::Edit);
+			entityTransform = glm::inverse(parentWorldTransform) * entityWorldTransform;
+		}
 
 		if (m_ViewportFocused != ImGui::IsWindowFocused() && m_ViewportFocused == true)
-			m_CameraController.SetViewportFocus(false);
+			m_Scene->GetCameraController().SetViewportFocus(false);
 
 		m_ViewportFocused = ImGui::IsWindowFocused();
 		m_ViewportHovered = ImGui::IsWindowHovered();
@@ -176,14 +182,14 @@ namespace E3D
 			m_Framebuffer->Resize(m_ViewportSize.x, m_ViewportSize.y);
 
 			m_Scene->OnViewportResize(m_ViewportSize.x, m_ViewportSize.y);
-			m_CameraController.Resize(m_ViewportSize.x, m_ViewportSize.y);
+			m_Scene->GetCameraController().Resize(m_ViewportSize.x, m_ViewportSize.y);
 		}
 		ImGuizmo::SetDrawlist();
 		uint32_t texture = m_Framebuffer->GetColorAttachment();
 		ImGui::Image((void*)texture, { m_ViewportSize.x , m_ViewportSize.y }, { 0, 1 }, { 1, 0 });
-		
-		ImGui::End();
 		ImGui::PopStyleVar();
+
+		ImGui::End();
 
 		ImGui::End();
 	}
@@ -198,9 +204,6 @@ namespace E3D
 		m_PlayButtonTexture = Texture2D::Create("assets/textures/playButton.png");
 		m_StopButtonTexture = Texture2D::Create("assets/textures/stopButton.png");
 
-		//auto materialShader = m_ShaderLibrary.Load("assets/shaders/MaterialShader.glsl");
-
-		m_Model = CreateRef<Model>("assets/models/starwars/darth vader/darthVader.fbx");
 		m_Grid = CreateRef<Model>("assets/models/grid/grid.fbx");
 
 		FramebufferSpecification fbSpec;
@@ -210,7 +213,67 @@ namespace E3D
 
 		m_Scene = CreateRef<Scene>();
 
+		m_Plane = m_Scene->CreateEntity("Plane");
+		m_Plane.AddComponent<MeshComponent>("assets/models/primitives/plane.fbx");
+		m_Plane.GetComponent<TransformComponent>().Transform = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 11.0f, 0.0f));
+
+		m_Cube = m_Scene->CreateEntity("Cube");
+		m_Cube.AddComponent<MeshComponent>("assets/models/primitives/cube.fbx");
+		m_Cube.GetComponent<TransformComponent>().Transform = glm::translate(glm::mat4(1.0f), glm::vec3(26.0f, 19.0f, 8.0f));
+
+		m_Cone = m_Scene->CreateEntity("Cone");
+		m_Cone.AddComponent<MeshComponent>("assets/models/primitives/cone.fbx");
+		m_Cone.GetComponent<TransformComponent>().Transform = glm::translate(glm::mat4(1.0f), glm::vec3(-26.0f, 19.0f, 8.0f));
+
+		m_Sphere = m_Scene->CreateEntity("Sphere");
+		m_Sphere.AddComponent<MeshComponent>("assets/models/primitives/sphere.fbx");
+		m_Sphere.GetComponent<TransformComponent>().Transform = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 19.0f, -15.0f));
+
+		m_MainCamera = m_Scene->CreateEntity("Main Camera");
+		m_MainCamera.AddComponent<MeshComponent>("assets/models/camera/camera.obj");
+		m_MainCamera.AddComponent<CameraComponent>().Primary = true;
+		auto& cameraTransform = m_MainCamera.GetComponent<TransformComponent>().Transform;
+		cameraTransform = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 10.0f, 35.0f));
+
+		auto& planeNC = m_Plane.GetComponent<SceneNodeComponent>();
+		auto& cubeNC = m_Cube.GetComponent<SceneNodeComponent>();
+		auto& coneNC = m_Cone.GetComponent<SceneNodeComponent>();
+		auto& sphereNC = m_Sphere.GetComponent<SceneNodeComponent>();
+		planeNC.FirstChild = m_Cube;
+		cubeNC.NextSibling = m_Cone;
+		coneNC.PreviousSibling = m_Cube;
+		coneNC.NextSibling = m_Sphere;
+
+		cubeNC.Parent = m_Plane;
+		coneNC.Parent = m_Plane;
+		sphereNC.Parent = m_Plane;
+
+		/*m_Vader = m_Scene->CreateEntity("Darth Vader");
+		m_Vader.AddComponent<MeshComponent>("assets/models/starwars/darth vader/vaderModified.fbx");
+		auto& transform = m_Vader.GetComponent<TransformComponent>().Transform;
 		
+
+		m_MainCamera = m_Scene->CreateEntity("Main Camera");
+		m_MainCamera.AddComponent<MeshComponent>("assets/models/camera/camera.obj");
+		m_MainCamera.AddComponent<CameraComponent>().Primary = true;
+		auto& cameraTransform = m_MainCamera.GetComponent<TransformComponent>().Transform;
+		cameraTransform = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 10.0f, 35.0f));
+
+
+		m_SpaceShip = m_Scene->CreateEntity("Tie-Fighter");
+		m_SpaceShip.AddComponent<MeshComponent>("assets/models/starwars/spaceship/tie-fighter.fbx");
+		auto& transform2 = m_SpaceShip.GetComponent<TransformComponent>().Transform;
+		transform2 = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -100.0f));
+		m_SpaceShip.AddComponent<ScriptComponent>().Bind<Player>();
+		
+
+		m_Terrain = m_Scene->CreateEntity("Terrain");
+		m_Terrain.AddComponent<MeshComponent>("assets/models/terrain/lavaTerrain.fbx");
+
+		m_SpaceShip.GetComponent<SceneNodeComponent>().FirstChild = m_Vader;
+		m_Vader.GetComponent<SceneNodeComponent>().Parent = m_SpaceShip;*/
+
+		m_SceneGraphPannel.SetScene(m_Scene);
 	}
 
 	void EditorLayer::OnDetach()

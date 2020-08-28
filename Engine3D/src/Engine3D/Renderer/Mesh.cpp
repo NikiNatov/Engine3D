@@ -48,7 +48,52 @@ namespace E3D
 
 	Mesh::~Mesh()
 	{
-		
+
+	}
+
+	void Mesh::ShowMeshWindow()
+	{
+		ImGui::Begin("Mesh");
+
+		ImGui::Separator();
+
+		bool diffuseTex = m_Material->HasDiffuseTexture();
+		bool specularTex = m_Material->HasSpecularTexture();
+
+		ImGui::Text("Diffuse Texture");
+		if (m_Material->HasDiffuseTexture())
+		{
+			ImGui::Image((void*)m_Material->GetDiffuseTexture()->GetTextureID(), ImVec2{ 64.0f, 64.0f }, { 0, 1 }, { 1, 0 });
+			ImGui::SameLine();
+			ImGui::BeginGroup();
+			if (ImGui::Checkbox("Use##ModelDiffuseTexture", &diffuseTex))
+				m_Material->UseDiffuseTexture(diffuseTex);
+			ImGui::SameLine();
+			ImGui::ColorEdit3("", &m_Material->GetDiffuseColor().x, ImGuiColorEditFlags_NoInputs);
+			ImGui::EndGroup();
+		}
+		//else
+			//ImGui::Image((void*)m_CheckerboardTexture->GetTextureID(), ImVec2{ 64.0f, 64.0f }, { 0, 1 }, { 1, 0 });
+
+		ImGui::Text("Specular Texture");
+		if (m_Material->HasSpecularTexture())
+		{
+			ImGui::Image((void*)m_Material->GetSpecularTexture()->GetTextureID(), ImVec2{ 64.0f, 64.0f }, { 0, 1 }, { 1, 0 });
+			ImGui::SameLine();
+			ImGui::BeginGroup();
+			if (ImGui::Checkbox("Use##ModelSpecularTexture", &specularTex))
+				m_Material->UseSpecularTexture(true);
+
+			ImGui::SameLine();
+			ImGui::ColorEdit3("", &m_Material->GetSpecularColor().x, ImGuiColorEditFlags_NoInputs);
+			ImGui::EndGroup();
+		}
+		//else
+		//	ImGui::Image((void*)m_CheckerboardTexture->GetTextureID(), ImVec2{ 64.0f, 64.0f }, { 0, 1 }, { 1, 0 });
+
+		ImGui::DragFloat("Shininess", &m_Material->GetShininess(), 0.5f, 0.0f, 180.0f);
+		ImGui::DragFloat("Transparency", &m_Material->GetTransparency(), 0.03f, 0.0f, 1.0f);
+		ImGui::End();
 	}
 
 	Model::Model(const std::string& filepath)
@@ -68,7 +113,9 @@ namespace E3D
 
 	Model::~Model()
 	{
+		
 	}
+
 	void Model::Draw(const glm::mat4& transform)
 	{
 		m_Root->Draw(transform);
@@ -128,18 +175,18 @@ namespace E3D
 			aiString name;
 			aiColor3D diffuse, ambient, specular;
 			ai_real shininess = 1.0f, transparency = 1.0f;
-			if (!(AI_SUCCESS == material->Get(AI_MATKEY_NAME, name)))
-				E3D_CORE_ASSERT(false, "Failed to load material name!");
-			if (!(AI_SUCCESS == material->Get(AI_MATKEY_COLOR_AMBIENT, ambient)))
-				E3D_CORE_ASSERT(false, "Failed to load material ambient color!");
-			if(!(AI_SUCCESS == material->Get(AI_MATKEY_COLOR_DIFFUSE, diffuse)))
-				E3D_CORE_ASSERT(false, "Failed to load material diffuse color!");
-			if(!(AI_SUCCESS == material->Get(AI_MATKEY_COLOR_SPECULAR, specular)))
-				E3D_CORE_ASSERT(false, "Failed to load material specular color!");
-			if (!(AI_SUCCESS == material->Get(AI_MATKEY_OPACITY, transparency)))
-				E3D_CORE_ASSERT(false, "Failed to load material transparency!");
-			if(!(AI_SUCCESS == material->Get(AI_MATKEY_SHININESS, shininess)))
-				E3D_CORE_ASSERT(false, "Failed to load material shininess!");
+			if (!(AI_SUCCESS == material->Get(AI_MATKEY_NAME, name)));
+				//E3D_CORE_ASSERT(false, "Failed to load material name!");
+			if (!(AI_SUCCESS == material->Get(AI_MATKEY_COLOR_AMBIENT, ambient)));
+				//E3D_CORE_ASSERT(false, "Failed to load material ambient color!");
+			if (!(AI_SUCCESS == material->Get(AI_MATKEY_COLOR_DIFFUSE, diffuse)));
+				//E3D_CORE_ASSERT(false, "Failed to load material diffuse color!");
+			if (!(AI_SUCCESS == material->Get(AI_MATKEY_COLOR_SPECULAR, specular)));
+				//E3D_CORE_ASSERT(false, "Failed to load material specular color!");
+			if (!(AI_SUCCESS == material->Get(AI_MATKEY_OPACITY, transparency)));
+				//E3D_CORE_ASSERT(false, "Failed to load material transparency!");
+			if (!(AI_SUCCESS == material->Get(AI_MATKEY_SHININESS, shininess)));
+				//E3D_CORE_ASSERT(false, "Failed to load material shininess!");
 
 			newMeshMaterial->SetName(std::string(name.C_Str()));
 			newMeshMaterial->SetAmbientColor({ ambient.r, ambient.g, ambient.b });
@@ -169,7 +216,7 @@ namespace E3D
 				Ref<Texture> normalMap = Texture2D::Create(textureDirectory + "/" + textureFileName.C_Str());
 				newMeshMaterial->SetNormalMap(normalMap);
 			}
-			
+
 		}
 
 		return newMesh;
@@ -207,66 +254,20 @@ namespace E3D
 		m_Children.push_back(child);
 	}
 
-	void Node::RenderTree(int& nodeID, int& selectedNodeID) const
+	void Node::RenderTree(Node*& selectedNode)
 	{
-		const int currentID = nodeID;
-		nodeID++;
-
-		const auto nodeFlags = ImGuiTreeNodeFlags_OpenOnArrow | (currentID == selectedNodeID ? ImGuiTreeNodeFlags_Selected : 0) 
+		const auto nodeFlags = ImGuiTreeNodeFlags_OpenOnArrow | (selectedNode == this ? ImGuiTreeNodeFlags_Selected : 0)
 			| (m_Children.empty() ? ImGuiTreeNodeFlags_Leaf : 0);
 
-		if (currentID == selectedNodeID && !m_Meshes.empty())
+		bool isTreeOpen = ImGui::TreeNodeEx(m_Name.c_str(), nodeFlags, m_Name.c_str());
+
+		if (isTreeOpen)
 		{
-			ImGui::Begin("Materials");
-			ImGui::Separator();
-			static bool diffuseTex = false;
-			static bool specularTex = false;
-
-			auto& material = m_Meshes[0]->GetMaterial();
-
-			ImGui::Text("Diffuse Texture");
-			if (material->HasDiffuseTexture())
-			{
-				ImGui::Image((void*)material->GetDiffuseTexture()->GetTextureID(), ImVec2{ 64.0f, 64.0f }, { 0, 1 }, { 1, 0 });
-				ImGui::SameLine();
-				ImGui::BeginGroup();
-				if (ImGui::Checkbox("Use##ModelDiffuseTexture", &diffuseTex))
-					material->UseDiffuseTexture(diffuseTex);
-				ImGui::SameLine();
-				ImGui::ColorEdit3("", &material->GetDiffuseColor().x, ImGuiColorEditFlags_NoInputs);
-				ImGui::EndGroup();
-			}
-			//else
-				//ImGui::Image((void*)m_CheckerboardTexture->GetTextureID(), ImVec2{ 64.0f, 64.0f }, { 0, 1 }, { 1, 0 });
-
-			ImGui::Text("Specular Texture");
-			if (material->HasSpecularTexture())
-			{
-				ImGui::Image((void*)material->GetSpecularTexture()->GetTextureID(), ImVec2{ 64.0f, 64.0f }, { 0, 1 }, { 1, 0 });
-				ImGui::SameLine();
-				ImGui::BeginGroup();
-				if (ImGui::Checkbox("Use##ModelSpecularTexture", &specularTex))
-					material->UseSpecularTexture(true);
-
-				ImGui::SameLine();
-				ImGui::ColorEdit3("", &material->GetSpecularColor().x, ImGuiColorEditFlags_NoInputs);
-				ImGui::EndGroup();
-			}
-			//else
-			//	ImGui::Image((void*)m_CheckerboardTexture->GetTextureID(), ImVec2{ 64.0f, 64.0f }, { 0, 1 }, { 1, 0 });
-
-			ImGui::DragFloat("Shininess", &material->GetShininess(), 0.5f, 0.0f, 180.0f);
-			ImGui::DragFloat("Transparency", &material->GetTransparency(), 0.03f, 0.0f, 1.0f);
-
-			ImGui::End();
-		}
-
-		if (ImGui::TreeNodeEx((void*)(intptr_t)currentID, nodeFlags, m_Name.c_str()))
-		{
-			selectedNodeID = ImGui::IsItemClicked() ? currentID : selectedNodeID;
+			if (ImGui::IsItemClicked())
+				selectedNode = this;
 
 			for (const auto& child : m_Children)
-				child->RenderTree(nodeID, selectedNodeID);
+				child->RenderTree(selectedNode);
 			ImGui::TreePop();
 		}
 	}

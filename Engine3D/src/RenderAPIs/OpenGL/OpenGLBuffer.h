@@ -7,7 +7,7 @@ namespace E3D
 	class OpenGLVertexBuffer : public VertexBuffer
 	{
 	public:
-		OpenGLVertexBuffer(void* data, uint32_t size);
+		OpenGLVertexBuffer(const void* data, uint32_t size);
 		~OpenGLVertexBuffer();
 
 		virtual void Bind() override;
@@ -24,7 +24,7 @@ namespace E3D
 	class OpenGLIndexBuffer : public IndexBuffer
 	{
 	public:
-		OpenGLIndexBuffer(uint32_t* data, uint32_t count);
+		OpenGLIndexBuffer(const uint32_t* data, uint32_t count);
 		~OpenGLIndexBuffer();
 
 		virtual void Bind() override;
