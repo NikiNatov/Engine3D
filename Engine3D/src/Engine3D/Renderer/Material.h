@@ -11,75 +11,59 @@ namespace E3D
 	{
 		std::string Name;
 
-		glm::vec3 Ambient{ 0.0f };
-		glm::vec3 Diffuse{ 1.0f };
-		glm::vec3 Specular{ 1.0f };
-		float Shininess = 35.0f;
-		float Transparency = 1.0f;
+		glm::vec3 Albedo { 1.0f };
+		float Roughness = 0.5f;
+		float Metalness = 0.5f;
 
-		Ref<Texture> DiffuseTexture;
-		Ref<Texture> SpecularTexture;
+		Ref<Texture> AlbedoMap;
 		Ref<Texture> NormalMap;
+		Ref<Texture> RoughnessMap;
+		Ref<Texture> MetalnessMap;
 	};
 
 	class Material
 	{
+		friend class ModelInspector;
 	public:
 		Material(const Ref<Shader>& shader);
 		virtual ~Material() = default;
 
 		void Bind();
-
+		void Unbind();
 		void SetName(const std::string& name);
 
-		void SetAmbientColor(const glm::vec3& ambient);
-		void SetDiffuseColor(const glm::vec3& diffuse);
-		void SetSpecularColor(const glm::vec3& specular);
+		void SetAlbedoColor(const glm::vec3& color);
+		void SetRoughness(float value);
+		void SetMetalness(float value);
 
-		void SetShininess(float shininess);
-		void SetTransparency(float transparency);
-
-		void SetDiffuseTexture(const Ref<Texture>& texture);
-		void SetSpecularTexture(const Ref<Texture>& texture);
+		void SetAlbedoMap(const Ref<Texture>& texture);
 		void SetNormalMap(const Ref<Texture>& texture);
+		void SetRoughnessMap(const Ref<Texture>& texture);
+		void SetMetalnessMap(const Ref<Texture>& texture);
 
-		inline bool HasDiffuseTexture() const { return m_HasDiffuseTexture; }
-		inline bool HasSpecularTexture() const { return m_HasSpecularTexture; }
+
+		void UseAlbedoMap(bool state);
+		void UseNormalMap(bool state);
+		void UseRoughnessMap(bool state);
+		void UseMetalnessMap(bool state);
 
 		inline const Ref<Shader>& GetShader() const { return m_Shader; }
-
 		inline std::string& GetName() { return m_Properties.Name; }
+		inline const Ref<Texture>& GetAlbedoMap() const { return m_Properties.AlbedoMap; }
+		inline const Ref<Texture>& GetNormalMap() const { return m_Properties.NormalMap; }
+		inline const Ref<Texture>& GetRoughnessMap() const { return m_Properties.RoughnessMap; }
+		inline const Ref<Texture>& GetMetalnessMap() const { return m_Properties.MetalnessMap; }
+		inline const glm::vec3& GetAlbedoColor() const { return m_Properties.Albedo; }
+		inline const float GetRoughness() const { return m_Properties.Roughness; }
+		inline const float GetMetalness() const { return m_Properties.Metalness; }
 
-		inline glm::vec3& GetAmbientColor() { return m_Properties.Ambient; }
-		inline glm::vec3& GetDiffuseColor() { return m_Properties.Diffuse; }
-		inline glm::vec3& GetSpecularColor() { return m_Properties.Specular; }
-
-		inline Ref<Texture>& GetDiffuseTexture() { return m_Properties.DiffuseTexture; }
-		inline Ref<Texture>& GetSpecularTexture() { return m_Properties.SpecularTexture; }
-		inline float& GetShininess() { return m_Properties.Shininess; }
-		inline float& GetTransparency() { return m_Properties.Transparency; }
-
-		inline void UseDiffuseTexture(bool state) { m_UseDiffuseTex = state; m_Shader->SetBool("u_UseDiffuseTexture", m_UseDiffuseTex);
-		}
-		inline void UseSpecularTexture(bool state) { m_UseSpecularTex = state; m_Shader->SetBool("u_UseSpecularTexture", m_UseSpecularTex);
-		}
-		inline void UseNormalMap(bool state) {
-			m_UseNormalMap = state; m_Shader->SetBool("u_UseNormalMap", m_UseNormalMap);
-		}
-	protected:
-		void SetHasDiffuseTexture(bool state);
-		void SetHasSpecularTexture(bool state);
-		void SetHasNormalMap(bool state);
 	protected:
 		MaterialProperties m_Properties;
 
-		bool m_HasDiffuseTexture = false;
-		bool m_HasSpecularTexture = false;
-		bool m_HasNormalMap = false;
-
-		bool m_UseDiffuseTex = false;
-		bool m_UseSpecularTex = false;
+		bool m_UseAlbedoMap = false;
 		bool m_UseNormalMap = false;
+		bool m_UseRoughnessMap = false;
+		bool m_UseMetalnessMap = false;
 
 		Ref<Shader> m_Shader;
 	};

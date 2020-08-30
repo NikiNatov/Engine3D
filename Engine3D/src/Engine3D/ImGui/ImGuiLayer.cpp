@@ -55,7 +55,6 @@ namespace E3D
 		style.WindowPadding = ImVec2(15, 15);
 		style.WindowRounding = 5.0f;
 		style.FramePadding = ImVec2(5, 5);
-		style.FrameRounding = 4.0f;
 		style.ItemSpacing = ImVec2(12, 8);
 		style.ItemInnerSpacing = ImVec2(8, 6);
 		style.IndentSpacing = 25.0f;
@@ -63,7 +62,6 @@ namespace E3D
 		style.ScrollbarRounding = 9.0f;
 		style.GrabMinSize = 5.0f;
 		style.GrabRounding = 3.0f;
-		
 
 		style.Colors[ImGuiCol_Text] = ImVec4(0.80f, 0.80f, 0.83f, 1.00f);
 		style.Colors[ImGuiCol_TextDisabled] = ImVec4(0.24f, 0.23f, 0.29f, 1.00f);

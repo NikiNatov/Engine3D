@@ -26,8 +26,6 @@ namespace E3D
 		Mesh(std::vector<Vertex>& vertices, std::vector<uint32_t>& indices);
 		~Mesh();
 
-		void ShowMeshWindow();
-
 		inline Ref<Material>& GetMaterial() { return m_Material; }
 		inline const Ref<VertexArray>& GetVertexArray() const { return m_VAO; }
 	private:
@@ -64,6 +62,8 @@ namespace E3D
 
 		inline const std::string& GetFilepath() const { return m_Filepath; }
 		inline const Ref<Node>& GetRootNode() const { return m_Root; }
+
+		inline std::vector<Ref<Mesh>>& GetMeshes() { return m_Meshes; }
 	private:
 		Ref<Node> m_Root;
 		std::string m_Filepath;

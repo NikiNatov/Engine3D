@@ -3,8 +3,6 @@
 #include "Engine3D\Scene\Entity.h"
 #include "Engine3D\Scene\Components.h"
 
-#
-
 namespace E3D
 {
 	struct ComponentData

@@ -12,29 +12,41 @@ namespace E3D
 	void Material::Bind()
 	{
 		m_Shader->Bind();
-		m_Shader->SetFloat3("u_Material.Ambient", m_Properties.Ambient);
-		m_Shader->SetFloat3("u_Material.Diffuse", m_Properties.Diffuse);
-		m_Shader->SetFloat3("u_Material.Specular", m_Properties.Specular);
+		m_Shader->SetFloat3("u_Material.Albedo", m_Properties.Albedo);
 
-		m_Shader->SetFloat("u_Material.Shininess", m_Properties.Shininess);
-		m_Shader->SetFloat("u_Material.Transparency", m_Properties.Transparency);
+		m_Shader->SetFloat("u_Material.Roughness", m_Properties.Roughness);
+		m_Shader->SetFloat("u_Material.Metalness", m_Properties.Metalness);
 
-		m_Shader->SetInt("u_Material.DiffuseTexture", 0);
-		m_Shader->SetInt("u_Material.SpecularTexture", 1);
-		m_Shader->SetInt("u_Material.NormalMap", 2);
+		m_Shader->SetInt("u_Material.AlbedoMap", 0);
+		m_Shader->SetInt("u_Material.NormalMap", 1);
+		m_Shader->SetInt("u_Material.RoughnessMap", 2);
+		m_Shader->SetInt("u_Material.MetalnessMap", 3);
 
-		m_Shader->SetBool("u_HasDiffuseTexture", m_HasDiffuseTexture);
-		m_Shader->SetBool("u_HasSpecularTexture", m_HasSpecularTexture);
-		m_Shader->SetBool("u_UseDiffuseTexture", m_UseDiffuseTex);
-		m_Shader->SetBool("u_UseSpecularTexture", m_UseSpecularTex);
+		m_Shader->SetBool("u_UseAlbedoMap", m_UseAlbedoMap);
 		m_Shader->SetBool("u_UseNormalMap", m_UseNormalMap);
+		m_Shader->SetBool("u_UseRoughnessMap", m_UseRoughnessMap);
+		m_Shader->SetBool("u_UseMetalnessMap", m_UseMetalnessMap);
 
-		if (m_Properties.DiffuseTexture)
-			m_Properties.DiffuseTexture->Bind(0);
-		if (m_Properties.SpecularTexture)
-			m_Properties.SpecularTexture->Bind(1);
+		if (m_Properties.AlbedoMap)
+			m_Properties.AlbedoMap->Bind(0);
 		if (m_Properties.NormalMap)
-			m_Properties.NormalMap->Bind(2);
+			m_Properties.NormalMap->Bind(1);
+		if (m_Properties.RoughnessMap)
+			m_Properties.RoughnessMap->Bind(2);
+		if (m_Properties.MetalnessMap)
+			m_Properties.MetalnessMap->Bind(3);
+	}
+
+	void Material::Unbind()
+	{
+		if (m_Properties.AlbedoMap)
+			m_Properties.AlbedoMap->Unbind(0);
+		if (m_Properties.NormalMap)
+			m_Properties.NormalMap->Unbind(1);
+		if (m_Properties.RoughnessMap)
+			m_Properties.RoughnessMap->Unbind(2);
+		if (m_Properties.MetalnessMap)
+			m_Properties.MetalnessMap->Unbind(3);
 	}
 
 	void Material::SetName(const std::string& name)
@@ -42,65 +54,59 @@ namespace E3D
 		m_Properties.Name = name;
 	}
 
-	void Material::SetAmbientColor(const glm::vec3& ambient)
+	void Material::SetAlbedoColor(const glm::vec3& color)
 	{
-		m_Properties.Ambient = ambient;
+		m_Properties.Albedo = color;
 	}
 
-	void Material::SetDiffuseColor(const glm::vec3& diffuse)
+	void Material::SetRoughness(float value)
 	{
-		m_Properties.Diffuse = diffuse;
+		m_Properties.Roughness = value;
 	}
 
-	void Material::SetSpecularColor(const glm::vec3& specular)
+	void Material::SetMetalness(float value)
 	{
-		m_Properties.Specular = specular;
+		m_Properties.Metalness = value;
 	}
 
-	void Material::SetShininess(float shininess)
+	void Material::SetAlbedoMap(const Ref<Texture>& texture)
 	{
-		m_Properties.Shininess = shininess;
-	}
-
-	void Material::SetTransparency(float transparency)
-	{
-		m_Properties.Transparency = transparency;
-	}
-
-	void Material::SetDiffuseTexture(const Ref<Texture>& texture)
-	{
-		m_Properties.DiffuseTexture = texture;
-		SetHasDiffuseTexture(true);
-		UseDiffuseTexture(true);
-	}
-
-	void Material::SetSpecularTexture(const Ref<Texture>& texture)
-	{
-		m_Properties.SpecularTexture = texture;
-		SetHasSpecularTexture(true);
-		UseSpecularTexture(true);
+		m_Properties.AlbedoMap = texture;
 	}
 
 	void Material::SetNormalMap(const Ref<Texture>& texture)
 	{
 		m_Properties.NormalMap = texture;
-		SetHasNormalMap(true);
-		UseNormalMap(true);
 	}
 
-	void Material::SetHasDiffuseTexture(bool state)
+	void Material::SetRoughnessMap(const Ref<Texture>& texture)
 	{
-		m_HasDiffuseTexture = state;
+		m_Properties.RoughnessMap = texture;
 	}
 
-	void Material::SetHasSpecularTexture(bool state)
+	void Material::SetMetalnessMap(const Ref<Texture>& texture)
 	{
-		m_HasSpecularTexture = state;
+		m_Properties.MetalnessMap = texture;
 	}
 
-	void Material::SetHasNormalMap(bool state)
+	void Material::UseAlbedoMap(bool state)
 	{
-		m_HasNormalMap = state;
+		m_UseAlbedoMap = state;
+	}
+
+	void Material::UseNormalMap(bool state)
+	{
+		m_UseNormalMap = state;
+	}
+
+	void Material::UseRoughnessMap(bool state)
+	{
+		m_UseRoughnessMap = state;
+	}
+
+	void Material::UseMetalnessMap(bool state)
+	{
+		m_UseMetalnessMap = state;
 	}
 
 }

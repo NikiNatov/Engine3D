@@ -31,17 +31,16 @@ namespace E3D
 		shader->Bind();
 		shader->SetMat4("u_ViewProjection", m_SceneData->ViewProjectionMatrix);
 		shader->SetMat4("u_Transform", transform);
-
-		shader->SetFloat3("u_CameraPosition", glm::vec3(0.0f, 0.0f, 3.0f));
-		shader->SetFloat3("u_Light.Direction", glm::vec3(0.0f, -1.0f, -1.0f));
-		shader->SetFloat3("u_Light.Ambient", glm::vec3(0.1f, 0.1f, 0.1f));
-		shader->SetFloat3("u_Light.Diffuse", glm::vec3(1.0f, 1.0f, 1.0f));
-		shader->SetFloat3("u_Light.Specular", glm::vec3(0.3f, 0.3f, 0.3f));
+		shader->SetFloat3("u_CameraPosition", glm::vec3(0.0f, 13.0f, 13.0f));
+		shader->SetFloat3("u_Light.Direction", glm::vec3(0.0f, -1.0f, -0.5));
+		shader->SetFloat3("u_Light.Radiance", glm::vec3(1.0f, 1.0f, 1.0f));
 
 		material->Bind();
 
 		auto& vao = mesh->GetVertexArray();
 		vao->Bind();
 		RenderCommand::DrawIndexed(vao);
+
+		material->Unbind();
 	}
 }

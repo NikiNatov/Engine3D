@@ -48,6 +48,8 @@ namespace E3D
 
 					ImGui::SameLine();
 
+					ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_DefaultOpen;
+
 					if (componentData.Name == "Transform")
 					{
 						auto& transform = entity.GetComponent<TransformComponent>().Transform;
@@ -55,7 +57,7 @@ namespace E3D
 						glm::vec3 rotation;
 						ImGuizmo::DecomposeMatrixToComponents(glm::value_ptr(transform), glm::value_ptr(position), glm::value_ptr(rotation), glm::value_ptr(scale));
 
-						if (ImGui::CollapsingHeader("Transform"))
+						if (ImGui::CollapsingHeader("Transform", flags))
 						{
 							ImGui::DragFloat3("Translation", &position.x, 0.5f, -1000.0f, 1000.0f);
 							ImGui::DragFloat3("Rotation", &rotation.x, 0.5f, -180.0f, 180.0f);
@@ -68,14 +70,14 @@ namespace E3D
 					{
 						auto& mesh = entity.GetComponent<MeshComponent>().Mesh;
 
-						if (ImGui::CollapsingHeader("Mesh"))
+						if (ImGui::CollapsingHeader("Mesh", flags))
 							ImGui::InputText("", (char*)mesh->GetFilepath().c_str(), 60, ImGuiInputTextFlags_ReadOnly);
 					}
 					else if (componentData.Name == "Camera")
 					{
 						auto& cameraComponent = entity.GetComponent<CameraComponent>();
 
-						if (ImGui::CollapsingHeader("Camera"))
+						if (ImGui::CollapsingHeader("Camera", flags))
 						{
 							auto& cameraComponent = entity.GetComponent<CameraComponent>();
 
@@ -84,7 +86,7 @@ namespace E3D
 					}
 					else if (componentData.Name == "Script")
 					{
-						if (ImGui::CollapsingHeader("Script"))
+						if (ImGui::CollapsingHeader("Script", flags))
 						{
 						}
 					}

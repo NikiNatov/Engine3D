@@ -17,22 +17,36 @@ namespace E3D
 		GLenum internalFormat = 0;
 		GLenum format = 0;
 
-		if (channels == 3)
+		glGenTextures(1, &m_TextureID);
+		glBindTexture(GL_TEXTURE_2D, m_TextureID);
+
+		if (channels == 2)
+		{
+			internalFormat = GL_RG8;
+			format = GL_RG;
+
+			GLint swizzleMask[] = { GL_RED, GL_RED, GL_RED, GL_GREEN };
+			glTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_SWIZZLE_RGBA, swizzleMask);
+		}
+		else if (channels == 3)
 		{
 			internalFormat = GL_RGB8;
 			format = GL_RGB;
+
+			GLint swizzleMask[] = { GL_RED, GL_GREEN, GL_BLUE, GL_ALPHA };
+			glTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_SWIZZLE_RGBA, swizzleMask);
 		}
 		else if (channels == 4)
 		{
 			internalFormat = GL_RGBA8;
 			format = GL_RGBA;
-		}
 
+			GLint swizzleMask[] = { GL_RED, GL_GREEN, GL_BLUE, GL_ALPHA };
+			glTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_SWIZZLE_RGBA, swizzleMask);
+		}
+		
 		m_Width = width;
 		m_Height = height;
-
-		glGenTextures(1, &m_TextureID);
-		glBindTexture(GL_TEXTURE_2D, m_TextureID);
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);

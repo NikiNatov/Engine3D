@@ -3,6 +3,7 @@
 
 #include "Panels\SceneGraph.h"
 #include "Panels\EntityInspector.h"
+#include "Panels\ModelInspector.h"
 
 namespace E3D
 {
@@ -22,10 +23,6 @@ namespace E3D
 	private:
 		ShaderLibrary m_ShaderLibrary;
 
-		
-		Ref<Texture2D> m_DiffuseTexture;
-		Ref<Texture2D> m_SpecularTexture;
-		Ref<Texture2D> m_CheckerboardTexture;
 		Ref<Texture2D> m_PlayButtonTexture;
 		Ref<Texture2D> m_StopButtonTexture;
 		Ref<Framebuffer> m_Framebuffer;
@@ -50,9 +47,11 @@ namespace E3D
 		Entity m_Plane;
 		Entity m_Cone;
 		Entity m_Sphere;
+		Entity m_Pistol;
 
-		EntityInspector m_InspectorPannel;
-		SceneGraph m_SceneGraphPannel;
+		EntityInspector m_InspectorPanel;
+		SceneGraph m_SceneGraphPanel;
+		ModelInspector m_ModelPanel;
 		Entity m_SelectedEntity;
 	};
 }

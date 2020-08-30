@@ -101,9 +101,11 @@ namespace E3D
 			ImGui::EndMenuBar();
 		}
 		
-		m_SceneGraphPannel.OnImGuiRender();
-		m_SelectedEntity = m_SceneGraphPannel.GetSelectedEntity();
-		m_InspectorPannel.OnImGuiRender(m_SelectedEntity);
+		m_SceneGraphPanel.OnImGuiRender();
+		m_SelectedEntity = m_SceneGraphPanel.GetSelectedEntity();
+		m_InspectorPanel.OnImGuiRender(m_SelectedEntity);
+		if(m_SelectedEntity && m_SelectedEntity.HasComponent<MeshComponent>())
+			m_ModelPanel.OnImGuiRender(m_SelectedEntity.GetComponent<MeshComponent>().Mesh);
 
 		ImGui::Begin("Scene Control", 0, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar);
 		if (ImGui::ImageButton((void*)m_PlayButtonTexture->GetTextureID(), { 40.0f, 40.0f }, { 0, 1 }, { 1, 0 }))
@@ -198,9 +200,6 @@ namespace E3D
 	{
 		m_ShaderLibrary.Load("assets/shaders/FlatColorShader.glsl");
 
-		m_DiffuseTexture = Texture2D::Create("assets/textures/rubyTexture.jpg");
-		m_CheckerboardTexture = Texture2D::Create("assets/textures/checkerboard.png");
-		m_SpecularTexture = Texture2D::Create("assets/textures/specular.png");
 		m_PlayButtonTexture = Texture2D::Create("assets/textures/playButton.png");
 		m_StopButtonTexture = Texture2D::Create("assets/textures/stopButton.png");
 
@@ -212,6 +211,11 @@ namespace E3D
 		m_Framebuffer = Framebuffer::Create(fbSpec);
 
 		m_Scene = CreateRef<Scene>();
+
+		m_Pistol = m_Scene->CreateEntity("Pistol");
+		m_Pistol.AddComponent<MeshComponent>("assets/models/pistol/m1911_finalFire.fbx");
+		m_Pistol.GetComponent<TransformComponent>().Transform = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 20.0f, 0.0f));
+
 
 		m_Plane = m_Scene->CreateEntity("Plane");
 		m_Plane.AddComponent<MeshComponent>("assets/models/primitives/plane.fbx");
@@ -273,7 +277,7 @@ namespace E3D
 		m_SpaceShip.GetComponent<SceneNodeComponent>().FirstChild = m_Vader;
 		m_Vader.GetComponent<SceneNodeComponent>().Parent = m_SpaceShip;*/
 
-		m_SceneGraphPannel.SetScene(m_Scene);
+		m_SceneGraphPanel.SetScene(m_Scene);
 	}
 
 	void EditorLayer::OnDetach()

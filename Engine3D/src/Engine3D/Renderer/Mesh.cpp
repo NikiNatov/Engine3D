@@ -7,6 +7,8 @@
 #include "Engine3D\Renderer\Renderer.h"
 
 #include <assimp/postprocess.h>
+#include <assimp/pbrmaterial.h>
+
 namespace E3D
 {
 	static glm::mat4 aiToGLM(const aiMatrix4x4& matrix)
@@ -43,57 +45,12 @@ namespace E3D
 		m_VAO->SetIndexBuffer(ibo);
 
 
-		m_Material = CreateRef<Material>(Shader::Create("assets/shaders/MaterialShader.glsl"));
+		m_Material = CreateRef<Material>(Shader::Create("assets/shaders/StaticModelShader.glsl"));
 	}
 
 	Mesh::~Mesh()
 	{
 
-	}
-
-	void Mesh::ShowMeshWindow()
-	{
-		ImGui::Begin("Mesh");
-
-		ImGui::Separator();
-
-		bool diffuseTex = m_Material->HasDiffuseTexture();
-		bool specularTex = m_Material->HasSpecularTexture();
-
-		ImGui::Text("Diffuse Texture");
-		if (m_Material->HasDiffuseTexture())
-		{
-			ImGui::Image((void*)m_Material->GetDiffuseTexture()->GetTextureID(), ImVec2{ 64.0f, 64.0f }, { 0, 1 }, { 1, 0 });
-			ImGui::SameLine();
-			ImGui::BeginGroup();
-			if (ImGui::Checkbox("Use##ModelDiffuseTexture", &diffuseTex))
-				m_Material->UseDiffuseTexture(diffuseTex);
-			ImGui::SameLine();
-			ImGui::ColorEdit3("", &m_Material->GetDiffuseColor().x, ImGuiColorEditFlags_NoInputs);
-			ImGui::EndGroup();
-		}
-		//else
-			//ImGui::Image((void*)m_CheckerboardTexture->GetTextureID(), ImVec2{ 64.0f, 64.0f }, { 0, 1 }, { 1, 0 });
-
-		ImGui::Text("Specular Texture");
-		if (m_Material->HasSpecularTexture())
-		{
-			ImGui::Image((void*)m_Material->GetSpecularTexture()->GetTextureID(), ImVec2{ 64.0f, 64.0f }, { 0, 1 }, { 1, 0 });
-			ImGui::SameLine();
-			ImGui::BeginGroup();
-			if (ImGui::Checkbox("Use##ModelSpecularTexture", &specularTex))
-				m_Material->UseSpecularTexture(true);
-
-			ImGui::SameLine();
-			ImGui::ColorEdit3("", &m_Material->GetSpecularColor().x, ImGuiColorEditFlags_NoInputs);
-			ImGui::EndGroup();
-		}
-		//else
-		//	ImGui::Image((void*)m_CheckerboardTexture->GetTextureID(), ImVec2{ 64.0f, 64.0f }, { 0, 1 }, { 1, 0 });
-
-		ImGui::DragFloat("Shininess", &m_Material->GetShininess(), 0.5f, 0.0f, 180.0f);
-		ImGui::DragFloat("Transparency", &m_Material->GetTransparency(), 0.03f, 0.0f, 1.0f);
-		ImGui::End();
 	}
 
 	Model::Model(const std::string& filepath)
@@ -173,42 +130,29 @@ namespace E3D
 			auto& newMeshMaterial = newMesh->GetMaterial();
 
 			aiString name;
-			aiColor3D diffuse, ambient, specular;
-			ai_real shininess = 1.0f, transparency = 1.0f;
-			if (!(AI_SUCCESS == material->Get(AI_MATKEY_NAME, name)));
-				//E3D_CORE_ASSERT(false, "Failed to load material name!");
-			if (!(AI_SUCCESS == material->Get(AI_MATKEY_COLOR_AMBIENT, ambient)));
-				//E3D_CORE_ASSERT(false, "Failed to load material ambient color!");
-			if (!(AI_SUCCESS == material->Get(AI_MATKEY_COLOR_DIFFUSE, diffuse)));
-				//E3D_CORE_ASSERT(false, "Failed to load material diffuse color!");
-			if (!(AI_SUCCESS == material->Get(AI_MATKEY_COLOR_SPECULAR, specular)));
-				//E3D_CORE_ASSERT(false, "Failed to load material specular color!");
-			if (!(AI_SUCCESS == material->Get(AI_MATKEY_OPACITY, transparency)));
-				//E3D_CORE_ASSERT(false, "Failed to load material transparency!");
-			if (!(AI_SUCCESS == material->Get(AI_MATKEY_SHININESS, shininess)));
-				//E3D_CORE_ASSERT(false, "Failed to load material shininess!");
+			aiColor3D albedo;
+			ai_real roughness = 0.5f, metalness = 0.5f;
+			if (!(AI_SUCCESS == material->Get(AI_MATKEY_NAME, name)))
+				E3D_CORE_LOG_WARNING("Material name missing!");
+			if (!(AI_SUCCESS == material->Get(AI_MATKEY_COLOR_DIFFUSE, albedo)))
+				E3D_CORE_LOG_WARNING("Material albedo color missing!");
+			if (!(AI_SUCCESS == material->Get(AI_MATKEY_GLTF_PBRMETALLICROUGHNESS_ROUGHNESS_FACTOR, roughness)))
+				E3D_CORE_LOG_WARNING("Material roughness value missing!");
+			if (!(AI_SUCCESS == material->Get(AI_MATKEY_GLTF_PBRMETALLICROUGHNESS_METALLIC_FACTOR, metalness)))
+				E3D_CORE_LOG_WARNING("Material metalness value missing!");
 
 			newMeshMaterial->SetName(std::string(name.C_Str()));
-			newMeshMaterial->SetAmbientColor({ ambient.r, ambient.g, ambient.b });
-			newMeshMaterial->SetDiffuseColor({ diffuse.r, diffuse.g, diffuse.b });
-			newMeshMaterial->SetSpecularColor({ specular.r, specular.g, specular.b });
-			newMeshMaterial->SetTransparency(transparency);
-			newMeshMaterial->SetShininess(shininess);
+			newMeshMaterial->SetAlbedoColor({ albedo.r, albedo.g, albedo.b });
+			newMeshMaterial->SetRoughness(roughness);
+			newMeshMaterial->SetMetalness(metalness);
 
 			aiString textureFileName;
 			std::string textureDirectory = m_Filepath.substr(0, m_Filepath.find_last_of('/'));
-			material->GetTexture(aiTextureType_DIFFUSE, 0, &textureFileName);
 
 			if (material->GetTexture(aiTextureType_DIFFUSE, 0, &textureFileName) == aiReturn_SUCCESS)
 			{
-				Ref<Texture> diffuseTexture = Texture2D::Create(textureDirectory + "/" + textureFileName.C_Str());
-				newMeshMaterial->SetDiffuseTexture(diffuseTexture);
-			}
-
-			if (material->GetTexture(aiTextureType_SPECULAR, 0, &textureFileName) == aiReturn_SUCCESS)
-			{
-				Ref<Texture> specularTexture = Texture2D::Create(textureDirectory + "/" + textureFileName.C_Str());
-				newMeshMaterial->SetSpecularTexture(specularTexture);
+				Ref<Texture> albedoMap = Texture2D::Create(textureDirectory + "/" + textureFileName.C_Str());
+				newMeshMaterial->SetAlbedoMap(albedoMap);
 			}
 
 			if (material->GetTexture(aiTextureType_NORMALS, 0, &textureFileName) == aiReturn_SUCCESS)
@@ -217,6 +161,17 @@ namespace E3D
 				newMeshMaterial->SetNormalMap(normalMap);
 			}
 
+			if (material->GetTexture(aiTextureType_UNKNOWN, 0, &textureFileName) == aiReturn_SUCCESS)
+			{
+				Ref<Texture> roughnessMap = Texture2D::Create(textureDirectory + "/" + textureFileName.C_Str());
+				newMeshMaterial->SetRoughnessMap(roughnessMap);
+			}
+
+			if (material->GetTexture(aiTextureType_METALNESS, 0, &textureFileName) == aiReturn_SUCCESS)
+			{
+				Ref<Texture> metalnessMap = Texture2D::Create(textureDirectory + "/" + textureFileName.C_Str());
+				newMeshMaterial->SetMetalnessMap(metalnessMap);
+			}
 		}
 
 		return newMesh;
