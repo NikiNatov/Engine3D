@@ -13,5 +13,6 @@ namespace E3D
 		virtual void ClearScreen() override;
 
 		virtual void DrawIndexed(const Ref<VertexArray>& vertexArray) override;
+		virtual void DrawArrays(const Ref<VertexArray>& vertexArray, uint32_t count) override;
 	};
 }

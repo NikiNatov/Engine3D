@@ -56,7 +56,7 @@ namespace E3D
 	Model::Model(const std::string& filepath)
 		: m_Filepath(filepath)
 	{
-		m_Scene = m_Importer.ReadFile(filepath.c_str(), aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_GenNormals | aiProcess_CalcTangentSpace);
+		m_Scene = m_Importer.ReadFile(filepath.c_str(), aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_GenNormals | aiProcess_CalcTangentSpace | aiProcess_GenUVCoords);
 
 		E3D_CORE_ASSERT(m_Scene, "Failed to load the model file!");
 
@@ -132,14 +132,10 @@ namespace E3D
 			aiString name;
 			aiColor3D albedo;
 			ai_real roughness = 0.5f, metalness = 0.5f;
-			if (!(AI_SUCCESS == material->Get(AI_MATKEY_NAME, name)))
-				E3D_CORE_LOG_WARNING("Material name missing!");
-			if (!(AI_SUCCESS == material->Get(AI_MATKEY_COLOR_DIFFUSE, albedo)))
-				E3D_CORE_LOG_WARNING("Material albedo color missing!");
-			if (!(AI_SUCCESS == material->Get(AI_MATKEY_GLTF_PBRMETALLICROUGHNESS_ROUGHNESS_FACTOR, roughness)))
-				E3D_CORE_LOG_WARNING("Material roughness value missing!");
-			if (!(AI_SUCCESS == material->Get(AI_MATKEY_GLTF_PBRMETALLICROUGHNESS_METALLIC_FACTOR, metalness)))
-				E3D_CORE_LOG_WARNING("Material metalness value missing!");
+			material->Get(AI_MATKEY_NAME, name);
+			material->Get(AI_MATKEY_COLOR_DIFFUSE, albedo);
+			material->Get(AI_MATKEY_GLTF_PBRMETALLICROUGHNESS_ROUGHNESS_FACTOR, roughness);
+			material->Get(AI_MATKEY_GLTF_PBRMETALLICROUGHNESS_METALLIC_FACTOR, metalness);
 
 			newMeshMaterial->SetName(std::string(name.C_Str()));
 			newMeshMaterial->SetAlbedoColor({ albedo.r, albedo.g, albedo.b });
@@ -152,6 +148,7 @@ namespace E3D
 			if (material->GetTexture(aiTextureType_DIFFUSE, 0, &textureFileName) == aiReturn_SUCCESS)
 			{
 				Ref<Texture> albedoMap = Texture2D::Create(textureDirectory + "/" + textureFileName.C_Str());
+				albedoMap->GenerateMipMaps();
 				newMeshMaterial->SetAlbedoMap(albedoMap);
 			}
 

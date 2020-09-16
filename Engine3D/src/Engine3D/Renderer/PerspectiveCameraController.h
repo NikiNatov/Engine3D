@@ -41,7 +41,7 @@ namespace E3D
 
 		float m_MovementSpeed = 40.0f;
 		float m_MouseSensitivity = 0.2f;
-		float m_ZoomSensitivity = 3.0f;
+		float m_ZoomSensitivity = 9.0f;
 		float m_Zoom = 0.0f;
 		PerspectiveCamera m_Camera;
 

@@ -38,6 +38,7 @@ namespace E3D
 
 		Ref<Model> m_Model;
 		Ref<Model> m_Grid;
+		Ref<Skybox> m_Skybox;
 
 		/*Entity m_Vader;
 		Entity m_SpaceShip;
@@ -52,6 +53,14 @@ namespace E3D
 		EntityInspector m_InspectorPanel;
 		SceneGraph m_SceneGraphPanel;
 		ModelInspector m_ModelPanel;
-		Entity m_SelectedEntity;
+		Entity m_SelectedEntity{};
+
+		Ref<Material> m_Gold;
+		Ref<Material> m_Grass;
+		Ref<Material> m_Marble;
+		Ref<Material> m_Rock;
+		Ref<Material> m_RustedIron;
+		Ref<Material> m_Wood;
+		Ref<Material> m_PistolMaterial;
 	};
 }

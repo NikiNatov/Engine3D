@@ -28,6 +28,7 @@ namespace E3D
 
 		inline Ref<Material>& GetMaterial() { return m_Material; }
 		inline const Ref<VertexArray>& GetVertexArray() const { return m_VAO; }
+		inline void SetMaterial(const Ref<Material>& material) { m_Material = material; }
 	private:
 		Ref<Material> m_Material;
 		Ref<VertexArray> m_VAO;

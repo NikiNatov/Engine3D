@@ -19,8 +19,11 @@ namespace E3D
 	Scene::Scene()
 	{
 
-		
+	}
 
+	Scene::Scene(const Ref<Skybox>& skybox)
+		: m_Skybox(skybox)
+	{
 	}
 
 	Scene::~Scene()
@@ -86,7 +89,7 @@ namespace E3D
 
 	void Scene::OnEditRender()
 	{
-		Renderer::BeginScene(m_CameraController.GetCamera());
+		Renderer::BeginScene(m_CameraController.GetCamera(), m_Skybox);
 
 		auto view = m_Registry.view<TransformComponent, MeshComponent, SceneNodeComponent>();
 
@@ -127,7 +130,7 @@ namespace E3D
 
 		if (mainCamera)
 		{
-			Renderer::BeginScene(*mainCamera, *cameraTransform);
+			Renderer::BeginScene(*mainCamera, *cameraTransform, m_Skybox);
 
 			auto view = m_Registry.view<TransformComponent, MeshComponent, SceneNodeComponent>();
 

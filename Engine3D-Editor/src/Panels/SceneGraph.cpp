@@ -39,6 +39,9 @@ namespace E3D
 				DrawNode(entity);
 		});
 
+		if (ImGui::IsMouseClicked(0) && ImGui::IsWindowHovered())
+			m_SelectedEntity = {};
+
 		ImGui::End();
 	}
 

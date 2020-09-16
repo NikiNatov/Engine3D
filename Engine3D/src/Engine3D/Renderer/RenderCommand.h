@@ -32,7 +32,12 @@ namespace E3D
 			s_RenderAPI->DrawIndexed(vertexArray);
 		}
 
+		inline static void DrawArrays(const Ref<VertexArray>& vertexArray, uint32_t count)
+		{
+			s_RenderAPI->DrawArrays(vertexArray, count);
+		}
+
 	private:
-		static RenderAPI* s_RenderAPI;
+		static Scope<RenderAPI> s_RenderAPI;
 	};
 }

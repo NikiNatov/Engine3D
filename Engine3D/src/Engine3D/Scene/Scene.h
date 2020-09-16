@@ -4,6 +4,7 @@
 #include "Engine3D\Core\Config.h"
 
 #include "Engine3D\Renderer\PerspectiveCameraController.h"
+#include "Engine3D\Renderer\SkyBox.h"
 
 #include <glm\glm.hpp>
 #include <entt.hpp>
@@ -18,6 +19,7 @@ namespace E3D
 		enum class SceneState { Edit = 0, Running = 1 };
 	public:
 		Scene();
+		Scene(const Ref<Skybox>& skybox);
 		~Scene();
 
 		Entity CreateEntity(const std::string& name = "Unnamed Entity");
@@ -38,6 +40,7 @@ namespace E3D
 		entt::registry m_Registry;
 		SceneState m_State = SceneState::Edit;
 		PerspectiveCameraController m_CameraController{ 45.0f, (float)1280 / (float)720 };
+		Ref<Skybox> m_Skybox;
 	
 	};
 

@@ -1,7 +1,8 @@
 #pragma once
 
 #include "Engine3D\Renderer\Texture.h"
-#include "Engine3D\Renderer\Mesh.h"
+
+#include "Engine3D\Scene\Entity.h"
 
 namespace E3D
 {
@@ -10,7 +11,7 @@ namespace E3D
 	public:
 		ModelInspector();
 
-		void OnImGuiRender(Ref<Model>& model);
+		void OnImGuiRender(Entity entity);
 	private:
 		Ref<Texture> m_WhiteTexture;
 		//Test

@@ -10,6 +10,9 @@ namespace E3D
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glEnable(GL_DEPTH_TEST);
+		glDepthFunc(GL_LEQUAL);
+
+		glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 	}
 	void OpenGLRenderAPI::SetViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height)
 	{
@@ -26,5 +29,9 @@ namespace E3D
 	void OpenGLRenderAPI::DrawIndexed(const Ref<VertexArray>& vertexArray)
 	{
 		glDrawElements(GL_TRIANGLES, vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+	}
+	void OpenGLRenderAPI::DrawArrays(const Ref<VertexArray>& vertexArray, uint32_t count)
+	{
+		glDrawArrays(GL_TRIANGLES, 0, count);
 	}
 }
