@@ -28,11 +28,12 @@ in vec3 v_Position;
 uniform samplerCube u_SkyBox;
 uniform float u_Exposure;
 
+uniform float u_LOD;
 
 void main()
 {
 	const float gamma = 2.0;
-	vec3 envColor = texture(u_SkyBox, v_Position).rgb;
+	vec3 envColor = textureLod(u_SkyBox, v_Position, u_LOD).rgb;
     
     //envColor = envColor / (envColor + vec3(1.0));
 	vec3 mapped = vec3(1.0) - exp(-envColor * u_Exposure);

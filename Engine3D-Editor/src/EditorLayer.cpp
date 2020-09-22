@@ -27,7 +27,7 @@ namespace E3D
 		case Scene::SceneState::Edit:
 		{
 			if (m_ViewportFocused)
-				m_Scene->GetCameraController().OnUpdate(ts);
+				m_Scene->GetCamera().Update(ts);
 
 			m_Scene->OnEditRender();
 			break;
@@ -48,8 +48,8 @@ namespace E3D
 
 	void EditorLayer::OnEvent(Event& event)
 	{
-		if(m_Scene->GetSceneState() != Scene::SceneState::Running && !ImGuizmo::IsUsing())
-			m_Scene->GetCameraController().OnEvent(event);
+		if (m_Scene->GetSceneState() != Scene::SceneState::Running && !ImGuizmo::IsUsing())
+			m_Scene->GetCamera().OnEvent(event);
 	}
 
 	void EditorLayer::OnImGuiRender()
@@ -110,6 +110,7 @@ namespace E3D
 
 		ImGui::Begin("Environment");
 		ImGui::DragFloat("Exposure", &m_Skybox->GetExposure(), 0.01f, 0.01f, 3.0f);
+		ImGui::DragFloat("LOD", &m_Skybox->GetLOD(), 0.1f, 0.0f, 10.0f);
 		ImGui::End();
 
 		ImGui::Begin("Scene Control", 0, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar);
@@ -135,10 +136,9 @@ namespace E3D
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0.0f, 0.0f });
 		ImGui::Begin("Scene");
 		
-		auto& viewMatrix = m_Scene->GetCameraController().GetCamera().GetViewMatrix();
-		auto& projMatrix = m_Scene->GetCameraController().GetCamera().GetProjection();
+		auto& viewMatrix = m_Scene->GetCamera().GetViewMatrix();
+		auto& projMatrix = m_Scene->GetCamera().GetProjection();
 		ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, ImGui::GetWindowSize().x, ImGui::GetWindowSize().y);
-		//ImGuizmo::DrawGrid(glm::value_ptr(viewMatrix), glm::value_ptr(projMatrix), glm::value_ptr(glm::mat4(1.0f)), 400.0f);
 
 		if (m_SelectedEntity && m_Scene->GetSceneState() == Scene::SceneState::Edit)
 		{
@@ -178,9 +178,6 @@ namespace E3D
 			entityTransform = glm::inverse(parentWorldTransform) * entityWorldTransform;
 		}
 
-		if (m_ViewportFocused != ImGui::IsWindowFocused() && m_ViewportFocused == true)
-			m_Scene->GetCameraController().SetViewportFocus(false);
-
 		m_ViewportFocused = ImGui::IsWindowFocused();
 		m_ViewportHovered = ImGui::IsWindowHovered();
 		Application::GetInstance().GetImGuiLayer()->BlockEvents(!m_ViewportFocused || !m_ViewportHovered);
@@ -192,7 +189,7 @@ namespace E3D
 			m_Framebuffer->Resize(m_ViewportSize.x, m_ViewportSize.y);
 
 			m_Scene->OnViewportResize(m_ViewportSize.x, m_ViewportSize.y);
-			m_Scene->GetCameraController().Resize(m_ViewportSize.x, m_ViewportSize.y);
+			m_Scene->GetCamera().SetProjection(65.0f, m_ViewportSize.x / m_ViewportSize.y);
 		}
 		ImGuizmo::SetDrawlist();
 		uint32_t texture = m_Framebuffer->GetColorAttachment()->GetTextureID();
@@ -213,67 +210,63 @@ namespace E3D
 
 		m_Grid = CreateRef<Model>("assets/models/grid/grid.fbx");
 
-		m_ShaderLibrary.Load("assets/shaders/StaticModelShader.glsl");
-		m_Gold = CreateRef<Material>(m_ShaderLibrary.Get("StaticModelShader"));
-		m_Grass = CreateRef<Material>(m_ShaderLibrary.Get("StaticModelShader"));
-		m_Marble = CreateRef<Material>(m_ShaderLibrary.Get("StaticModelShader"));
-		m_Rock = CreateRef<Material>(m_ShaderLibrary.Get("StaticModelShader"));
-		m_RustedIron = CreateRef<Material>(m_ShaderLibrary.Get("StaticModelShader"));
-		m_Wood = CreateRef<Material>(m_ShaderLibrary.Get("StaticModelShader"));
-		m_PistolMaterial = CreateRef<Material>(m_ShaderLibrary.Get("StaticModelShader"));
+		auto shader = m_ShaderLibrary.Load("assets/shaders/StaticModelShader.glsl");
+
+		m_Gold = CreateRef<Material>(shader);
+		m_Grass = CreateRef<Material>(shader);
+		m_Marble = CreateRef<Material>(shader);
+		m_Rock = CreateRef<Material>(shader);
+		m_RustedIron = CreateRef<Material>(shader);
+		m_Wood = CreateRef<Material>(shader);
+		m_PistolMaterial = CreateRef<Material>(shader);
 
 		// Gold
-		m_Gold->SetAlbedoMap(Texture2D::Create("assets/PBR/gold/lightgold_albedo.png"));
-		m_Gold->SetNormalMap(Texture2D::Create("assets/PBR/gold/lightgold_normal-ogl.png"));
-		m_Gold->SetMetalnessMap(Texture2D::Create("assets/PBR/gold/lightgold_metallic.png"));
-		m_Gold->SetRoughnessMap(Texture2D::Create("assets/PBR/gold/lightgold_roughness.png"));
+		m_Gold->SetAlbedoMap(Texture2D::Create("assets/PBR/gold/lightgold_albedo.png", {}, true));
+		m_Gold->SetNormalMap(Texture2D::Create("assets/PBR/gold/lightgold_normal-ogl.png", {}, true));
+		m_Gold->SetMetalnessMap(Texture2D::Create("assets/PBR/gold/lightgold_metallic.png", {}, true));
+		m_Gold->SetRoughnessMap(Texture2D::Create("assets/PBR/gold/lightgold_roughness.png", {}, true));
+
 
 		// Grass
-		m_Grass->SetAlbedoMap(Texture2D::Create("assets/PBR/grass/leafy-grass2-albedo.png"));
-		m_Grass->SetNormalMap(Texture2D::Create("assets/PBR/grass/leafy-grass2-normal-ogl.png"));
-		m_Grass->SetMetalnessMap(Texture2D::Create("assets/PBR/grass/leafy-grass2-metallic.png"));
-		m_Grass->SetRoughnessMap(Texture2D::Create("assets/PBR/grass/leafy-grass2-roughness.png"));
+		m_Grass->SetAlbedoMap(Texture2D::Create("assets/PBR/grass/leafy-grass2-albedo.png", {}, true));
+		m_Grass->SetNormalMap(Texture2D::Create("assets/PBR/grass/leafy-grass2-normal-ogl.png", {}, true));
+		m_Grass->SetMetalnessMap(Texture2D::Create("assets/PBR/grass/leafy-grass2-metallic.png", {}, true));
+		m_Grass->SetRoughnessMap(Texture2D::Create("assets/PBR/grass/leafy-grass2-roughness.png", {}, true));
 
 		// Marble
-		m_Marble->SetAlbedoMap(Texture2D::Create("assets/PBR/marble/stringy_marble_albedo.png"));
-		m_Marble->SetNormalMap(Texture2D::Create("assets/PBR/marble/stringy_marble_Normal-ogl.png"));
-		m_Marble->SetMetalnessMap(Texture2D::Create("assets/PBR/marble/stringy_marble_Metallic.png"));
-		m_Marble->SetRoughnessMap(Texture2D::Create("assets/PBR/marble/stringy_marble_Roughness.png"));
+		m_Marble->SetAlbedoMap(Texture2D::Create("assets/PBR/marble/stringy_marble_albedo.png", {}, true));
+		m_Marble->SetNormalMap(Texture2D::Create("assets/PBR/marble/stringy_marble_Normal-ogl.png", {}, true));
+		m_Marble->SetMetalnessMap(Texture2D::Create("assets/PBR/marble/stringy_marble_Metallic.png", {}, true));
+		m_Marble->SetRoughnessMap(Texture2D::Create("assets/PBR/marble/stringy_marble_Roughness.png", {}, true));
 
 		// Rock
-		m_Rock->SetAlbedoMap(Texture2D::Create("assets/PBR/rock/layered-rock1-albedo.png"));
-		m_Rock->SetNormalMap(Texture2D::Create("assets/PBR/rock/layered-rock1-normal-ogl.png"));
-		m_Rock->SetMetalnessMap(Texture2D::Create("assets/PBR/rock/layered-rock1-Metalness.png"));
-		m_Rock->SetRoughnessMap(Texture2D::Create("assets/PBR/rock/layered-rock1-rough.png"));
+		m_Rock->SetAlbedoMap(Texture2D::Create("assets/PBR/rock/layered-rock1-albedo.png", {}, true));
+		m_Rock->SetNormalMap(Texture2D::Create("assets/PBR/rock/layered-rock1-normal-ogl.png", {}, true));
+		m_Rock->SetMetalnessMap(Texture2D::Create("assets/PBR/rock/layered-rock1-Metalness.png", {}, true));
+		m_Rock->SetRoughnessMap(Texture2D::Create("assets/PBR/rock/layered-rock1-rough.png", {}, true));
 
 		// Rusted Iron
-		m_RustedIron->SetAlbedoMap(Texture2D::Create("assets/PBR/rusted_iron/rustediron2_basecolor.png"));
-		m_RustedIron->SetNormalMap(Texture2D::Create("assets/PBR/rusted_iron/rustediron2_normal.png"));
-		m_RustedIron->SetMetalnessMap(Texture2D::Create("assets/PBR/rusted_iron/rustediron2_metallic.png"));
-		m_RustedIron->SetRoughnessMap(Texture2D::Create("assets/PBR/rusted_iron/rustediron2_roughness.png"));
+		m_RustedIron->SetAlbedoMap(Texture2D::Create("assets/PBR/rusted_iron/rustediron2_basecolor.png", {}, true));
+		m_RustedIron->SetNormalMap(Texture2D::Create("assets/PBR/rusted_iron/rustediron2_normal.png", {}, true));
+		m_RustedIron->SetMetalnessMap(Texture2D::Create("assets/PBR/rusted_iron/rustediron2_metallic.png", {}, true));
+		m_RustedIron->SetRoughnessMap(Texture2D::Create("assets/PBR/rusted_iron/rustediron2_roughness.png", {}, true));
 
 		// Wood
-		m_Wood->SetAlbedoMap(Texture2D::Create("assets/PBR/wood/bamboo-wood-semigloss-albedo.png"));
-		m_Wood->SetNormalMap(Texture2D::Create("assets/PBR/wood/bamboo-wood-semigloss-normal.png"));
-		m_Wood->SetMetalnessMap(Texture2D::Create("assets/PBR/wood/bamboo-wood-semigloss-metal.png"));
-		m_Wood->SetRoughnessMap(Texture2D::Create("assets/PBR/wood/bamboo-wood-semigloss-roughness.png"));
+		m_Wood->SetAlbedoMap(Texture2D::Create("assets/PBR/wood/bamboo-wood-semigloss-albedo.png", {}, true));
+		m_Wood->SetNormalMap(Texture2D::Create("assets/PBR/wood/bamboo-wood-semigloss-normal.png", {}, true));
+		m_Wood->SetMetalnessMap(Texture2D::Create("assets/PBR/wood/bamboo-wood-semigloss-metal.png", {}, true));
+		m_Wood->SetRoughnessMap(Texture2D::Create("assets/PBR/wood/bamboo-wood-semigloss-roughness.png", {}, true));
 
 		// Pistol
-		m_PistolMaterial->SetAlbedoMap(Texture2D::Create("assets/models/gun/Textures/Cerberus_A.tga"));
-		m_PistolMaterial->SetNormalMap(Texture2D::Create("assets/models/gun/Textures/Cerberus_N.tga"));
-		m_PistolMaterial->SetMetalnessMap(Texture2D::Create("assets/models/gun/Textures/Cerberus_M.tga"));
-		m_PistolMaterial->SetRoughnessMap(Texture2D::Create("assets/models/gun/Textures/Cerberus_R.tga"));
+		m_PistolMaterial->SetAlbedoMap(Texture2D::Create("assets/models/gun/Textures/Cerberus_A.tga", {}, true));
+		m_PistolMaterial->SetNormalMap(Texture2D::Create("assets/models/gun/Textures/Cerberus_N.tga", {}, true));
+		m_PistolMaterial->SetMetalnessMap(Texture2D::Create("assets/models/gun/Textures/Cerberus_M.tga", {}, true));
+		m_PistolMaterial->SetRoughnessMap(Texture2D::Create("assets/models/gun/Textures/Cerberus_R.tga", {}, true));
 
-		FramebufferSpecification fbSpec;
-		fbSpec.Width = 1280;
-		fbSpec.Height = 720;
-		fbSpec.ColorAttachmentFormat = TextureFormat::RGBA8;
-		fbSpec.TexTarget = TextureTarget::Texture2D;
-
-		m_Framebuffer = Framebuffer::Create(fbSpec);
+		m_Framebuffer = Framebuffer::Create({1280, 720, TextureTarget::Texture2D, TextureFormat::RGBA8, 1});
 
 		m_Skybox = CreateRef<Skybox>();
-		m_Skybox->SetTexture("assets/textures/skybox/birchwood_4k.hdr");
+		m_Skybox->SetTexture("assets/textures/skybox/the_sky_is_on_fire_4k.hdr");
 
 		m_Scene = CreateRef<Scene>(m_Skybox);
 
@@ -294,10 +287,6 @@ namespace E3D
 		m_Cone.AddComponent<MeshComponent>("assets/models/primitives/cone.fbx");
 		m_Cone.GetComponent<TransformComponent>().Transform = glm::translate(glm::mat4(1.0f), glm::vec3(-26.0f, 19.0f, 8.0f));
 
-		//m_Sphere = m_Scene->CreateEntity("Sphere");
-		//m_Sphere.AddComponent<MeshComponent>("assets/models/primitives/sphere.fbx");
-		//m_Sphere.GetComponent<TransformComponent>().Transform = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 19.0f, -15.0f));
-
 		m_MainCamera = m_Scene->CreateEntity("Main Camera");
 		m_MainCamera.AddComponent<MeshComponent>("assets/models/camera/camera.obj");
 		m_MainCamera.AddComponent<CameraComponent>().Primary = true;
@@ -308,31 +297,27 @@ namespace E3D
 
 		Entity e = m_Scene->CreateEntity("Sphere");
 		e.AddComponent<MeshComponent>("assets/models/primitives/globe-sphere.fbx").Mesh->GetMeshes()[0]->SetMaterial(m_Gold);
-		e.GetComponent<TransformComponent>().Transform = glm::translate(glm::mat4(1.0f), glm::vec3(-160.0f, 8.0f, -90.0f)) * glm::scale(glm::mat4(1.0f), glm::vec3(30.0f));
+		e.GetComponent<TransformComponent>().Transform = glm::translate(glm::mat4(1.0f), glm::vec3(-100.0f, 8.0f, -90.0f)) * glm::scale(glm::mat4(1.0f), glm::vec3(30.0f));
 
 		e = m_Scene->CreateEntity("Sphere");
 		e.AddComponent<MeshComponent>("assets/models/primitives/globe-sphere.fbx").Mesh->GetMeshes()[0]->SetMaterial(m_Grass);
-		e.GetComponent<TransformComponent>().Transform = glm::translate(glm::mat4(1.0f), glm::vec3(-120.0f, 8.0f, -90.0f)) * glm::scale(glm::mat4(1.0f), glm::vec3(30.0f));
+		e.GetComponent<TransformComponent>().Transform = glm::translate(glm::mat4(1.0f), glm::vec3(-60.0f, 8.0f, -90.0f)) * glm::scale(glm::mat4(1.0f), glm::vec3(30.0f));
 
 		e = m_Scene->CreateEntity("Sphere");
 		e.AddComponent<MeshComponent>("assets/models/primitives/globe-sphere.fbx").Mesh->GetMeshes()[0]->SetMaterial(m_Marble);
-		e.GetComponent<TransformComponent>().Transform = glm::translate(glm::mat4(1.0f), glm::vec3(-80.0f, 8.0f, -90.0f)) * glm::scale(glm::mat4(1.0f), glm::vec3(30.0f));
+		e.GetComponent<TransformComponent>().Transform = glm::translate(glm::mat4(1.0f), glm::vec3(-20.0f, 8.0f, -90.0f)) * glm::scale(glm::mat4(1.0f), glm::vec3(30.0f));
 
 		e = m_Scene->CreateEntity("Sphere");
 		e.AddComponent<MeshComponent>("assets/models/primitives/globe-sphere.fbx").Mesh->GetMeshes()[0]->SetMaterial(m_Rock);
-		e.GetComponent<TransformComponent>().Transform = glm::translate(glm::mat4(1.0f), glm::vec3(-40.0f, 8.0f, -90.0f)) * glm::scale(glm::mat4(1.0f), glm::vec3(30.0f));
+		e.GetComponent<TransformComponent>().Transform = glm::translate(glm::mat4(1.0f), glm::vec3(20.0f, 8.0f, -90.0f)) * glm::scale(glm::mat4(1.0f), glm::vec3(30.0f));
 
 		e = m_Scene->CreateEntity("Sphere");
 		e.AddComponent<MeshComponent>("assets/models/primitives/globe-sphere.fbx").Mesh->GetMeshes()[0]->SetMaterial(m_RustedIron);
-		e.GetComponent<TransformComponent>().Transform = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 8.0f, -90.0f)) * glm::scale(glm::mat4(1.0f), glm::vec3(30.0f));
+		e.GetComponent<TransformComponent>().Transform = glm::translate(glm::mat4(1.0f), glm::vec3(60.0f, 8.0f, -90.0f)) * glm::scale(glm::mat4(1.0f), glm::vec3(30.0f));
 
 		e = m_Scene->CreateEntity("Sphere");
 		e.AddComponent<MeshComponent>("assets/models/primitives/globe-sphere.fbx").Mesh->GetMeshes()[0]->SetMaterial(m_Wood);
-		e.GetComponent<TransformComponent>().Transform = glm::translate(glm::mat4(1.0f), glm::vec3(40.0f, 8.0f, -90.0f)) * glm::scale(glm::mat4(1.0f), glm::vec3(30.0f));
-
-		
-
-		
+		e.GetComponent<TransformComponent>().Transform = glm::translate(glm::mat4(1.0f), glm::vec3(100.0f, 8.0f, -90.0f)) * glm::scale(glm::mat4(1.0f), glm::vec3(30.0f));
 
 		auto& planeNC = m_Plane.GetComponent<SceneNodeComponent>();
 		auto& cubeNC = m_Cube.GetComponent<SceneNodeComponent>();

@@ -61,8 +61,8 @@ namespace E3D
 		virtual uint32_t GetWidth() const = 0;
 		virtual uint32_t GetHeight() const = 0;
 
-		static Ref<Texture2D> Create(uint32_t width, uint32_t height, const TextureSpecification& spec = TextureSpecification());
-		static Ref<Texture2D> Create(const std::string& filepath, const TextureSpecification& spec = TextureSpecification());
+		static Ref<Texture2D> Create(uint32_t width, uint32_t height, const TextureSpecification& spec = TextureSpecification(), bool genMips = false);
+		static Ref<Texture2D> Create(const std::string& filepath, const TextureSpecification& spec = TextureSpecification(), bool genMips = false);
 	};
 
 	class TextureCubeMap : public Texture
@@ -70,6 +70,6 @@ namespace E3D
 	public:
 		virtual uint32_t GetSize() const = 0;
 
-		static Ref<TextureCubeMap> Create(uint32_t size, const TextureSpecification& spec = TextureSpecification());
+		static Ref<TextureCubeMap> Create(uint32_t size, const TextureSpecification& spec = TextureSpecification(), bool genMips = false);
 	};
 }

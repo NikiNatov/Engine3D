@@ -8,12 +8,11 @@ namespace E3D
 	{
 	public:
 		Camera() = default;
-		Camera(const glm::mat4& projection)
-			: m_ProjectionMatrix(projection)
-		{
-		}
+		Camera(const glm::mat4& projection);
 
 		virtual ~Camera() = default;
+
+		void SetProjection(float fov, float aspectRatio);
 
 		const glm::mat4& GetProjection() const { return m_ProjectionMatrix; }
 		glm::mat4& GetProjection() { return m_ProjectionMatrix; }

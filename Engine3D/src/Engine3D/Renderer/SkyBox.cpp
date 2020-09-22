@@ -127,6 +127,7 @@ namespace E3D
 			RenderCommand::DrawArrays(m_CubeVAO, 36);
 		}
 		m_CubeMapFB->Unbind();
+		m_CubeMapFB->GetColorAttachment()->GenerateMipMaps();
 
 		// IRRADIANCE MAP ////////////////////////////////////////////////////////////////////////////////////////
 		m_IrradianceShader->Bind();

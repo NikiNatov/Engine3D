@@ -24,7 +24,7 @@ namespace E3D
 		return state == GLFW_PRESS;
 	}
 
-	MousePosition Input::GetMousePosition()
+	glm::vec2 Input::GetMousePosition()
 	{
 		auto& app = Application::GetInstance();
 		GLFWwindow* window = static_cast<GLFWwindow*>(app.GetWindow().GetNativeWindow());

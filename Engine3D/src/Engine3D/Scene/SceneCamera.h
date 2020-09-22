@@ -19,9 +19,9 @@ namespace E3D
 	private:
 		void RecalculateProjection();
 	private:
-		float m_Fov = 45.0f;
-		float m_AspectRatio = 0.0f;
-		float m_NearPlane = 0.01f;
-		float m_FarPlane = 10000.0f;
+		float m_Fov = 65.0f;
+		float m_AspectRatio = 16.0f / 9.0f;
+		float m_NearPlane = 0.1f;
+		float m_FarPlane = 1000.0f;
 	};
 }

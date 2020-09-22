@@ -27,6 +27,6 @@ namespace E3D
 
 	void SceneCamera::RecalculateProjection()
 	{
-		m_ProjectionMatrix = glm::perspective(m_Fov, m_AspectRatio, m_NearPlane, m_FarPlane);
+		m_ProjectionMatrix = glm::perspective(glm::radians(m_Fov), m_AspectRatio, m_NearPlane, m_FarPlane);
 	}
 }

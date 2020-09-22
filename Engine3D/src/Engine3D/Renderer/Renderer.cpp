@@ -22,16 +22,18 @@ namespace E3D
 		m_SceneData->ViewProjectionMatrix = m_SceneData->ProjectionMatrix * m_SceneData->ViewMatrix;
 		m_SceneData->Skybox = skybox;
 	}
-	void Renderer::BeginScene(PerspectiveCamera& camera, const Ref<Skybox>& skybox)
+	void Renderer::BeginScene(EditorCamera& camera, const Ref<Skybox>& skybox)
 	{
 		m_SceneData->ProjectionMatrix = camera.GetProjection();
 		m_SceneData->ViewMatrix = camera.GetViewMatrix();
-		m_SceneData->ViewProjectionMatrix = camera.GetViewProjection();
+		m_SceneData->ViewProjectionMatrix = m_SceneData->ProjectionMatrix * m_SceneData->ViewMatrix;
 		m_SceneData->Skybox = skybox;
 	}
+
 	void Renderer::EndScene()
 	{
 	}
+
 	void Renderer::Submit(const Ref<Mesh>& mesh, const glm::mat4& transform)
 	{
 		auto& material = mesh->GetMaterial();
@@ -40,7 +42,7 @@ namespace E3D
 		shader->SetMat4("u_ViewProjection", m_SceneData->ViewProjectionMatrix);
 		shader->SetMat4("u_Transform", transform);
 		shader->SetFloat3("u_CameraPosition", glm::inverse(m_SceneData->ViewMatrix)[3]);
-		shader->SetFloat3("u_Light.Direction", glm::vec3(0.0f, -1.0f, -0.5));
+		shader->SetFloat3("u_Light.Direction", glm::vec3(0.0f, 0.0f, -0.5));
 		shader->SetFloat3("u_Light.Radiance", glm::vec3(1.0f, 1.0f, 1.0f));
 		shader->SetInt("u_IrradianceMap", 4);
 		shader->SetInt("u_PrefilterMap", 5);
@@ -68,6 +70,7 @@ namespace E3D
 		shader->SetMat4("u_View", m_SceneData->ViewMatrix);
 		shader->SetMat4("u_Projection", m_SceneData->ProjectionMatrix);
 		shader->SetFloat("u_Exposure", skybox->GetExposure());
+		shader->SetFloat("u_LOD", skybox->GetLOD());
 
 		m_SceneData->Skybox->GetCubeMap()->Bind(0);
 

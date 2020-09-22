@@ -25,16 +25,13 @@ namespace E3D
 
 		if (entity)
 		{
-			ImGui::PushID((uint32_t)entity);
-			ImGui::InputText("Tag", (char*)entity.GetComponent<NameComponent>().Name.c_str(), 30);
-			ImGui::Separator();
+			
 
 			std::unordered_map<ComponentID, ComponentData> missingComponents;
 			
 			for (auto& [componentID, componentData] : m_RegisteredComponents)
 			{
-				if (componentData.Name == "Tag")
-					continue;
+				
 				if (entity.HasComponent(componentID))
 				{
 					ImGui::PushID(componentID);
@@ -50,7 +47,29 @@ namespace E3D
 
 					ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_DefaultOpen;
 
-					if (componentData.Name == "Transform")
+					if (componentData.Name == "Tag")
+					{
+						auto& tag = entity.GetComponent<NameComponent>().Name;
+
+						char buffer[256];
+						memset(buffer, 0, sizeof(buffer));
+						strcpy_s(buffer, sizeof(buffer), tag.c_str());
+						if (ImGui::CollapsingHeader("Tag", flags))
+						{
+							ImGui::Columns(2);
+							ImGui::Dummy(ImVec2{ 0.0f, 0.5f });
+							ImGui::Text("Tag");
+							ImGui::NextColumn();
+							if (ImGui::InputText("", buffer, sizeof(buffer)))
+							{
+								tag = std::string(buffer);
+							}
+							ImGui::Columns(1);
+							ImGui::Separator();
+						}
+					}
+
+					else if (componentData.Name == "Transform")
 					{
 						auto& transform = entity.GetComponent<TransformComponent>().Transform;
 						glm::vec3 position, scale;
@@ -59,19 +78,41 @@ namespace E3D
 
 						if (ImGui::CollapsingHeader("Transform", flags))
 						{
-							ImGui::DragFloat3("Translation", &position.x, 0.5f, -1000.0f, 1000.0f);
-							ImGui::DragFloat3("Rotation", &rotation.x, 0.5f, -180.0f, 180.0f);
-							ImGui::DragFloat3("Scale", &scale.x, 0.5f, 0.5f, 100.0f);
+							ImGui::Columns(2);
+							ImGui::Dummy(ImVec2{ 0.0f, 0.5f });
+							ImGui::Text("Translation");
+							ImGui::Dummy(ImVec2{ 0.0f, 0.5f });
+							ImGui::Text("Rotation");
+							ImGui::Dummy(ImVec2{ 0.0f, 0.5f });
+							ImGui::Text("Scale");
+
+							ImGui::NextColumn();
+							ImGui::DragFloat3("##Translation", &position.x, 0.5f, -1000.0f, 1000.0f);
+							ImGui::DragFloat3("##Rotation", &rotation.x, 0.5f, -180.0f, 180.0f);
+							ImGui::DragFloat3("##Scale", &scale.x, 0.5f, 0.5f, 100.0f);
+
+							ImGui::Columns(1);
+							ImGui::Separator();
 						}
 
 						ImGuizmo::RecomposeMatrixFromComponents(glm::value_ptr(position), glm::value_ptr(rotation), glm::value_ptr(scale), glm::value_ptr(transform));
+						
 					}
 					else if (componentData.Name == "Mesh")
 					{
 						auto& mesh = entity.GetComponent<MeshComponent>().Mesh;
 
 						if (ImGui::CollapsingHeader("Mesh", flags))
+						{
+							ImGui::Columns(2);
+							ImGui::Dummy(ImVec2{ 0.0f, 0.5f });
+							ImGui::Text("File Path");
+							ImGui::NextColumn();
 							ImGui::InputText("", (char*)mesh->GetFilepath().c_str(), 60, ImGuiInputTextFlags_ReadOnly);
+
+							ImGui::Columns(1);
+							ImGui::Separator();
+						}
 					}
 					else if (componentData.Name == "Camera")
 					{
@@ -120,8 +161,6 @@ namespace E3D
 					ImGui::EndPopup();
 				}
 			}
-
-			ImGui::PopID();
 		}
 		ImGui::End();
 	}

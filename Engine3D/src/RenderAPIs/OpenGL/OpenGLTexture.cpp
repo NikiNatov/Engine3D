@@ -70,7 +70,7 @@ namespace E3D
 		return 0;
 	}
 
-	OpenGLTexture2D::OpenGLTexture2D(uint32_t width, uint32_t height, const TextureSpecification& spec)
+	OpenGLTexture2D::OpenGLTexture2D(uint32_t width, uint32_t height, const TextureSpecification& spec, bool genMips)
 		: m_Width(width), m_Height(height), m_TextureSpec(spec)
 	{
 
@@ -84,9 +84,12 @@ namespace E3D
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, TextureWrapToOpenGLWrap(m_TextureSpec.Wrap));
 
 		glTexImage2D(GL_TEXTURE_2D, 0, TextureFormatToOpenGLInternalFormat(m_TextureSpec.Format), m_Width, m_Height, 0, TextureFormatToOpenGLDataFormat(m_TextureSpec.Format), FormatDataType(m_TextureSpec.Format), nullptr);
+
+		if (genMips)
+			GenerateMipMaps();
 	}
 
-	OpenGLTexture2D::OpenGLTexture2D(const std::string& filepath, const TextureSpecification& spec)
+	OpenGLTexture2D::OpenGLTexture2D(const std::string& filepath, const TextureSpecification& spec, bool genMips)
 		: m_TextureSpec(spec)
 	{		
 		int width, height, channels;
@@ -147,6 +150,9 @@ namespace E3D
 
 		glTexImage2D(GL_TEXTURE_2D, 0, TextureFormatToOpenGLInternalFormat(m_TextureSpec.Format), m_Width, m_Height, 0, TextureFormatToOpenGLDataFormat(m_TextureSpec.Format), FormatDataType(m_TextureSpec.Format), data);
 
+		if (genMips)
+			GenerateMipMaps();
+
 		stbi_image_free(data);
 	}
 
@@ -193,7 +199,7 @@ namespace E3D
 	}
 
 
-	OpenGLTextureCubeMap::OpenGLTextureCubeMap(uint32_t size, const TextureSpecification& spec)
+	OpenGLTextureCubeMap::OpenGLTextureCubeMap(uint32_t size, const TextureSpecification& spec, bool genMips)
 		: m_Size(size), m_TextureSpec(spec)
 	{
 
@@ -210,6 +216,9 @@ namespace E3D
 		{
 			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, TextureFormatToOpenGLInternalFormat(m_TextureSpec.Format), m_Size, m_Size, 0, TextureFormatToOpenGLDataFormat(m_TextureSpec.Format), FormatDataType(m_TextureSpec.Format), nullptr);
 		}
+
+		if (genMips)
+			GenerateMipMaps();
 	}
 
 	OpenGLTextureCubeMap::~OpenGLTextureCubeMap()

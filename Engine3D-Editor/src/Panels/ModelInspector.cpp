@@ -37,18 +37,22 @@ namespace E3D
 					m_Normal = material->GetNormalMap();
 					m_Metalness = material->GetMetalnessMap();
 					m_Roughness = material->GetRoughnessMap();
-					/*material->SetNormalMap(m_Normal);
-					material->SetMetalnessMap(m_Metalness);
-					material->SetRoughnessMap(m_Roughness);*/
 
 					if (ImGui::CollapsingHeader("Albedo", flags))
 					{
-						uint32_t id = material->m_Properties.AlbedoMap ? material->m_Properties.AlbedoMap->GetTextureID() : m_WhiteTexture->GetTextureID();
+						uint32_t id = 0;
+						if (material->m_Properties.AlbedoMap)
+							id = material->m_Properties.AlbedoMap->GetTextureID();
+						else
+							id = m_WhiteTexture->GetTextureID();
+						
 						ImGui::ImageButton((void*)id, ImVec2{ 64.0f, 64.0f }, { 0, 1 }, { 1, 0 });
 						ImGui::SameLine();
 						ImGui::BeginGroup();
 
 						ImGui::Checkbox("Use##Albedo", &material->m_UseAlbedoMap);
+						material->UseAlbedoMap(material->m_UseAlbedoMap);
+
 						ImGui::SameLine();
 						ImGui::ColorEdit3("", &material->m_Properties.Albedo.r, ImGuiColorEditFlags_NoInputs);
 
@@ -57,25 +61,38 @@ namespace E3D
 
 					if (ImGui::CollapsingHeader("Normal", flags))
 					{
-						uint32_t id = material->m_Properties.NormalMap ? material->m_Properties.NormalMap->GetTextureID() : m_WhiteTexture->GetTextureID();
+						uint32_t id = 0;
+						if (material->m_Properties.NormalMap)
+							id = material->m_Properties.NormalMap->GetTextureID();
+						else
+							id = m_WhiteTexture->GetTextureID();
+
 						ImGui::ImageButton((void*)id, ImVec2{ 64.0f, 64.0f }, { 0, 1 }, { 1, 0 });
 						ImGui::SameLine();
 						ImGui::BeginGroup();
 
 						ImGui::Checkbox("Use##Normal", &material->m_UseNormalMap);
+						material->UseNormalMap(material->m_UseNormalMap);
 
 						ImGui::EndGroup();
 					}
 
 					if (ImGui::CollapsingHeader("Roughness", flags))
 					{
-						uint32_t id = material->m_Properties.RoughnessMap ? material->m_Properties.RoughnessMap->GetTextureID() : m_WhiteTexture->GetTextureID();
+						uint32_t id = 0;
+						if (material->m_Properties.RoughnessMap)
+							id = material->m_Properties.RoughnessMap->GetTextureID();
+						else
+							id = m_WhiteTexture->GetTextureID();
+
 						ImGui::ImageButton((void*)id, ImVec2{ 64.0f, 64.0f }, { 0, 1 }, { 1, 0 });
 
 						ImGui::SameLine();
 						ImGui::BeginGroup();
 
 						ImGui::Checkbox("Use##Roughness", &material->m_UseRoughnessMap);
+						material->UseRoughnessMap(material->m_UseRoughnessMap);
+
 						ImGui::SameLine();
 						ImGui::DragFloat("##Roughness", &material->m_Properties.Roughness, 0.01f, 0.0f, 1.0f);
 
@@ -84,13 +101,20 @@ namespace E3D
 
 					if (ImGui::CollapsingHeader("Metalness", flags))
 					{
-						uint32_t id = material->m_Properties.MetalnessMap ? material->m_Properties.MetalnessMap->GetTextureID() : m_WhiteTexture->GetTextureID();
+						uint32_t id = 0;
+						if (material->m_Properties.MetalnessMap)
+							id = material->m_Properties.MetalnessMap->GetTextureID();
+						else
+							id = m_WhiteTexture->GetTextureID();
+
 						ImGui::ImageButton((void*)id, ImVec2{ 64.0f, 64.0f }, { 0, 1 }, { 1, 0 });
 
 						ImGui::SameLine();
 						ImGui::BeginGroup();
 
 						ImGui::Checkbox("Use##Metalness", &material->m_UseMetalnessMap);
+						material->UseMetalnessMap(material->m_UseMetalnessMap);
+
 						ImGui::SameLine();
 						ImGui::DragFloat("##Metalness", &material->m_Properties.Metalness, 0.01f, 0.0f, 1.0f);
 

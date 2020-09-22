@@ -57,56 +57,70 @@ namespace E3D
 	void Material::SetAlbedoColor(const glm::vec3& color)
 	{
 		m_Properties.Albedo = color;
+		m_UseAlbedoMap = false;
+		UseAlbedoMap(m_UseAlbedoMap);
 	}
 
 	void Material::SetRoughness(float value)
 	{
 		m_Properties.Roughness = value;
+		m_UseRoughnessMap = false;
+		UseRoughnessMap(m_UseRoughnessMap);
 	}
 
 	void Material::SetMetalness(float value)
 	{
 		m_Properties.Metalness = value;
+		m_UseMetalnessMap = false;
+		UseMetalnessMap(m_UseMetalnessMap);
 	}
 
 	void Material::SetAlbedoMap(const Ref<Texture>& texture)
 	{
 		m_Properties.AlbedoMap = texture;
+		m_UseAlbedoMap = true;
+		UseAlbedoMap(m_UseAlbedoMap);
 	}
 
 	void Material::SetNormalMap(const Ref<Texture>& texture)
 	{
 		m_Properties.NormalMap = texture;
+		m_UseNormalMap = true;
+		UseNormalMap(m_UseNormalMap);
 	}
 
 	void Material::SetRoughnessMap(const Ref<Texture>& texture)
 	{
 		m_Properties.RoughnessMap = texture;
+		m_UseRoughnessMap = true;
+		UseRoughnessMap(m_UseRoughnessMap);
 	}
 
 	void Material::SetMetalnessMap(const Ref<Texture>& texture)
 	{
 		m_Properties.MetalnessMap = texture;
+		m_UseMetalnessMap = true;
+		UseMetalnessMap(m_UseMetalnessMap);
 	}
 
 	void Material::UseAlbedoMap(bool state)
 	{
-		m_UseAlbedoMap = state;
+		m_Shader->SetBool("u_UseAlbedoMap", state);
 	}
 
 	void Material::UseNormalMap(bool state)
 	{
-		m_UseNormalMap = state;
+		m_Shader->SetBool("u_UseNormalMap", state);
 	}
 
 	void Material::UseRoughnessMap(bool state)
 	{
-		m_UseRoughnessMap = state;
+		m_Shader->SetBool("u_UseRoughnessMap", state);
 	}
 
 	void Material::UseMetalnessMap(bool state)
 	{
-		m_UseMetalnessMap = state;
+		m_Shader->SetBool("u_UseMetalnessMap", state);
 	}
 
 }

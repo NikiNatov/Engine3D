@@ -9,8 +9,8 @@ namespace E3D
 	class OpenGLTexture2D : public Texture2D
 	{
 	public:
-		OpenGLTexture2D(uint32_t width, uint32_t height, const TextureSpecification& spec);
-		OpenGLTexture2D(const std::string& filepath, const TextureSpecification& spec = TextureSpecification());
+		OpenGLTexture2D(uint32_t width, uint32_t height, const TextureSpecification& spec, bool genMips);
+		OpenGLTexture2D(const std::string& filepath, const TextureSpecification& spec, bool genMips);
 		~OpenGLTexture2D();
 
 		virtual void Bind(uint32_t slot) override;
@@ -37,7 +37,7 @@ namespace E3D
 	class OpenGLTextureCubeMap : public TextureCubeMap
 	{
 	public:
-		OpenGLTextureCubeMap(uint32_t size, const TextureSpecification& spec);
+		OpenGLTextureCubeMap(uint32_t size, const TextureSpecification& spec, bool genMips);
 		~OpenGLTextureCubeMap();
 
 		virtual void Bind(uint32_t slot) override;

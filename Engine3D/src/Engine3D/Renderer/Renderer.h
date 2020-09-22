@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Engine3D\Renderer\RenderCommand.h"
-#include "Engine3D\Renderer\PerspectiveCamera.h"
+#include "Engine3D\Renderer\EditorCamera.h"
 #include "Engine3D\Renderer\Camera.h"
 
 #include "Engine3D\Renderer\Material.h"
@@ -16,7 +16,7 @@ namespace E3D
 		static void Init();
 		static void WindowResize(uint32_t width, uint32_t height);
 		static void BeginScene(Camera& camera, const glm::mat4& transform, const Ref<Skybox>& skybox);
-		static void BeginScene(PerspectiveCamera& camera, const Ref<Skybox>& skybox);
+		static void BeginScene(EditorCamera& camera, const Ref<Skybox>& skybox);
 		static void EndScene();
 		static void Submit(const Ref<Mesh>& mesh, const glm::mat4& transform = glm::mat4(1.0f));
 		static void Submit(const Ref<Skybox>& skybox, const glm::mat4& transform = glm::mat4(1.0f));

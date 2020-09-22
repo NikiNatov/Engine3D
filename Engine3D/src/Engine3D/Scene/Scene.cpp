@@ -17,12 +17,13 @@
 namespace E3D
 {
 	Scene::Scene()
+		: m_Camera(glm::perspective(65.0f, 16.0f / 9.0f, 0.1f, 1000.0f))
 	{
 
 	}
 
 	Scene::Scene(const Ref<Skybox>& skybox)
-		: m_Skybox(skybox)
+		: m_Camera(glm::perspective(65.0f, 16.0f / 9.0f, 0.1f, 1000.0f)), m_Skybox(skybox)
 	{
 	}
 
@@ -89,7 +90,7 @@ namespace E3D
 
 	void Scene::OnEditRender()
 	{
-		Renderer::BeginScene(m_CameraController.GetCamera(), m_Skybox);
+		Renderer::BeginScene(m_Camera, m_Skybox);
 
 		auto view = m_Registry.view<TransformComponent, MeshComponent, SceneNodeComponent>();
 

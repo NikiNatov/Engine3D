@@ -3,7 +3,7 @@
 #include "Engine3D\Core\Timestep.h"
 #include "Engine3D\Core\Config.h"
 
-#include "Engine3D\Renderer\PerspectiveCameraController.h"
+#include "Engine3D\Renderer\EditorCamera.h"
 #include "Engine3D\Renderer\SkyBox.h"
 
 #include <glm\glm.hpp>
@@ -35,11 +35,11 @@ namespace E3D
 
 		inline void SetSceneState(SceneState state) { m_State = state; }
 		inline SceneState GetSceneState() const { return m_State; }
-		inline PerspectiveCameraController& GetCameraController() { return m_CameraController; }
+		inline EditorCamera& GetCamera() { return m_Camera; }
 	private:
 		entt::registry m_Registry;
 		SceneState m_State = SceneState::Edit;
-		PerspectiveCameraController m_CameraController{ 45.0f, (float)1280 / (float)720 };
+		EditorCamera m_Camera;
 		Ref<Skybox> m_Skybox;
 	
 	};
