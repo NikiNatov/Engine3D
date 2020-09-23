@@ -104,7 +104,7 @@ namespace E3D
 		style.Colors[ImGuiCol_TabHovered] = ImVec4(0.4f, 0.4f, 0.4f, 1.0f);
 		style.Colors[ImGuiCol_TabUnfocused] = ImVec4(0.3f, 0.3f, 0.3f, 1.0f);
 		style.Colors[ImGuiCol_TabUnfocusedActive] = ImVec4(0.3f, 0.3f, 0.3f, 1.0f);
-
+		
 		// Red/Black THEME ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		/*style.WindowPadding = ImVec2(15, 15);
 		style.WindowRounding = 5.0f;
@@ -169,7 +169,7 @@ namespace E3D
 			style.Colors[ImGuiCol_WindowBg].w = 1.0f;
 		}
 
-		io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\arial.ttf", 14);
+		io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\arial.ttf", 16);
 
 		ImGui_ImplGlfw_InitForOpenGL(static_cast<GLFWwindow*>(app.GetWindow().GetNativeWindow()), true);
 		ImGui_ImplOpenGL3_Init("#version 410 core");

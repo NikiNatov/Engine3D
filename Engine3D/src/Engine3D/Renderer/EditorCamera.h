@@ -35,7 +35,7 @@ namespace E3D
 
 		void MouseMove(const glm::vec2& mouseDelta, Timestep ts);
 		void MouseRotate(const glm::vec2& mouseDelta, Timestep ts);
-		void MouseZoom(float zoomDelta);
+		void MouseZoom(float zoomDelta, Timestep ts);
 
 		glm::vec3 CalculatePosition() const;
 

@@ -14,8 +14,13 @@ namespace E3D
 
 		void SetViewportSize(uint32_t width, uint32_t height);
 
-		float GetFov() const { return m_Fov; }
+		inline void SetNearPlane(float value) { m_NearPlane = value; RecalculateProjection(); }
+		inline void SetFarPlane(float value) { m_FarPlane = value; RecalculateProjection(); }
 		inline void SetFov(float fov) { m_Fov = fov; RecalculateProjection(); }
+
+		float GetFov() const { return m_Fov; }
+		float GetNearPlane() const { return m_NearPlane; }
+		float GetFarPlane() const { return m_FarPlane; }
 	private:
 		void RecalculateProjection();
 	private:

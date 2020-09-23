@@ -14,17 +14,17 @@ namespace E3D
 		: Camera(projectionMatrix)
 	{
 		m_MoveSpeed = 0.1f;
-		m_RotationSpeed = 45.00f;
-		m_ZoomSpeed = 7.0f;
+		m_RotationSpeed = 30.00f;
+		m_ZoomSpeed = 6.0f;
 
-		m_Position = glm::vec3(0.0f, 30.0f, -30.0f);
-		m_Rotation = glm::vec3(90.0f, 0.0f, 0.0f);
+		m_Position = glm::vec3(50.0f, 60.0f, 100.0f);
+		m_Rotation = glm::vec3(0.0f, 0.0f, 0.0f);
 
 		m_TargetPoint = glm::vec3(0.0f);
 		m_Distance = glm::distance(m_TargetPoint, m_Position);
 
-		m_Yaw = glm::radians(135.0f);
-		m_Pitch = glm::radians(45.0f);
+		m_Yaw = 25.0f;
+		m_Pitch = 25.0f;
 	}
 
 	void EditorCamera::Update(Timestep ts)
@@ -39,12 +39,15 @@ namespace E3D
 				MouseMove(delta, ts);
 			else if (Input::IsMouseButtonPressed(E3D_MOUSE_BUTTON_LEFT))
 				MouseRotate(delta, ts);
+			else if (Input::IsMouseButtonPressed(E3D_MOUSE_BUTTON_RIGHT))
+				MouseZoom(delta.y, ts);
 		}
 
 		m_Position = CalculatePosition();
 
 		glm::quat orientation = GetOrientation();
-		m_Rotation = glm::eulerAngles(orientation);
+		glm::vec3 eulerAngles = glm::eulerAngles(orientation);
+		m_Rotation = eulerAngles;
 
 		glm::mat4 rotationMatrix = glm::mat4_cast(glm::conjugate(orientation));
 
@@ -60,7 +63,7 @@ namespace E3D
 	bool EditorCamera::OnMouseScrolled(MouseScrolledEvent& event)
 	{
 		float yOffset = event.GetYOffset();
-		MouseZoom(yOffset);
+		//MouseZoom(yOffset);
 
 		return true;
 	}
@@ -78,9 +81,9 @@ namespace E3D
 		m_Pitch += mouseDelta.y * m_RotationSpeed * (float)ts;
 	}
 
-	void EditorCamera::MouseZoom(float zoomDelta)
+	void EditorCamera::MouseZoom(float zoomDelta, Timestep ts)
 	{
-		m_Distance -= zoomDelta * m_ZoomSpeed;
+		m_Distance -= zoomDelta * m_ZoomSpeed * ts;
 
 		if (m_Distance < 1.0f)
 		{

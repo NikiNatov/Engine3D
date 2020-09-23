@@ -25,8 +25,6 @@ namespace E3D
 
 		if (entity)
 		{
-			
-
 			std::unordered_map<ComponentID, ComponentData> missingComponents;
 			
 			for (auto& [componentID, componentData] : m_RegisteredComponents)
@@ -56,15 +54,20 @@ namespace E3D
 						strcpy_s(buffer, sizeof(buffer), tag.c_str());
 						if (ImGui::CollapsingHeader("Tag", flags))
 						{
-							ImGui::Columns(2);
-							ImGui::Dummy(ImVec2{ 0.0f, 0.5f });
+							ImGui::BeginGroup();
+							//ImGui::Dummy(ImVec2{ 0.0f, 0.5f });
 							ImGui::Text("Tag");
-							ImGui::NextColumn();
+							ImGui::EndGroup();
+
+							ImGui::SameLine(150.0f, 0.0f);
+
+							ImGui::BeginGroup();
 							if (ImGui::InputText("", buffer, sizeof(buffer)))
 							{
 								tag = std::string(buffer);
 							}
-							ImGui::Columns(1);
+							ImGui::EndGroup();
+
 							ImGui::Separator();
 						}
 					}
@@ -78,20 +81,23 @@ namespace E3D
 
 						if (ImGui::CollapsingHeader("Transform", flags))
 						{
-							ImGui::Columns(2);
+							ImGui::BeginGroup();
 							ImGui::Dummy(ImVec2{ 0.0f, 0.5f });
 							ImGui::Text("Translation");
 							ImGui::Dummy(ImVec2{ 0.0f, 0.5f });
 							ImGui::Text("Rotation");
 							ImGui::Dummy(ImVec2{ 0.0f, 0.5f });
 							ImGui::Text("Scale");
+							ImGui::EndGroup();
 
-							ImGui::NextColumn();
+							ImGui::SameLine(150.0f, 0.0f);
+
+							ImGui::BeginGroup();
 							ImGui::DragFloat3("##Translation", &position.x, 0.5f, -1000.0f, 1000.0f);
 							ImGui::DragFloat3("##Rotation", &rotation.x, 0.5f, -180.0f, 180.0f);
 							ImGui::DragFloat3("##Scale", &scale.x, 0.5f, 0.5f, 100.0f);
+							ImGui::EndGroup();
 
-							ImGui::Columns(1);
 							ImGui::Separator();
 						}
 
@@ -104,13 +110,17 @@ namespace E3D
 
 						if (ImGui::CollapsingHeader("Mesh", flags))
 						{
-							ImGui::Columns(2);
+							ImGui::BeginGroup();
 							ImGui::Dummy(ImVec2{ 0.0f, 0.5f });
 							ImGui::Text("File Path");
-							ImGui::NextColumn();
-							ImGui::InputText("", (char*)mesh->GetFilepath().c_str(), 60, ImGuiInputTextFlags_ReadOnly);
+							ImGui::EndGroup();
 
-							ImGui::Columns(1);
+							ImGui::SameLine(150.0f, 0.0f);
+
+							ImGui::BeginGroup();
+							ImGui::InputText("", (char*)mesh->GetFilepath().c_str(), 60, ImGuiInputTextFlags_ReadOnly);
+							ImGui::EndGroup();
+
 							ImGui::Separator();
 						}
 					}
@@ -120,7 +130,30 @@ namespace E3D
 
 						if (ImGui::CollapsingHeader("Camera", flags))
 						{
-							auto& cameraComponent = entity.GetComponent<CameraComponent>();
+							auto& camera = cameraComponent.Camera;
+							float fov = camera.GetFov();
+							float nearPlane = camera.GetNearPlane();
+							float farPlane = camera.GetFarPlane();
+
+							ImGui::BeginGroup();
+							ImGui::Dummy(ImVec2{ 0.0f, 0.5f });
+							ImGui::Text("FOV");
+							ImGui::Dummy(ImVec2{ 0.0f, 0.5f });
+							ImGui::Text("Near Plane");
+							ImGui::Dummy(ImVec2{ 0.0f, 0.5f });
+							ImGui::Text("Far Plane");
+							ImGui::EndGroup();
+
+							ImGui::SameLine(150.0f, 0.0f);
+
+							ImGui::BeginGroup();
+							if (ImGui::SliderFloat("##FOV", &fov, 0.0f, 180.0f))
+								camera.SetFov(fov);
+							if (ImGui::SliderFloat("##NearPlane", &nearPlane, 0.0f, 1000.0f))
+								camera.SetNearPlane(nearPlane);
+							if (ImGui::SliderFloat("##FarPlane", &farPlane, 0.0f, 1000.0f))
+								camera.SetFarPlane(farPlane);
+							ImGui::EndGroup();
 
 							ImGui::Checkbox("Primary", &cameraComponent.Primary);
 						}

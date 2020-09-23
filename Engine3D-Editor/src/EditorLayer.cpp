@@ -113,7 +113,9 @@ namespace E3D
 		ImGui::DragFloat("LOD", &m_Skybox->GetLOD(), 0.1f, 0.0f, 10.0f);
 		ImGui::End();
 
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0.0f, 0.0f });
 		ImGui::Begin("Scene Control", 0, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar);
+
 		if (ImGui::ImageButton((void*)m_PlayButtonTexture->GetTextureID(), { 40.0f, 40.0f }, { 0, 1 }, { 1, 0 }))
 		{
 			if (m_Scene->GetSceneState() != Scene::SceneState::Running)
@@ -131,7 +133,9 @@ namespace E3D
 				m_Scene->OnSceneEnd();
 			}
 		}
+		
 		ImGui::End();
+		ImGui::PopStyleVar();
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0.0f, 0.0f });
 		ImGui::Begin("Scene");
@@ -205,8 +209,8 @@ namespace E3D
 	{
 		m_ShaderLibrary.Load("assets/shaders/FlatColorShader.glsl");
 
-		m_PlayButtonTexture = Texture2D::Create("assets/textures/playButton.png");
-		m_StopButtonTexture = Texture2D::Create("assets/textures/stopButton.png");
+		m_PlayButtonTexture = Texture2D::Create("assets/textures/playButton.png", {}, true);
+		m_StopButtonTexture = Texture2D::Create("assets/textures/pauseButton.png", {}, true);
 
 		m_Grid = CreateRef<Model>("assets/models/grid/grid.fbx");
 
