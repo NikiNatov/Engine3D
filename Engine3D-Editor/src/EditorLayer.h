@@ -37,7 +37,7 @@ namespace E3D
 		bool m_RunScene = false;
 
 		Ref<Model> m_Model;
-		Ref<Model> m_Grid;
+		Ref<Mesh> m_Grid;
 		Ref<Skybox> m_Skybox;
 
 		/*Entity m_Vader;

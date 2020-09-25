@@ -30,6 +30,7 @@
 #include "Engine3D\Renderer\Framebuffer.h"
 #include "Engine3D\Renderer\Material.h"
 #include "Engine3D\Renderer\Mesh.h"
+#include "Engine3D\Renderer\MeshFactory.h"
 #include "Engine3D\Renderer\SkyBox.h"
 
 // Scene

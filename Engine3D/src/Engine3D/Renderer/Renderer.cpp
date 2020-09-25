@@ -6,6 +6,7 @@
 namespace E3D
 {
 	Scope<Renderer::SceneData> Renderer::m_SceneData = CreateScope<Renderer::SceneData>();
+	RenderMode Renderer::s_RenderMode = RenderMode::Triangles;
 
 	void Renderer::Init()
 	{
@@ -58,7 +59,11 @@ namespace E3D
 
 		auto& vao = mesh->GetVertexArray();
 		vao->Bind();
-		RenderCommand::DrawIndexed(vao);
+
+		if (s_RenderMode == RenderMode::Triangles)
+			RenderCommand::DrawIndexed(vao);
+		else if (s_RenderMode == RenderMode::Lines)
+			RenderCommand::DrawIndexedLines(vao);
 
 		material->Unbind();
 	}

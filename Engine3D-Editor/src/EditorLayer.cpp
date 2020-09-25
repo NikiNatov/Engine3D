@@ -39,7 +39,10 @@ namespace E3D
 			break;
 		}
 
-		m_Grid->Draw(glm::scale(glm::mat4(1.0f), glm::vec3(5.0f)));
+		Renderer::SetRenderMode(RenderMode::Lines);
+		Renderer::Submit(m_Grid, glm::mat4(1.0f));
+		Renderer::SetRenderMode(RenderMode::Triangles);
+
 		Renderer::Submit(m_Skybox);
 
 		Renderer::EndScene();
@@ -212,9 +215,9 @@ namespace E3D
 		m_PlayButtonTexture = Texture2D::Create("assets/textures/playButton.png", {}, true);
 		m_StopButtonTexture = Texture2D::Create("assets/textures/pauseButton.png", {}, true);
 
-		m_Grid = CreateRef<Model>("assets/models/grid/grid.fbx");
-
 		auto shader = m_ShaderLibrary.Load("assets/shaders/StaticModelShader.glsl");
+
+		m_Grid = MeshFactory::CreateGrid(80, 80, 3000, CreateRef<Material>(shader));
 
 		m_Gold = CreateRef<Material>(shader);
 		m_Grass = CreateRef<Material>(shader);
@@ -229,7 +232,6 @@ namespace E3D
 		m_Gold->SetNormalMap(Texture2D::Create("assets/PBR/gold/lightgold_normal-ogl.png", {}, true));
 		m_Gold->SetMetalnessMap(Texture2D::Create("assets/PBR/gold/lightgold_metallic.png", {}, true));
 		m_Gold->SetRoughnessMap(Texture2D::Create("assets/PBR/gold/lightgold_roughness.png", {}, true));
-
 
 		// Grass
 		m_Grass->SetAlbedoMap(Texture2D::Create("assets/PBR/grass/leafy-grass2-albedo.png", {}, true));
@@ -279,8 +281,8 @@ namespace E3D
 		m_Pistol.GetComponent<TransformComponent>().Transform = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 20.0f, 0.0f));
 		m_Pistol.AddComponent<ScriptComponent>().Bind<Player>();
 
-		m_Plane = m_Scene->CreateEntity("Plane");
-		m_Plane.AddComponent<MeshComponent>("assets/models/primitives/plane.fbx");
+	/*	m_Plane = m_Scene->CreateEntity("Plane");
+		m_Plane.AddComponent<MeshComponent>("assets/models/sponza/sponza.obj");
 		m_Plane.GetComponent<TransformComponent>().Transform = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 11.0f, 0.0f));
 
 		m_Cube = m_Scene->CreateEntity("Cube");
@@ -289,7 +291,7 @@ namespace E3D
 
 		m_Cone = m_Scene->CreateEntity("Cone");
 		m_Cone.AddComponent<MeshComponent>("assets/models/primitives/cone.fbx");
-		m_Cone.GetComponent<TransformComponent>().Transform = glm::translate(glm::mat4(1.0f), glm::vec3(-26.0f, 19.0f, 8.0f));
+		m_Cone.GetComponent<TransformComponent>().Transform = glm::translate(glm::mat4(1.0f), glm::vec3(-26.0f, 19.0f, 8.0f));*/
 
 		m_MainCamera = m_Scene->CreateEntity("Main Camera");
 		m_MainCamera.AddComponent<MeshComponent>("assets/models/camera/camera.obj");
@@ -323,17 +325,17 @@ namespace E3D
 		e.AddComponent<MeshComponent>("assets/models/primitives/globe-sphere.fbx").Mesh->GetMeshes()[0]->SetMaterial(m_Wood);
 		e.GetComponent<TransformComponent>().Transform = glm::translate(glm::mat4(1.0f), glm::vec3(100.0f, 8.0f, -90.0f)) * glm::scale(glm::mat4(1.0f), glm::vec3(30.0f));
 
-		auto& planeNC = m_Plane.GetComponent<SceneNodeComponent>();
+		/*auto& planeNC = m_Plane.GetComponent<SceneNodeComponent>();
 		auto& cubeNC = m_Cube.GetComponent<SceneNodeComponent>();
-		auto& coneNC = m_Cone.GetComponent<SceneNodeComponent>();
+		auto& coneNC = m_Cone.GetComponent<SceneNodeComponent>();*/
 		//auto& sphereNC = m_Sphere.GetComponent<SceneNodeComponent>();
-		planeNC.FirstChild = m_Cube;
+		/*planeNC.FirstChild = m_Cube;
 		cubeNC.NextSibling = m_Cone;
 		coneNC.PreviousSibling = m_Cube;
 		coneNC.NextSibling = m_Sphere;
 
 		cubeNC.Parent = m_Plane;
-		coneNC.Parent = m_Plane;
+		coneNC.Parent = m_Plane;*/
 		//sphereNC.Parent = m_Plane;
 
 		/*m_Vader = m_Scene->CreateEntity("Darth Vader");

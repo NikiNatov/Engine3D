@@ -10,6 +10,8 @@
 
 namespace E3D
 {
+	enum class RenderMode { Lines = 0, Triangles = 1};
+
 	class Renderer
 	{
 	public:
@@ -21,6 +23,8 @@ namespace E3D
 		static void Submit(const Ref<Mesh>& mesh, const glm::mat4& transform = glm::mat4(1.0f));
 		static void Submit(const Ref<Skybox>& skybox, const glm::mat4& transform = glm::mat4(1.0f));
 
+		inline static void SetRenderMode(RenderMode mode) { s_RenderMode = mode; }
+		inline static RenderMode GetRenderMode() { return s_RenderMode; }
 		inline static RenderAPI::API GetRenderAPI() { return RenderAPI::GetAPI(); }
 	private:
 		struct SceneData
@@ -31,6 +35,7 @@ namespace E3D
 			Ref<Skybox> Skybox;
 		};
 
+		static RenderMode s_RenderMode;
 		static Scope<SceneData> m_SceneData;
 	};
 }

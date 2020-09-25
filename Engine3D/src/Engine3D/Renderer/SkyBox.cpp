@@ -4,6 +4,8 @@
 
 #include "Engine3D\Renderer\RenderCommand.h"
 #include "Engine3D\Renderer\Framebuffer.h"
+#include "Engine3D\Renderer\MeshFactory.h"
+#include "Engine3D\Renderer\Renderer.h"
 
 #include <glm\gtc\matrix_transform.hpp>
 #include <glad\glad.h>

@@ -22,6 +22,7 @@ namespace E3D
 
 		virtual void DrawIndexed(const Ref<VertexArray>& vertexArray) = 0;
 		virtual void DrawArrays(const Ref<VertexArray>& vertexArray, uint32_t count) = 0;
+		virtual void DrawIndexedLines(const Ref<VertexArray>& vertexArray) = 0;
 
 		inline static API GetAPI() { return s_API; }
 

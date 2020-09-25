@@ -11,8 +11,8 @@ namespace E3D
 	{
 		std::string Name;
 
-		glm::vec3 Albedo { 1.0f };
-		float Roughness = 0.5f;
+		glm::vec3 Albedo { 0.8f };
+		float Roughness = 1.0f;
 		float Metalness = 0.5f;
 
 		Ref<Texture> AlbedoMap;

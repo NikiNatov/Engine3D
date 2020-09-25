@@ -23,7 +23,7 @@ namespace E3D
 		return result;
 	}
 
-	Mesh::Mesh(std::vector<Vertex>& vertices, std::vector<uint32_t>& indices)
+	Mesh::Mesh(std::vector<Vertex>& vertices, std::vector<uint32_t>& indices, Ref<Material> material)
 	{
 		BufferLayout layout = {
 			{"a_Position",	DataType::Float3, false},
@@ -45,12 +45,21 @@ namespace E3D
 		m_VAO->SetIndexBuffer(ibo);
 
 
-		m_Material = CreateRef<Material>(Shader::Create("assets/shaders/StaticModelShader.glsl"));
+		m_Material = material;
 	}
 
 	Mesh::~Mesh()
 	{
 
+	}
+
+	void Mesh::Render()
+	{
+		m_Material->Bind();
+		m_VAO->Bind();
+		RenderCommand::DrawIndexed(m_VAO);
+		m_VAO->Unbind();
+		m_Material->Unbind();
 	}
 
 	Model::Model(const std::string& filepath)
@@ -122,7 +131,8 @@ namespace E3D
 			indices.push_back(mesh->mFaces[i].mIndices[2]);
 		}
 
-		Ref<Mesh> newMesh = CreateRef<Mesh>(vertices, indices);
+		Ref<Material> material = CreateRef<Material>(Shader::Create("assets/shaders/StaticModelShader.glsl"));
+		Ref<Mesh> newMesh = CreateRef<Mesh>(vertices, indices, material);
 
 		if (mesh->mMaterialIndex >= 0)
 		{

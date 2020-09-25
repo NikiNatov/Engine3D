@@ -16,7 +16,7 @@ namespace E3D {
 		uint32_t Height;
 		bool VSync;
 
-		WindowProperties(const std::string& title = "Engine3D", uint32_t width = 1600, uint32_t height = 900, bool vSync = false)
+		WindowProperties(const std::string& title = "Engine3D", uint32_t width = 1280, uint32_t height = 720, bool vSync = false)
 			: Title(title), Width(width), Height(height), VSync(vSync)
 		{
 		}

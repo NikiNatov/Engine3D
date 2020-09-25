@@ -14,5 +14,6 @@ namespace E3D
 
 		virtual void DrawIndexed(const Ref<VertexArray>& vertexArray) override;
 		virtual void DrawArrays(const Ref<VertexArray>& vertexArray, uint32_t count) override;
+		virtual void DrawIndexedLines(const Ref<VertexArray>& vertexArray) override;
 	};
 }

@@ -23,8 +23,10 @@ namespace E3D
 	class Mesh
 	{
 	public:
-		Mesh(std::vector<Vertex>& vertices, std::vector<uint32_t>& indices);
+		Mesh(std::vector<Vertex>& vertices, std::vector<uint32_t>& indices, Ref<Material> material);
 		~Mesh();
+
+		void Render();
 
 		inline Ref<Material>& GetMaterial() { return m_Material; }
 		inline const Ref<VertexArray>& GetVertexArray() const { return m_VAO; }

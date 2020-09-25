@@ -34,4 +34,9 @@ namespace E3D
 	{
 		glDrawArrays(GL_TRIANGLES, 0, count);
 	}
+	void OpenGLRenderAPI::DrawIndexedLines(const Ref<VertexArray>& vertexArray)
+	{
+		glLineWidth(2.0f);
+		glDrawElements(GL_LINES, vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+	}
 }

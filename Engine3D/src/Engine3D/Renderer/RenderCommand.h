@@ -37,6 +37,11 @@ namespace E3D
 			s_RenderAPI->DrawArrays(vertexArray, count);
 		}
 
+		inline static void DrawIndexedLines(const Ref<VertexArray>& vertexArray)
+		{
+			s_RenderAPI->DrawIndexedLines(vertexArray);
+		}
+
 	private:
 		static Scope<RenderAPI> s_RenderAPI;
 	};

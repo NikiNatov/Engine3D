@@ -12,6 +12,6 @@ namespace E3D
 
 	void Camera::SetProjection(float fov, float aspectRatio)
 	{
-		m_ProjectionMatrix = glm::perspective(glm::radians(fov), aspectRatio, 0.1f, 1000.0f);
+		m_ProjectionMatrix = glm::perspective(glm::radians(fov), aspectRatio, 0.1f, 10000.0f);
 	}
 }
