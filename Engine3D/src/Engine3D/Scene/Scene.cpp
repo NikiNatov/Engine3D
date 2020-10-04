@@ -5,6 +5,7 @@
 #include "Engine3D\Scene\Components.h"
 
 #include "Engine3D\Renderer\Renderer.h"
+#include "Engine3D\Renderer\Model.h"
 
 #include <glm\gtc\type_ptr.hpp>
 
@@ -39,6 +40,15 @@ namespace E3D
 		entity.AddComponent<SceneNodeComponent>();
 
 		return entity;
+	}
+
+	Entity Scene::CreateFromModel(const Ref<Model>& model, const std::string& name)
+	{
+		Entity modelEntity = CreateEntity(name);
+		modelEntity.GetComponent<SceneNodeComponent>().FirstChild = CreateEntity("Model Hierarchy");
+		modelEntity.GetComponent<SceneNodeComponent>().FirstChild.GetComponent<SceneNodeComponent>().Parent = modelEntity;
+		CreateFromModelNode(model->GetRootNode(), modelEntity.GetComponent<SceneNodeComponent>().FirstChild);
+		return modelEntity;
 	}
 
 
@@ -96,60 +106,184 @@ namespace E3D
 
 		for (auto entity : view)
 		{
-			auto [transform, mesh, node] = view.get<TransformComponent, MeshComponent, SceneNodeComponent>(entity);
+			auto [tc, mc, sc] = view.get<TransformComponent, MeshComponent, SceneNodeComponent>(entity);
 
-			if (node.Parent)
+			if (sc.Parent)
 			{
-				auto& parentTransform = node.Parent.GetComponent<TransformComponent>().Transform;
+				auto accumulatedTransform = sc.Parent.GetComponent<TransformComponent>().Transform;
+				Entity currentParent = sc.Parent;
 
-				mesh.Mesh->Draw(parentTransform * transform.Transform);
+				while (currentParent.GetComponent<SceneNodeComponent>().Parent)
+				{
+					currentParent = currentParent.GetComponent<SceneNodeComponent>().Parent;
+					accumulatedTransform = currentParent.GetComponent<TransformComponent>().Transform * accumulatedTransform;
+				}
+
+				Renderer::Submit(mc.Mesh, accumulatedTransform * tc.Transform);
 			}
 			else
-				mesh.Mesh->Draw(transform.Transform);
+				Renderer::Submit(mc.Mesh, tc.Transform);
 
 		}
 	}
 
 	void Scene::OnRunningRender()
 	{
-		auto view = m_Registry.view<CameraComponent, TransformComponent>();
+		auto view = m_Registry.view<CameraComponent, TransformComponent, SceneNodeComponent>();
 
 		Camera* mainCamera = nullptr;
-		glm::mat4* cameraTransform = nullptr;
+		glm::mat4 cameraTransform;
 
 		for (auto entity : view)
 		{
-			auto [camera, transform] = view.get<CameraComponent, TransformComponent>(entity);
+			auto [camera, transform, sc] = view.get<CameraComponent, TransformComponent, SceneNodeComponent>(entity);
 
 			if (camera.Primary)
 			{
 				mainCamera = &camera.Camera;
-				cameraTransform = &transform.Transform;
+				
+				if (sc.Parent)
+				{
+					auto accumulatedTransform = sc.Parent.GetComponent<TransformComponent>().Transform;
+					Entity currentParent = sc.Parent;
+
+					while (currentParent.GetComponent<SceneNodeComponent>().Parent)
+					{
+						currentParent = currentParent.GetComponent<SceneNodeComponent>().Parent;
+						accumulatedTransform = currentParent.GetComponent<TransformComponent>().Transform * accumulatedTransform;
+					}
+
+					cameraTransform = accumulatedTransform * transform.Transform;
+				}
+				else
+					cameraTransform = transform.Transform;
 				break;
 			}
 		}
 
 		if (mainCamera)
 		{
-			Renderer::BeginScene(*mainCamera, *cameraTransform, m_Skybox);
+			Renderer::BeginScene(*mainCamera, cameraTransform, m_Skybox);
 
 			auto view = m_Registry.view<TransformComponent, MeshComponent, SceneNodeComponent>();
 
 			for (auto entity : view)
 			{
-				auto [transform, mesh, node] = view.get<TransformComponent, MeshComponent, SceneNodeComponent>(entity);
+				auto [tc, mc, sc] = view.get<TransformComponent, MeshComponent, SceneNodeComponent>(entity);
 
-				if (node.Parent)
+				if (sc.Parent)
 				{
-					auto& parentTransform = node.Parent.GetComponent<TransformComponent>().Transform;
+					auto accumulatedTransform = sc.Parent.GetComponent<TransformComponent>().Transform;
+					Entity currentParent = sc.Parent;
 
-					mesh.Mesh->Draw(parentTransform * transform.Transform);
+					while (currentParent.GetComponent<SceneNodeComponent>().Parent)
+					{
+						currentParent = currentParent.GetComponent<SceneNodeComponent>().Parent;
+						accumulatedTransform = currentParent.GetComponent<TransformComponent>().Transform * accumulatedTransform;
+					}
+
+					Renderer::Submit(mc.Mesh, accumulatedTransform * tc.Transform);
+
 				}
 				else
-					mesh.Mesh->Draw(transform.Transform);
+					Renderer::Submit(mc.Mesh, tc.Transform);
 
 			}
 		}
 	}
+
+	Entity Scene::CreateFromModelNode(const Ref<ModelNode>& node)
+	{
+		Entity nodeEntity = CreateEntity(node->Name);
+		if (!node->Meshes.empty())
+		{
+
+			for (auto& mesh : node->Meshes)
+			{
+				nodeEntity.AddComponent<MeshComponent>(mesh);
+				nodeEntity.GetComponent<TransformComponent>().Transform = node->Transform;
+			}
+		}
+
+		/*for (auto& mesh : node->Meshes)
+		{
+			Entity newEntity = CreateEntity(mesh->GetName());
+			newEntity.AddComponent<MeshComponent>(mesh);
+			newEntity.GetComponent<SceneNodeComponent>().Parent = nodeEntity;
+
+			auto& sceneNodeComp = nodeEntity.GetComponent<SceneNodeComponent>();
+
+			if (!sceneNodeComp.FirstChild)
+				sceneNodeComp.FirstChild = newEntity;
+			else
+			{
+				Entity currentChild = sceneNodeComp.FirstChild;
+
+				while (currentChild.GetComponent<SceneNodeComponent>().NextSibling)
+					currentChild = currentChild.GetComponent<SceneNodeComponent>().NextSibling;
+
+				currentChild.GetComponent<SceneNodeComponent>().NextSibling = newEntity;
+			}
+		}*/
+
+		for (auto& child : node->Children)
+		{
+			if (!(nodeEntity.GetComponent<SceneNodeComponent>().FirstChild))
+			{
+				nodeEntity.GetComponent<SceneNodeComponent>().FirstChild = CreateFromModelNode(child);
+				nodeEntity.GetComponent<SceneNodeComponent>().FirstChild.GetComponent<SceneNodeComponent>().Parent = nodeEntity;
+			}
+			else
+			{
+				Entity currentChild = nodeEntity.GetComponent<SceneNodeComponent>().FirstChild;
+
+				while (currentChild.GetComponent<SceneNodeComponent>().NextSibling)
+					currentChild = currentChild.GetComponent<SceneNodeComponent>().NextSibling;
+
+				currentChild.GetComponent<SceneNodeComponent>().NextSibling = CreateFromModelNode(child);
+				currentChild.GetComponent<SceneNodeComponent>().NextSibling.GetComponent<SceneNodeComponent>().Parent = nodeEntity;
+			}
+		}
+
+		return nodeEntity;
+	}
+
+	void Scene::CreateFromModelNode(const Ref<ModelNode>& node, Entity parentEntity)
+	{
+		Entity newParent;
+
+		if (!node->Meshes.empty())
+		{
+			for (auto& mesh : node->Meshes)
+			{
+				Entity newEntity = CreateEntity(mesh->GetName());
+				newEntity.AddComponent<MeshComponent>(mesh);
+				newEntity.GetComponent<TransformComponent>().Transform = node->Transform;
+				newEntity.GetComponent<SceneNodeComponent>().Parent = parentEntity;
+
+				if (!parentEntity.GetComponent<SceneNodeComponent>().FirstChild)
+					parentEntity.GetComponent<SceneNodeComponent>().FirstChild = newEntity;
+				else
+				{
+					auto currentChild = parentEntity.GetComponent<SceneNodeComponent>().FirstChild;
+
+					while (currentChild.GetComponent<SceneNodeComponent>().NextSibling)
+						currentChild = currentChild.GetComponent<SceneNodeComponent>().NextSibling;
+
+					currentChild.GetComponent<SceneNodeComponent>().NextSibling = newEntity;
+				}
+
+				newParent = newEntity;
+			}
+		}
+		else
+			newParent = parentEntity;
+
+		for (auto& child : node->Children)
+		{
+			CreateFromModelNode(child, newParent);
+		}
+	}
+
 	
 }

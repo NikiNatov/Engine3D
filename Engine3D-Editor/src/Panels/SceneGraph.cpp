@@ -1,6 +1,7 @@
 #include "SceneGraph.h"
 
 #include "Engine3D\Scene\Components.h"
+#include "Engine3D\Renderer\Model.h"
 
 #include <ImGui\imgui.h>
 
@@ -25,7 +26,7 @@ namespace E3D
 		{
 
 			Entity newEntity = m_Scene->CreateEntity();
-			newEntity.AddComponent<MeshComponent>("assets/models/primitives/cube.fbx");
+			//newEntity.AddComponent<MeshComponent>("assets/models/primitives/cube.fbx");
 		}
 		///////////////////////////////////////////////////////////////////////////////////
 
@@ -51,6 +52,7 @@ namespace E3D
 		auto& nodeComponent = entity.GetComponent<SceneNodeComponent>();
 
 		ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | (m_SelectedEntity == entity ? ImGuiTreeNodeFlags_Selected : 0);
+
 
 		bool isOpen = ImGui::TreeNodeEx((void*)(uint64_t)(uint32_t)entity, flags, name.c_str());
 
@@ -95,6 +97,7 @@ namespace E3D
 
 			ImGui::TreePop();
 		}
+
 	}
 
 }

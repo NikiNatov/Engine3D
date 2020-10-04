@@ -46,15 +46,11 @@ namespace E3D
 
 	struct MeshComponent
 	{
-		Ref<Model> Mesh;
+		Ref<Mesh> Mesh;
 
 		MeshComponent() = default;
 		MeshComponent(const MeshComponent& other) = default;
-		MeshComponent(const std::string& filepath)
-		{
-			Mesh = CreateRef<Model>(filepath);
-		}
-		MeshComponent(const Ref<Model>& mesh)
+		MeshComponent(const Ref<E3D::Mesh>& mesh)
 			: Mesh(mesh)
 		{
 		}

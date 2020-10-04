@@ -43,7 +43,5 @@ namespace E3D
 		{
 
 		}
-	private:
-		double m_A;
 	};
 }

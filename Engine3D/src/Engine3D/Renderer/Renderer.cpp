@@ -37,6 +37,7 @@ namespace E3D
 
 	void Renderer::Submit(const Ref<Mesh>& mesh, const glm::mat4& transform)
 	{
+
 		auto& material = mesh->GetMaterial();
 		auto& shader = material->GetShader();
 		shader->Bind();
@@ -66,6 +67,7 @@ namespace E3D
 			RenderCommand::DrawIndexedLines(vao);
 
 		material->Unbind();
+		
 	}
 
 	void Renderer::Submit(const Ref<Skybox>& skybox, const glm::mat4& transform)

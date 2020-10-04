@@ -118,7 +118,7 @@ namespace E3D
 							ImGui::SameLine(150.0f, 0.0f);
 
 							ImGui::BeginGroup();
-							ImGui::InputText("", (char*)mesh->GetFilepath().c_str(), 60, ImGuiInputTextFlags_ReadOnly);
+							ImGui::InputText("", (char*)mesh->GetName().c_str(), 60, ImGuiInputTextFlags_ReadOnly);
 							ImGui::EndGroup();
 
 							ImGui::Separator();

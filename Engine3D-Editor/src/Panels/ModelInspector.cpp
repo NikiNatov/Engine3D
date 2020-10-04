@@ -30,9 +30,9 @@ namespace E3D
 
 				if (mesh)
 				{
-					ImGui::Text(mesh->GetFilepath().c_str());
+					ImGui::Text(mesh->GetName().c_str());
 
-					auto& material = mesh->GetMeshes()[0]->GetMaterial();
+					auto& material = mesh->GetMaterial();
 
 					m_Normal = material->GetNormalMap();
 					m_Metalness = material->GetMetalnessMap();

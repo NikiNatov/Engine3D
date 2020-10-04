@@ -29,7 +29,7 @@
 #include "Engine3D\Renderer\Texture.h"
 #include "Engine3D\Renderer\Framebuffer.h"
 #include "Engine3D\Renderer\Material.h"
-#include "Engine3D\Renderer\Mesh.h"
+#include "Engine3D\Renderer\Model.h"
 #include "Engine3D\Renderer\MeshFactory.h"
 #include "Engine3D\Renderer\SkyBox.h"
 

@@ -11,6 +11,9 @@
 
 namespace E3D
 {
+	class Model;
+	struct ModelNode;
+
 	class Scene
 	{
 		friend class Entity;
@@ -23,6 +26,7 @@ namespace E3D
 		~Scene();
 
 		Entity CreateEntity(const std::string& name = "Unnamed Entity");
+		Entity CreateFromModel(const Ref<Model>& model, const std::string& name = "Unnamed Entity");
 
 		void OnSceneStart();
 		void OnUpdate(Timestep ts);
@@ -36,6 +40,9 @@ namespace E3D
 		inline void SetSceneState(SceneState state) { m_State = state; }
 		inline SceneState GetSceneState() const { return m_State; }
 		inline EditorCamera& GetCamera() { return m_Camera; }
+	private:
+		Entity CreateFromModelNode(const Ref<ModelNode>& node);
+		void CreateFromModelNode(const Ref<ModelNode>& node, Entity parentEntity);
 	private:
 		entt::registry m_Registry;
 		SceneState m_State = SceneState::Edit;

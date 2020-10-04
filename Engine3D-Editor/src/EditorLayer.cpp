@@ -40,7 +40,7 @@ namespace E3D
 		}
 
 		Renderer::SetRenderMode(RenderMode::Lines);
-		Renderer::Submit(m_Grid, glm::mat4(1.0f));
+		Renderer::Submit(m_Grid->GetMesh(0), glm::mat4(1.0f));
 		Renderer::SetRenderMode(RenderMode::Triangles);
 
 		Renderer::Submit(m_Skybox);
@@ -210,12 +210,12 @@ namespace E3D
 
 	void EditorLayer::OnAttach()
 	{
-		m_ShaderLibrary.Load("assets/shaders/FlatColorShader.glsl");
+		ShaderLibrary::Load("assets/shaders/FlatColorShader.glsl");
 
 		m_PlayButtonTexture = Texture2D::Create("assets/textures/playButton.png", {}, true);
 		m_StopButtonTexture = Texture2D::Create("assets/textures/pauseButton.png", {}, true);
 
-		auto shader = m_ShaderLibrary.Load("assets/shaders/StaticModelShader.glsl");
+		auto shader = ShaderLibrary::Load("assets/shaders/StaticModelShader.glsl");
 
 		m_Grid = MeshFactory::CreateGrid(80, 80, 3000, CreateRef<Material>(shader));
 
@@ -276,53 +276,58 @@ namespace E3D
 
 		m_Scene = CreateRef<Scene>(m_Skybox);
 
-		m_Pistol = m_Scene->CreateEntity("Pistol");
-		m_Pistol.AddComponent<MeshComponent>("assets/models/gun/Cerberus_LP.fbx").Mesh->GetMeshes()[0]->SetMaterial(m_PistolMaterial);
-		m_Pistol.GetComponent<TransformComponent>().Transform = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 20.0f, 0.0f));
+		auto pistolModel = CreateRef<Model>("assets/models/starwars/spaceship/tie-fighter.fbx");
+		m_Pistol = m_Scene->CreateFromModel(pistolModel, "Player");
+		//m_Pistol.AddComponent<MeshComponent>("assets/models/gun/Cerberus_LP.fbx").Model->GetMesh(0)->SetMaterial(m_PistolMaterial);
+		//m_Pistol.GetComponent<TransformComponent>().Transform = glm::rotate(glm::mat4(1.0f), glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		m_Pistol.AddComponent<ScriptComponent>().Bind<Player>();
 
-	/*	m_Plane = m_Scene->CreateEntity("Plane");
-		m_Plane.AddComponent<MeshComponent>("assets/models/sponza/sponza.obj");
-		m_Plane.GetComponent<TransformComponent>().Transform = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 11.0f, 0.0f));
 
-		m_Cube = m_Scene->CreateEntity("Cube");
-		m_Cube.AddComponent<MeshComponent>("assets/models/primitives/cube.fbx");
-		m_Cube.GetComponent<TransformComponent>().Transform = glm::translate(glm::mat4(1.0f), glm::vec3(26.0f, 19.0f, 8.0f));
-
-		m_Cone = m_Scene->CreateEntity("Cone");
-		m_Cone.AddComponent<MeshComponent>("assets/models/primitives/cone.fbx");
-		m_Cone.GetComponent<TransformComponent>().Transform = glm::translate(glm::mat4(1.0f), glm::vec3(-26.0f, 19.0f, 8.0f));*/
-
+		auto cameraModel = CreateRef<Model>("assets/models/camera/camera.obj");
+		auto& cameraMesh = cameraModel->GetMesh(0);
 		m_MainCamera = m_Scene->CreateEntity("Main Camera");
-		m_MainCamera.AddComponent<MeshComponent>("assets/models/camera/camera.obj");
+		m_MainCamera.AddComponent<MeshComponent>(cameraMesh);
 		m_MainCamera.AddComponent<CameraComponent>().Primary = true;
 		auto& cameraTransform = m_MainCamera.GetComponent<TransformComponent>().Transform;
 		cameraTransform = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 10.0f, 35.0f));
+		m_MainCamera.GetComponent<SceneNodeComponent>().Parent = m_Pistol;
+
+		if (m_Pistol.GetComponent<SceneNodeComponent>().FirstChild)
+		{
+			Entity currentChild = m_Pistol.GetComponent<SceneNodeComponent>().FirstChild;
+			while (currentChild.GetComponent<SceneNodeComponent>().NextSibling)
+				currentChild = currentChild.GetComponent<SceneNodeComponent>().NextSibling;
+
+			currentChild.GetComponent<SceneNodeComponent>().NextSibling = m_MainCamera;
+		}
+		else
+			m_Pistol.GetComponent<SceneNodeComponent>().FirstChild = m_MainCamera;
 
 		auto model = CreateRef<Model>("assets/models/primitives/globe-sphere.fbx");
+		auto& sphereMesh = model->GetMesh(0);
 
 		Entity e = m_Scene->CreateEntity("Sphere");
-		e.AddComponent<MeshComponent>("assets/models/primitives/globe-sphere.fbx").Mesh->GetMeshes()[0]->SetMaterial(m_Gold);
+		e.AddComponent<MeshComponent>(std::make_shared<Mesh>(*sphereMesh)).Mesh->SetMaterial(m_Gold);
 		e.GetComponent<TransformComponent>().Transform = glm::translate(glm::mat4(1.0f), glm::vec3(-100.0f, 8.0f, -90.0f)) * glm::scale(glm::mat4(1.0f), glm::vec3(30.0f));
 
 		e = m_Scene->CreateEntity("Sphere");
-		e.AddComponent<MeshComponent>("assets/models/primitives/globe-sphere.fbx").Mesh->GetMeshes()[0]->SetMaterial(m_Grass);
+		e.AddComponent<MeshComponent>(std::make_shared<Mesh>(*sphereMesh)).Mesh->SetMaterial(m_Grass);
 		e.GetComponent<TransformComponent>().Transform = glm::translate(glm::mat4(1.0f), glm::vec3(-60.0f, 8.0f, -90.0f)) * glm::scale(glm::mat4(1.0f), glm::vec3(30.0f));
 
 		e = m_Scene->CreateEntity("Sphere");
-		e.AddComponent<MeshComponent>("assets/models/primitives/globe-sphere.fbx").Mesh->GetMeshes()[0]->SetMaterial(m_Marble);
+		e.AddComponent<MeshComponent>(std::make_shared<Mesh>(*sphereMesh)).Mesh->SetMaterial(m_Marble);
 		e.GetComponent<TransformComponent>().Transform = glm::translate(glm::mat4(1.0f), glm::vec3(-20.0f, 8.0f, -90.0f)) * glm::scale(glm::mat4(1.0f), glm::vec3(30.0f));
 
 		e = m_Scene->CreateEntity("Sphere");
-		e.AddComponent<MeshComponent>("assets/models/primitives/globe-sphere.fbx").Mesh->GetMeshes()[0]->SetMaterial(m_Rock);
+		e.AddComponent<MeshComponent>(std::make_shared<Mesh>(*sphereMesh)).Mesh->SetMaterial(m_Rock);
 		e.GetComponent<TransformComponent>().Transform = glm::translate(glm::mat4(1.0f), glm::vec3(20.0f, 8.0f, -90.0f)) * glm::scale(glm::mat4(1.0f), glm::vec3(30.0f));
 
 		e = m_Scene->CreateEntity("Sphere");
-		e.AddComponent<MeshComponent>("assets/models/primitives/globe-sphere.fbx").Mesh->GetMeshes()[0]->SetMaterial(m_RustedIron);
+		e.AddComponent<MeshComponent>(std::make_shared<Mesh>(*sphereMesh)).Mesh->SetMaterial(m_RustedIron);
 		e.GetComponent<TransformComponent>().Transform = glm::translate(glm::mat4(1.0f), glm::vec3(60.0f, 8.0f, -90.0f)) * glm::scale(glm::mat4(1.0f), glm::vec3(30.0f));
 
 		e = m_Scene->CreateEntity("Sphere");
-		e.AddComponent<MeshComponent>("assets/models/primitives/globe-sphere.fbx").Mesh->GetMeshes()[0]->SetMaterial(m_Wood);
+		e.AddComponent<MeshComponent>(std::make_shared<Mesh>(*sphereMesh)).Mesh->SetMaterial(m_Wood);
 		e.GetComponent<TransformComponent>().Transform = glm::translate(glm::mat4(1.0f), glm::vec3(100.0f, 8.0f, -90.0f)) * glm::scale(glm::mat4(1.0f), glm::vec3(30.0f));
 
 		/*auto& planeNC = m_Plane.GetComponent<SceneNodeComponent>();

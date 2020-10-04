@@ -7,6 +7,8 @@
 
 namespace E3D
 {
+	std::unordered_map<std::string, Ref<Shader>> ShaderLibrary::m_ShaderMap;
+
 	Ref<Shader> Shader::Create(const std::string& filepath)
 	{
 		switch (RenderAPI::GetAPI())

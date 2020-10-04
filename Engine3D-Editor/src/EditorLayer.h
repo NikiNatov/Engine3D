@@ -21,8 +21,6 @@ namespace E3D
 		virtual void OnAttach() override;
 		virtual void OnDetach() override;
 	private:
-		ShaderLibrary m_ShaderLibrary;
-
 		Ref<Texture2D> m_PlayButtonTexture;
 		Ref<Texture2D> m_StopButtonTexture;
 		Ref<Framebuffer> m_Framebuffer;
@@ -36,8 +34,7 @@ namespace E3D
 		bool m_PrimaryCamera = true;
 		bool m_RunScene = false;
 
-		Ref<Model> m_Model;
-		Ref<Mesh> m_Grid;
+		Ref<Model> m_Grid;
 		Ref<Skybox> m_Skybox;
 
 		/*Entity m_Vader;

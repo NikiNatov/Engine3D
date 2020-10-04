@@ -3,8 +3,11 @@
 #include "Engine3D\Scene\Entity.h"
 #include "Engine3D\Scene\Scene.h"
 
+
 namespace E3D
 {
+	struct ModelNode;
+
 	class SceneGraph
 	{
 	public:
