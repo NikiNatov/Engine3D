@@ -17,7 +17,7 @@ namespace E3D
 		m_RotationSpeed = 30.00f;
 		m_ZoomSpeed = 30.0f;
 
-		m_Position = glm::vec3(50.0f, 60.0f, 100.0f);
+		m_Position = glm::vec3(5.0f, 6.0f, 10.0f);
 		m_Rotation = glm::vec3(0.0f, 0.0f, 0.0f);
 
 		m_TargetPoint = glm::vec3(0.0f);

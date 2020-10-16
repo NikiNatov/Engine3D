@@ -32,8 +32,8 @@ namespace E3D
 	class ShaderLibrary
 	{
 	public:
-		ShaderLibrary() = default;
-		~ShaderLibrary() = default;
+		ShaderLibrary(const ShaderLibrary& other) = delete;
+		ShaderLibrary& operator=(const ShaderLibrary& other) = delete;
 
 		static void Add(const std::string& name, const Ref<Shader>& shader);
 		static void Add(const Ref<Shader>& shader);
@@ -44,6 +44,8 @@ namespace E3D
 		static Ref<Shader> Get(const std::string& name);
 		 
 		static bool Exists(const std::string& name);
+	private:
+		ShaderLibrary() {};
 	private:
 		static std::unordered_map<std::string, Ref<Shader>> m_ShaderMap;
 	};

@@ -192,62 +192,7 @@ namespace E3D
 		}
 	}
 
-	Entity Scene::CreateFromModelNode(const Ref<ModelNode>& node)
-	{
-		Entity nodeEntity = CreateEntity(node->Name);
-		if (!node->Meshes.empty())
-		{
-
-			for (auto& mesh : node->Meshes)
-			{
-				nodeEntity.AddComponent<MeshComponent>(mesh);
-				nodeEntity.GetComponent<TransformComponent>().Transform = node->Transform;
-			}
-		}
-
-		/*for (auto& mesh : node->Meshes)
-		{
-			Entity newEntity = CreateEntity(mesh->GetName());
-			newEntity.AddComponent<MeshComponent>(mesh);
-			newEntity.GetComponent<SceneNodeComponent>().Parent = nodeEntity;
-
-			auto& sceneNodeComp = nodeEntity.GetComponent<SceneNodeComponent>();
-
-			if (!sceneNodeComp.FirstChild)
-				sceneNodeComp.FirstChild = newEntity;
-			else
-			{
-				Entity currentChild = sceneNodeComp.FirstChild;
-
-				while (currentChild.GetComponent<SceneNodeComponent>().NextSibling)
-					currentChild = currentChild.GetComponent<SceneNodeComponent>().NextSibling;
-
-				currentChild.GetComponent<SceneNodeComponent>().NextSibling = newEntity;
-			}
-		}*/
-
-		for (auto& child : node->Children)
-		{
-			if (!(nodeEntity.GetComponent<SceneNodeComponent>().FirstChild))
-			{
-				nodeEntity.GetComponent<SceneNodeComponent>().FirstChild = CreateFromModelNode(child);
-				nodeEntity.GetComponent<SceneNodeComponent>().FirstChild.GetComponent<SceneNodeComponent>().Parent = nodeEntity;
-			}
-			else
-			{
-				Entity currentChild = nodeEntity.GetComponent<SceneNodeComponent>().FirstChild;
-
-				while (currentChild.GetComponent<SceneNodeComponent>().NextSibling)
-					currentChild = currentChild.GetComponent<SceneNodeComponent>().NextSibling;
-
-				currentChild.GetComponent<SceneNodeComponent>().NextSibling = CreateFromModelNode(child);
-				currentChild.GetComponent<SceneNodeComponent>().NextSibling.GetComponent<SceneNodeComponent>().Parent = nodeEntity;
-			}
-		}
-
-		return nodeEntity;
-	}
-
+	
 	void Scene::CreateFromModelNode(const Ref<ModelNode>& node, Entity parentEntity)
 	{
 		Entity newParent;
@@ -261,17 +206,7 @@ namespace E3D
 				newEntity.GetComponent<TransformComponent>().Transform = node->Transform;
 				newEntity.GetComponent<SceneNodeComponent>().Parent = parentEntity;
 
-				if (!parentEntity.GetComponent<SceneNodeComponent>().FirstChild)
-					parentEntity.GetComponent<SceneNodeComponent>().FirstChild = newEntity;
-				else
-				{
-					auto currentChild = parentEntity.GetComponent<SceneNodeComponent>().FirstChild;
-
-					while (currentChild.GetComponent<SceneNodeComponent>().NextSibling)
-						currentChild = currentChild.GetComponent<SceneNodeComponent>().NextSibling;
-
-					currentChild.GetComponent<SceneNodeComponent>().NextSibling = newEntity;
-				}
+				parentEntity.AddChild(newEntity);
 
 				newParent = newEntity;
 			}

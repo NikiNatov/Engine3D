@@ -23,7 +23,7 @@ namespace E3D
 
 	class Material
 	{
-		friend class ModelInspector;
+		friend class MaterialInspector;
 	public:
 		Material(const Ref<Shader>& shader);
 		virtual ~Material() = default;

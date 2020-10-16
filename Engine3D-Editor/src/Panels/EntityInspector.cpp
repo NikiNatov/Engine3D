@@ -112,7 +112,7 @@ namespace E3D
 						{
 							ImGui::BeginGroup();
 							ImGui::Dummy(ImVec2{ 0.0f, 0.5f });
-							ImGui::Text("File Path");
+							ImGui::Text("Mesh Name");
 							ImGui::EndGroup();
 
 							ImGui::SameLine(150.0f, 0.0f);

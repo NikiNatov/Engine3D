@@ -3,6 +3,8 @@
 #include "Engine3D\Scene\Components.h"
 #include "Engine3D\Renderer\Model.h"
 
+#include "Engine3D\Renderer\MeshFactory.h"
+
 #include <ImGui\imgui.h>
 
 namespace E3D
@@ -24,9 +26,8 @@ namespace E3D
 		// Temporary //////////////////////////////////////////////////////////////////////
 		if (ImGui::Button("Create Entity"))
 		{
-
 			Entity newEntity = m_Scene->CreateEntity();
-			//newEntity.AddComponent<MeshComponent>("assets/models/primitives/cube.fbx");
+			newEntity.AddComponent<MeshComponent>(MeshFactory::CreateCube(1.0f, CreateRef<Material>(ShaderLibrary::Get("StaticModelShader"))));
 		}
 		///////////////////////////////////////////////////////////////////////////////////
 
@@ -65,21 +66,9 @@ namespace E3D
 			m_SelectedEntity = entity;
 			if (ImGui::Selectable("Add Child"))
 			{
-				if (!nodeComponent.FirstChild)
-				{
-					entity.GetComponent<SceneNodeComponent>().FirstChild = m_Scene->CreateEntity();
-					entity.GetComponent<SceneNodeComponent>().FirstChild.GetComponent<SceneNodeComponent>().Parent = m_SelectedEntity;
-				}
-				else
-				{
-					auto currentChild = nodeComponent.FirstChild;
-
-					while (currentChild.GetComponent<SceneNodeComponent>().NextSibling)
-						currentChild = currentChild.GetComponent<SceneNodeComponent>().NextSibling;
-
-					currentChild.GetComponent<SceneNodeComponent>().NextSibling = m_Scene->CreateEntity();
-					currentChild.GetComponent<SceneNodeComponent>().NextSibling.GetComponent<SceneNodeComponent>().Parent = m_SelectedEntity;
-				}
+				Entity newEntity = m_Scene->CreateEntity();
+				newEntity.AddComponent<MeshComponent>(MeshFactory::CreateCube(1.0f, CreateRef<Material>(ShaderLibrary::Get("StaticModelShader"))));
+				entity.AddChild(newEntity);
 			}
 			ImGui::EndPopup();
 		}

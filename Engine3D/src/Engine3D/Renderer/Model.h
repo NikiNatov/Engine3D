@@ -40,12 +40,14 @@ namespace E3D
 		inline const std::vector<Ref<Mesh>>& GetMeshList() const { return m_Meshes; }
 		inline const Ref<Mesh>& GetMesh(uint32_t index) const { return m_Meshes[index]; }
 		inline const std::string& GetFilepath() const { return m_Filepath; }
+		inline const std::string& GetName() const { return m_Name; }
 		inline const Ref<ModelNode>& GetRootNode() const { return m_RootNode; }
 	private:
 		Ref<Mesh> ProcessMesh(const aiMesh* mesh);
 		Ref<ModelNode> ProcessNode(const aiNode* node);
 	private:
 		std::vector<Ref<Mesh>> m_Meshes;
+		std::string m_Name;
 		std::string m_Filepath;
 
 		Ref<ModelNode> m_RootNode;

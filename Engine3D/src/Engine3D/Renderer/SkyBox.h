@@ -28,8 +28,8 @@ namespace E3D
 		inline float& GetExposure() { return m_Exposure; }
 		inline float& GetLOD() { return m_LOD; }
 	private:
-		float m_Exposure = 0.5f;
-		float m_LOD = 8.0f;
+		float m_Exposure = 3.0f;
+		float m_LOD = 0.0f;
 		Ref<Shader> m_ComputeShader;
 		Ref<Shader> m_SkyboxShader;
 		Ref<Shader> m_IrradianceShader;

@@ -3,7 +3,8 @@
 
 #include "Panels\SceneGraph.h"
 #include "Panels\EntityInspector.h"
-#include "Panels\ModelInspector.h"
+#include "Panels\MaterialInspector.h"
+#include "Panels\AssetsPanel.h"
 
 namespace E3D
 {
@@ -34,22 +35,17 @@ namespace E3D
 		bool m_PrimaryCamera = true;
 		bool m_RunScene = false;
 
-		Ref<Model> m_Grid;
+		Ref<Mesh> m_Grid;
 		Ref<Skybox> m_Skybox;
 
-		/*Entity m_Vader;
-		Entity m_SpaceShip;
-		Entity m_Terrain;*/
 		Entity m_MainCamera;
-		Entity m_Cube;
-		Entity m_Plane;
-		Entity m_Cone;
-		Entity m_Sphere;
-		Entity m_Pistol;
+		Entity m_Player;
 
 		EntityInspector m_InspectorPanel;
 		SceneGraph m_SceneGraphPanel;
-		ModelInspector m_ModelPanel;
+		MaterialInspector m_MaterialPanel;
+		AssetsPanel m_AssetsPanel;
+
 		Entity m_SelectedEntity{};
 
 		Ref<Material> m_Gold;

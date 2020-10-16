@@ -17,6 +17,8 @@ namespace E3D
 		Entity(entt::entity entity, Scene* scene);
 		Entity(const Entity& other) = default;
 
+		void AddChild(Entity child);
+
 		template<typename T, typename... Args>
 		T& AddComponent(Args&&... args)
 		{

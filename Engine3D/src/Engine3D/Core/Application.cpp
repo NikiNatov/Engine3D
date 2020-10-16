@@ -38,6 +38,8 @@ namespace E3D {
 			ts = m_CurrentFrameTime - m_LastFrameTime;
 			m_LastFrameTime = m_CurrentFrameTime;
 
+			//E3D_CORE_LOG_WARNING(ts);
+
 			if (!m_Minimized)
 			{
 				for (auto layer : m_LayerStack)

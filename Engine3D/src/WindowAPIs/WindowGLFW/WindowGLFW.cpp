@@ -9,6 +9,8 @@
 
 #include "RenderAPIs\OpenGL\OpenGLGraphicsContext.h"
 
+#include <stb_image.h>
+
 namespace E3D {
 
 	Scope<Window> Window::Create(const WindowProperties& properties)
@@ -39,7 +41,7 @@ namespace E3D {
 		m_WindowData.Height = properties.Height;
 		m_WindowData.Title = properties.Title;
 		m_WindowData.VSync = properties.VSync;
-
+		
 		int status = glfwInit();
 		E3D_CORE_ASSERT(status, "Failed to initialize GLFW!");
 
@@ -52,6 +54,11 @@ namespace E3D {
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+		GLFWimage image;
+		image.pixels = stbi_load("assets/textures/icon.png", &image.width, &image.height, nullptr, 0);
+
+		glfwSetWindowIcon(m_Window, 1, &image);
 
 		SetVSync(true);
 

@@ -7,7 +7,7 @@
 namespace E3D
 {
 
-		Ref<Model> MeshFactory::CreatePlane(float width, float height, const Ref<Material>& material)
+		Ref<Mesh> MeshFactory::CreatePlane(float width, float height, const Ref<Material>& material)
 		{
 			std::vector<Vertex> vertices;
 			vertices.resize(4);
@@ -40,18 +40,18 @@ namespace E3D
 				0, 1, 2, 2, 3, 0
 			};
 
-			Ref<Model> model = CreateRef<Model>();
-			model->AddMesh(CreateRef<Mesh>(vertices, indices, material));
+			Ref<Mesh> mesh = CreateRef<Mesh>(vertices, indices, material);
+			mesh->SetName("PlaneMesh");
 
-			return model;
+			return mesh;
 		}
 
-		Ref<Model> MeshFactory::CreatePlane(const glm::vec2& size, const Ref<Material>& material)
+		Ref<Mesh> MeshFactory::CreatePlane(const glm::vec2& size, const Ref<Material>& material)
 		{
 			return CreatePlane(size.x, size.y, material);
 		}
 
-		Ref<Model> MeshFactory::CreateCube(float size, const Ref<Material>& material)
+		Ref<Mesh> MeshFactory::CreateCube(float size, const Ref<Material>& material)
 		{
 			std::vector<Vertex> vertices;
 			vertices.reserve(24);
@@ -146,13 +146,13 @@ namespace E3D
 				15, 23, 16
 			};
 
-			Ref<Model> model = CreateRef<Model>();
-			model->AddMesh(CreateRef<Mesh>(vertices, indices, material));
+			Ref<Mesh> mesh = CreateRef<Mesh>(vertices, indices, material);
+			mesh->SetName("CubeMesh");
 
-			return model;
+			return mesh;
 		}
 
-		Ref<Model> MeshFactory::CreateGrid(uint32_t numVerticesX, uint32_t numVerticesZ, float cellSize, const Ref<Material>& material)
+		Ref<Mesh> MeshFactory::CreateGrid(uint32_t numVerticesX, uint32_t numVerticesZ, float cellSize, const Ref<Material>& material)
 		{
 			std::vector<Vertex> vertices;
 			vertices.reserve(numVerticesX * numVerticesZ);
@@ -196,18 +196,18 @@ namespace E3D
 				}
 			}
 
-			Ref<Model> model = CreateRef<Model>();
-			model->AddMesh(CreateRef<Mesh>(vertices, indices, material));
+			Ref<Mesh> mesh = CreateRef<Mesh>(vertices, indices, material);
+			mesh->SetName("GridMesh");
 
-			return model;
+			return mesh;
 		}
 
-		Ref<Model> MeshFactory::CreateGrid(const glm::vec2& size, float cellSize, const Ref<Material>& material)
+		Ref<Mesh> MeshFactory::CreateGrid(const glm::vec2& size, float cellSize, const Ref<Material>& material)
 		{
 			return CreateGrid(size.x, size.y, cellSize, material);
 		}
 
-		Ref<Model> MeshFactory::CreateQuad(float x, float y, float width, float height, const Ref<Material>& material)
+		Ref<Mesh> MeshFactory::CreateQuad(float x, float y, float width, float height, const Ref<Material>& material)
 		{
 			/*struct QuadVertex
 			{
@@ -234,13 +234,13 @@ namespace E3D
 				0, 1, 2, 2, 3, 0
 			};
 
-			Ref<Model> model = CreateRef<Model>();
-			model->AddMesh(CreateRef<Mesh>(vertices, indices, material));
+			Ref<Mesh> mesh = CreateRef<Mesh>(vertices, indices, material);
+			mesh->SetName("QuadMesh");
 
-			return model;
+			return mesh;
 		}
 
-		Ref<Model> MeshFactory::CreateQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Material>& material)
+		Ref<Mesh> MeshFactory::CreateQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Material>& material)
 		{
 			return CreateQuad(position.x, position.y, size.x, size.y, material);
 		}

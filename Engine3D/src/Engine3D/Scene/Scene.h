@@ -41,7 +41,6 @@ namespace E3D
 		inline SceneState GetSceneState() const { return m_State; }
 		inline EditorCamera& GetCamera() { return m_Camera; }
 	private:
-		Entity CreateFromModelNode(const Ref<ModelNode>& node);
 		void CreateFromModelNode(const Ref<ModelNode>& node, Entity parentEntity);
 	private:
 		entt::registry m_Registry;

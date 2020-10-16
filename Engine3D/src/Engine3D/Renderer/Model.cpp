@@ -19,13 +19,15 @@ namespace E3D
 	}
 
 	Model::Model()
-		: m_Filepath(""), m_Scene(nullptr)
+		: m_Name(""), m_Filepath(""), m_Scene(nullptr)
 	{
 	}
 
 	Model::Model(const std::string& filepath)
-		: m_Filepath(filepath.substr(0, filepath.find_last_of('/')))
 	{
+		m_Name = filepath.substr(filepath.find_last_of('/') + 1, filepath.find_last_of('.') - filepath.find_last_of('/') - 1);
+		m_Filepath = filepath.substr(0, filepath.find_last_of('/'));
+
 		LoadFromFile(filepath);
 	}
 
@@ -118,7 +120,7 @@ namespace E3D
 			const aiMaterial* material = m_Scene->mMaterials[mesh->mMaterialIndex];
 			aiString textureName;
 
-			if (material->GetTexture(aiTextureType_BASE_COLOR, 0, &textureName) == aiReturn_SUCCESS)
+			if (material->GetTexture(aiTextureType_DIFFUSE, 0, &textureName) == aiReturn_SUCCESS)
 			{
 				std::string textureFilepath = m_Filepath + "/" + textureName.C_Str();
 				meshMaterial->SetAlbedoMap(Texture2D::Create(textureFilepath));

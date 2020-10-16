@@ -20,6 +20,7 @@ namespace E3D
 		virtual void GenerateMipMaps() override;
 
 		virtual uint32_t GetTextureID() const override { return m_TextureID; }
+		virtual const std::string& GetName() const { return m_Name; }
 
 		virtual uint32_t GetWidth() const override { return m_Width; }
 		virtual uint32_t GetHeight() const override { return m_Height; }
@@ -29,6 +30,7 @@ namespace E3D
 			return m_TextureID == ((OpenGLTexture2D&)other).m_TextureID;
 		}
 	private:
+		std::string m_Name = "";
 		uint32_t m_TextureID;
 		uint32_t m_Width, m_Height;
 		TextureSpecification m_TextureSpec;

@@ -2,6 +2,8 @@
 
 #include "SkyBox.h"
 
+#include "Engine3D\ResourceManager\TextureManager.h"
+
 #include "Engine3D\Renderer\RenderCommand.h"
 #include "Engine3D\Renderer\Framebuffer.h"
 #include "Engine3D\Renderer\MeshFactory.h"
@@ -85,7 +87,7 @@ namespace E3D
 
 	void Skybox::SetTexture(const std::string& filepath)
 	{
-		m_HDRMap = Texture2D::Create(filepath);
+		m_HDRMap = TextureManager::LoadTexture(Texture2D::Create(filepath));
 		CreateEnvironmentMap();
 	}
 

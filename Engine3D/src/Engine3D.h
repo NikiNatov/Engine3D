@@ -33,6 +33,11 @@
 #include "Engine3D\Renderer\MeshFactory.h"
 #include "Engine3D\Renderer\SkyBox.h"
 
+// Resource Manager
+#include "Engine3D\ResourceManager\ModelManager.h"
+#include "Engine3D\ResourceManager\TextureManager.h"
+#include "Engine3D\ResourceManager\MaterialManager.h"
+
 // Scene
 #include "Engine3D\Scene\Scene.h"
 #include "Engine3D\Scene\Components.h"

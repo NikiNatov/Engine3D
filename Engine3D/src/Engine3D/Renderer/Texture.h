@@ -49,6 +49,7 @@ namespace E3D
 		virtual void GenerateMipMaps() = 0;
 
 		virtual uint32_t GetTextureID() const = 0;
+		
 
 		virtual bool operator==(const Texture& other) = 0;
 	};
@@ -57,6 +58,7 @@ namespace E3D
 	{
 	public:
 		virtual void SetData(const void* data, uint32_t size) = 0;
+		virtual const std::string& GetName() const = 0;
 
 		virtual uint32_t GetWidth() const = 0;
 		virtual uint32_t GetHeight() const = 0;
