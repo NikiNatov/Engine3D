@@ -43,7 +43,6 @@ namespace E3D
 		Renderer::Submit(m_Grid, glm::mat4(1.0f));
 		Renderer::SetRenderMode(RenderMode::Triangles);
 
-		Renderer::Submit(m_Skybox);
 
 		Renderer::EndScene();
 		m_Framebuffer->Unbind();
@@ -113,6 +112,13 @@ namespace E3D
 		m_AssetsPanel.OnImGuiRender();
 
 		ImGui::Begin("Environment");
+		if (ImGui::Button("Upload Environment Map"))
+		{
+			const std::string& path = FileDialog::OpenTextureFile();
+
+			if(!path.empty())
+				m_Skybox->SetTexture(path);
+		}
 		ImGui::DragFloat("Exposure", &m_Skybox->GetExposure(), 0.01f, 0.01f, 3.0f);
 		ImGui::DragFloat("LOD", &m_Skybox->GetLOD(), 0.1f, 0.0f, 10.0f);
 		ImGui::End();

@@ -1,6 +1,10 @@
 #include "MaterialInspector.h"
 #include "Engine3D\Scene\Components.h"
 
+#include "Engine3D\ResourceManager\TextureManager.h"
+
+#include "Engine3D\Core\FileDialog.h"
+
 #include <ImGui\imgui.h>
 
 namespace E3D
@@ -46,7 +50,16 @@ namespace E3D
 						else
 							id = m_WhiteTexture->GetTextureID();
 						
-						ImGui::ImageButton((void*)id, ImVec2{ 64.0f, 64.0f }, { 0, 1 }, { 1, 0 });
+						ImGui::PushID("AlbedoMapImage");
+						if (ImGui::ImageButton((void*)id, ImVec2{ 64.0f, 64.0f }, { 0, 1 }, { 1, 0 }))
+						{
+							const std::string& path = FileDialog::OpenTextureFile(); 
+
+							if (!path.empty())
+								material->m_Properties.AlbedoMap = TextureManager::LoadTexture(Texture2D::Create(path, {}, true));
+						}
+						ImGui::PopID();
+
 						ImGui::SameLine();
 						ImGui::BeginGroup();
 
@@ -67,7 +80,16 @@ namespace E3D
 						else
 							id = m_WhiteTexture->GetTextureID();
 
-						ImGui::ImageButton((void*)id, ImVec2{ 64.0f, 64.0f }, { 0, 1 }, { 1, 0 });
+						ImGui::PushID("NormalMapImage");
+						if (ImGui::ImageButton((void*)id, ImVec2{ 64.0f, 64.0f }, { 0, 1 }, { 1, 0 }))
+						{
+							const std::string& path = FileDialog::OpenTextureFile();
+
+							if(!path.empty())
+								material->m_Properties.NormalMap = TextureManager::LoadTexture(Texture2D::Create(path, {}, true));
+						}
+						ImGui::PopID();
+
 						ImGui::SameLine();
 						ImGui::BeginGroup();
 
@@ -85,7 +107,15 @@ namespace E3D
 						else
 							id = m_WhiteTexture->GetTextureID();
 
-						ImGui::ImageButton((void*)id, ImVec2{ 64.0f, 64.0f }, { 0, 1 }, { 1, 0 });
+						ImGui::PushID("RoughnessMapImage");
+						if (ImGui::ImageButton((void*)id, ImVec2{ 64.0f, 64.0f }, { 0, 1 }, { 1, 0 }))
+						{
+							const std::string& path = FileDialog::OpenTextureFile();
+
+							if (!path.empty())
+								material->m_Properties.RoughnessMap = TextureManager::LoadTexture(Texture2D::Create(path, {}, true));
+						}
+						ImGui::PopID();
 
 						ImGui::SameLine();
 						ImGui::BeginGroup();
@@ -107,7 +137,15 @@ namespace E3D
 						else
 							id = m_WhiteTexture->GetTextureID();
 
-						ImGui::ImageButton((void*)id, ImVec2{ 64.0f, 64.0f }, { 0, 1 }, { 1, 0 });
+						ImGui::PushID("MetalnessMapImage");
+						if (ImGui::ImageButton((void*)id, ImVec2{ 64.0f, 64.0f }, { 0, 1 }, { 1, 0 }))
+						{
+							const std::string& path = FileDialog::OpenTextureFile();
+
+							if (!path.empty())
+								material->m_Properties.MetalnessMap = TextureManager::LoadTexture(Texture2D::Create(path, {}, true));
+						}
+						ImGui::PopID();
 
 						ImGui::SameLine();
 						ImGui::BeginGroup();
@@ -149,4 +187,7 @@ namespace E3D
 		}
 		ImGui::End();
 	}
+
+		
+	
 }

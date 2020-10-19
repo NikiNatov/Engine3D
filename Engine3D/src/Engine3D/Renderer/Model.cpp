@@ -25,8 +25,8 @@ namespace E3D
 
 	Model::Model(const std::string& filepath)
 	{
-		m_Name = filepath.substr(filepath.find_last_of('/') + 1, filepath.find_last_of('.') - filepath.find_last_of('/') - 1);
-		m_Filepath = filepath.substr(0, filepath.find_last_of('/'));
+		m_Name = filepath.substr(filepath.find_last_of("\\/") + 1, filepath.length() - filepath.find_last_of("\\/") - 1);
+		m_Filepath = filepath.substr(0, filepath.find_last_of("\\/"));
 
 		LoadFromFile(filepath);
 	}
@@ -124,6 +124,7 @@ namespace E3D
 			{
 				std::string textureFilepath = m_Filepath + "/" + textureName.C_Str();
 				meshMaterial->SetAlbedoMap(Texture2D::Create(textureFilepath));
+				meshMaterial->GetAlbedoMap()->GenerateMipMaps();
 			}
 			if (material->GetTexture(aiTextureType_NORMALS, 0, &textureName) == aiReturn_SUCCESS)
 			{

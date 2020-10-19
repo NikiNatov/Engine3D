@@ -39,6 +39,7 @@ namespace E3D
 
 		inline void SetSceneState(SceneState state) { m_State = state; }
 		inline SceneState GetSceneState() const { return m_State; }
+		inline Ref<Skybox>& GetSkybox() { return m_Skybox; }
 		inline EditorCamera& GetCamera() { return m_Camera; }
 	private:
 		void CreateFromModelNode(const Ref<ModelNode>& node, Entity parentEntity);

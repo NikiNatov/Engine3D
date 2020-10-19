@@ -4,6 +4,7 @@
 #include "Engine3D\Core\Application.h"
 #include "Engine3D\Core\Log.h"
 #include "Engine3D\Core\Timestep.h"
+#include "Engine3D\Core\FileDialog.h"
 
 // Events
 #include "Engine3D\Events\Event.h"

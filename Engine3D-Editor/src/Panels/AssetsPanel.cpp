@@ -8,19 +8,19 @@ namespace E3D
 	{
 		ImGui::Begin("Assets");
 
-		/*ImGui::BeginGroup();
-		for (auto& element : MaterialManager::m_LoadedMaterials)
+		ImGui::BeginGroup();
+		for (auto& element : MaterialManager::GetLoadedMaterials())
 			ImGui::Text(element.second->GetName().c_str());
 		ImGui::EndGroup();
 
 		ImGui::SameLine();
 
 		ImGui::BeginGroup();
-		for (auto& element : ModelManager::m_LoadedModels)
+		for (auto& element : ModelManager::GetLoadedModels())
 			ImGui::Text(element.second->GetName().c_str());
 		ImGui::EndGroup();
 
-		ImGui::SameLine();*/
+		ImGui::SameLine();
 
 		ImGui::BeginGroup();
 		for (auto& element : TextureManager::GetLoadedTextures())
@@ -29,7 +29,6 @@ namespace E3D
 			ImGui::Image((void*)element.second->GetTextureID(), { element.second->GetWidth() / 32.0f, element.second->GetHeight() / 32.0f }, { 0, 1 }, { 1, 0 });
 			ImGui::Text(element.second->GetName().c_str());
 			ImGui::EndGroup();
-			ImGui::SameLine();
 		}
 		ImGui::EndGroup();
 

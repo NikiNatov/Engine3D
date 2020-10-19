@@ -9,9 +9,6 @@
 
 #include <glm\gtc\type_ptr.hpp>
 
-#include <imgui.h>
-#include <ImGuizmo.h>
-
 #include "Engine3D\Core\Input.h"
 #include "Engine3D\Core\KeyCodes.h"
 
@@ -102,6 +99,8 @@ namespace E3D
 	{
 		Renderer::BeginScene(m_Camera, m_Skybox);
 
+		Renderer::Submit(m_Skybox);
+
 		auto view = m_Registry.view<TransformComponent, MeshComponent, SceneNodeComponent>();
 
 		for (auto entity : view)
@@ -165,6 +164,8 @@ namespace E3D
 		{
 			Renderer::BeginScene(*mainCamera, cameraTransform, m_Skybox);
 
+			Renderer::Submit(m_Skybox);
+
 			auto view = m_Registry.view<TransformComponent, MeshComponent, SceneNodeComponent>();
 
 			for (auto entity : view)
@@ -199,6 +200,7 @@ namespace E3D
 
 		if (!node->Meshes.empty())
 		{
+			// TODO: Remove the for loop
 			for (auto& mesh : node->Meshes)
 			{
 				Entity newEntity = CreateEntity(mesh->GetName());

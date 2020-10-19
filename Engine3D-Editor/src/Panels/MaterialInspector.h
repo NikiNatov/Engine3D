@@ -12,11 +12,13 @@ namespace E3D
 		MaterialInspector();
 
 		void OnImGuiRender(Entity entity);
+
 	private:
 		Ref<Texture> m_WhiteTexture;
 		//Test
 		Ref<Texture> m_Normal;
 		Ref<Texture> m_Roughness;
 		Ref<Texture> m_Metalness;
+
 	};
 }

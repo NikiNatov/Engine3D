@@ -92,7 +92,7 @@ namespace E3D
 	OpenGLTexture2D::OpenGLTexture2D(const std::string& filepath, const TextureSpecification& spec, bool genMips)
 		: m_TextureSpec(spec)
 	{	
-		m_Name = filepath.substr(filepath.find_last_of('/') + 1, filepath.length() - filepath.find_last_of('/'));
+		m_Name = filepath.substr(filepath.find_last_of("\\/") + 1, filepath.length() - filepath.find_last_of("\\/"));
 
 		int width, height, channels;
 		stbi_set_flip_vertically_on_load(true);

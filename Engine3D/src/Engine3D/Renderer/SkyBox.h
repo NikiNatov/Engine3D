@@ -27,6 +27,7 @@ namespace E3D
 		inline const Ref<Texture>& GetBRDFTexture() const { return m_BRDFTextureFB->GetColorAttachment(); }
 		inline float& GetExposure() { return m_Exposure; }
 		inline float& GetLOD() { return m_LOD; }
+
 	private:
 		float m_Exposure = 3.0f;
 		float m_LOD = 0.0f;
@@ -36,6 +37,7 @@ namespace E3D
 		Ref<Shader> m_PrefilterShader;
 		Ref<Shader> m_BRDFShader;
 		Ref<VertexArray> m_CubeVAO;
+		Ref<VertexArray> m_QuadVAO;
 		Ref<Texture2D> m_HDRMap;
 
 		Ref<Framebuffer> m_CubeMapFB;

@@ -1,6 +1,7 @@
 #include "EntityInspector.h"
 
 #include "Engine3D\Scene\Scene.h"
+#include "Engine3D\ResourceManager\ModelManager.h"
 
 #include <ImGui\imgui.h>
 #include <ImGuizmo.h>
@@ -62,10 +63,12 @@ namespace E3D
 							ImGui::SameLine(150.0f, 0.0f);
 
 							ImGui::BeginGroup();
+							ImGui::PushItemWidth(230.0f);
 							if (ImGui::InputText("", buffer, sizeof(buffer)))
 							{
 								tag = std::string(buffer);
 							}
+							ImGui::PopItemWidth();
 							ImGui::EndGroup();
 
 							ImGui::Separator();
@@ -93,9 +96,11 @@ namespace E3D
 							ImGui::SameLine(150.0f, 0.0f);
 
 							ImGui::BeginGroup();
-							ImGui::DragFloat3("##Translation", &position.x, 0.5f, -1000.0f, 1000.0f);
-							ImGui::DragFloat3("##Rotation", &rotation.x, 0.5f, -180.0f, 180.0f);
-							ImGui::DragFloat3("##Scale", &scale.x, 0.5f, 0.5f, 100.0f);
+							ImGui::PushItemWidth(230.0f);
+							ImGui::DragFloat3("##Translation", &position.x, 0.5f, -1000.0f, 1000.0f, "%.2f");
+							ImGui::DragFloat3("##Rotation", &rotation.x, 0.5f, -180.0f, 180.0f, "%.2f");
+							ImGui::DragFloat3("##Scale", &scale.x, 0.5f, 0.5f, 100.0f, "%.2f");
+							ImGui::PopItemWidth();
 							ImGui::EndGroup();
 
 							ImGui::Separator();
@@ -118,7 +123,9 @@ namespace E3D
 							ImGui::SameLine(150.0f, 0.0f);
 
 							ImGui::BeginGroup();
+							ImGui::PushItemWidth(230.0f);
 							ImGui::InputText("", (char*)mesh->GetName().c_str(), 60, ImGuiInputTextFlags_ReadOnly);
+							ImGui::PopItemWidth();
 							ImGui::EndGroup();
 
 							ImGui::Separator();

@@ -32,7 +32,6 @@ namespace E3D
 			auto [iterator, result] = m_RegisteredComponents.insert_or_assign(componentID, component);
 			E3D_CORE_ASSERT(result, "Component already registered!");
 		}
-
 	private:
 		using ComponentID = ENTT_ID_TYPE;
 		std::unordered_map<ComponentID, ComponentData> m_RegisteredComponents;

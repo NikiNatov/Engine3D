@@ -21,6 +21,7 @@ namespace E3D
 		inline Entity& GetSelectedEntity() { return m_SelectedEntity; }
 	private:
 		void DrawNode(Entity entity);
+		std::string LoadModelFromFile();
 	private:
 		Ref<Scene> m_Scene;
 		Entity m_SelectedEntity;

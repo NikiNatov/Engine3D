@@ -83,7 +83,7 @@ namespace E3D
 
 		auto& vao = skybox->GetVertexArray();
 		vao->Bind();
-		RenderCommand::DrawArrays(vao, 36);
+		RenderCommand::DrawIndexed(vao);
 
 	}
 }
