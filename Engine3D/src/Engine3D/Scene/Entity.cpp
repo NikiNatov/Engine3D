@@ -10,6 +10,11 @@ namespace E3D
 	{
 	}
 
+	Entity::Entity(uint32_t entity, Scene* scene)
+		: m_Entity((entt::entity)entity), m_Scene(scene)
+	{
+	}
+
 	void Entity::AddChild(Entity child)
 	{
 		auto& sceneNode = GetComponent<SceneNodeComponent>();

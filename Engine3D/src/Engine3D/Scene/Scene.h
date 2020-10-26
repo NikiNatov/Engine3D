@@ -16,6 +16,7 @@ namespace E3D
 
 	class Scene
 	{
+		friend class SceneSerializer;
 		friend class Entity;
 		friend class SceneGraph;
 	public:
@@ -27,6 +28,7 @@ namespace E3D
 
 		Entity CreateEntity(const std::string& name = "Unnamed Entity");
 		Entity CreateFromModel(const Ref<Model>& model, const std::string& name = "Unnamed Entity");
+		void DeleteEntity(Entity entity);
 
 		void OnSceneStart();
 		void OnUpdate(Timestep ts);
@@ -43,11 +45,15 @@ namespace E3D
 		inline EditorCamera& GetCamera() { return m_Camera; }
 	private:
 		void CreateFromModelNode(const Ref<ModelNode>& node, Entity parentEntity);
+
+		template<typename T>
+		void OnComponentAdded(Entity entity, T& component);
 	private:
 		entt::registry m_Registry;
 		SceneState m_State = SceneState::Edit;
 		EditorCamera m_Camera;
 		Ref<Skybox> m_Skybox;
+		uint32_t m_ViewportWidth = 0, m_ViewportHeight = 0;
 	
 	};
 

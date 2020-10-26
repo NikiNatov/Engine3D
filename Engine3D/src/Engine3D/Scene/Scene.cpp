@@ -9,6 +9,9 @@
 
 #include <glm\gtc\type_ptr.hpp>
 
+#include <imgui.h>
+#include <ImGuizmo.h>
+
 #include "Engine3D\Core\Input.h"
 #include "Engine3D\Core\KeyCodes.h"
 
@@ -17,7 +20,7 @@ namespace E3D
 	Scene::Scene()
 		: m_Camera(glm::perspective(65.0f, 16.0f / 9.0f, 0.1f, 1000.0f))
 	{
-
+		
 	}
 
 	Scene::Scene(const Ref<Skybox>& skybox)
@@ -46,6 +49,25 @@ namespace E3D
 		modelEntity.GetComponent<SceneNodeComponent>().FirstChild.GetComponent<SceneNodeComponent>().Parent = modelEntity;
 		CreateFromModelNode(model->GetRootNode(), modelEntity.GetComponent<SceneNodeComponent>().FirstChild);
 		return modelEntity;
+	}
+
+	void Scene::DeleteEntity(Entity entity)
+	{
+		auto& sceneNodeComponent = entity.GetComponent<SceneNodeComponent>();
+		if (sceneNodeComponent.Parent)
+			if (sceneNodeComponent.Parent.GetComponent<SceneNodeComponent>().FirstChild == entity)
+				sceneNodeComponent.Parent.GetComponent<SceneNodeComponent>().FirstChild = sceneNodeComponent.NextSibling;
+
+		auto currentChild = sceneNodeComponent.FirstChild;
+
+		while (currentChild)
+		{
+			auto deleted = currentChild;
+			currentChild = currentChild.GetComponent<SceneNodeComponent>().NextSibling;
+			DeleteEntity(deleted);
+		}
+
+		m_Registry.destroy((entt::entity)entity);
 	}
 
 
@@ -83,6 +105,9 @@ namespace E3D
 
 	void Scene::OnViewportResize(uint32_t width, uint32_t height)
 	{
+		m_ViewportWidth = width;
+		m_ViewportHeight = height;
+
 		auto view = m_Registry.view<CameraComponent>();
 
 		for (auto entity : view)
@@ -109,19 +134,19 @@ namespace E3D
 
 			if (sc.Parent)
 			{
-				auto accumulatedTransform = sc.Parent.GetComponent<TransformComponent>().Transform;
+				auto accumulatedTransform = sc.Parent.GetComponent<TransformComponent>().GetTransform();
 				Entity currentParent = sc.Parent;
 
 				while (currentParent.GetComponent<SceneNodeComponent>().Parent)
 				{
 					currentParent = currentParent.GetComponent<SceneNodeComponent>().Parent;
-					accumulatedTransform = currentParent.GetComponent<TransformComponent>().Transform * accumulatedTransform;
+					accumulatedTransform = currentParent.GetComponent<TransformComponent>().GetTransform() * accumulatedTransform;
 				}
 
-				Renderer::Submit(mc.Mesh, accumulatedTransform * tc.Transform);
+				Renderer::Submit(mc.Mesh, accumulatedTransform * tc.GetTransform());
 			}
 			else
-				Renderer::Submit(mc.Mesh, tc.Transform);
+				Renderer::Submit(mc.Mesh, tc.GetTransform());
 
 		}
 	}
@@ -143,19 +168,19 @@ namespace E3D
 				
 				if (sc.Parent)
 				{
-					auto accumulatedTransform = sc.Parent.GetComponent<TransformComponent>().Transform;
+					auto accumulatedTransform = sc.Parent.GetComponent<TransformComponent>().GetTransform();
 					Entity currentParent = sc.Parent;
 
 					while (currentParent.GetComponent<SceneNodeComponent>().Parent)
 					{
 						currentParent = currentParent.GetComponent<SceneNodeComponent>().Parent;
-						accumulatedTransform = currentParent.GetComponent<TransformComponent>().Transform * accumulatedTransform;
+						accumulatedTransform = currentParent.GetComponent<TransformComponent>().GetTransform() * accumulatedTransform;
 					}
 
-					cameraTransform = accumulatedTransform * transform.Transform;
+					cameraTransform = accumulatedTransform * transform.GetTransform();
 				}
 				else
-					cameraTransform = transform.Transform;
+					cameraTransform = transform.GetTransform();
 				break;
 			}
 		}
@@ -174,20 +199,20 @@ namespace E3D
 
 				if (sc.Parent)
 				{
-					auto accumulatedTransform = sc.Parent.GetComponent<TransformComponent>().Transform;
+					auto accumulatedTransform = sc.Parent.GetComponent<TransformComponent>().GetTransform();
 					Entity currentParent = sc.Parent;
 
 					while (currentParent.GetComponent<SceneNodeComponent>().Parent)
 					{
 						currentParent = currentParent.GetComponent<SceneNodeComponent>().Parent;
-						accumulatedTransform = currentParent.GetComponent<TransformComponent>().Transform * accumulatedTransform;
+						accumulatedTransform = currentParent.GetComponent<TransformComponent>().GetTransform() * accumulatedTransform;
 					}
 
-					Renderer::Submit(mc.Mesh, accumulatedTransform * tc.Transform);
+					Renderer::Submit(mc.Mesh, accumulatedTransform * tc.GetTransform());
 
 				}
 				else
-					Renderer::Submit(mc.Mesh, tc.Transform);
+					Renderer::Submit(mc.Mesh, tc.GetTransform());
 
 			}
 		}
@@ -205,7 +230,14 @@ namespace E3D
 			{
 				Entity newEntity = CreateEntity(mesh->GetName());
 				newEntity.AddComponent<MeshComponent>(mesh);
-				newEntity.GetComponent<TransformComponent>().Transform = node->Transform;
+
+				glm::vec3 translation, rotation, scale;
+				ImGuizmo::DecomposeMatrixToComponents(glm::value_ptr(node->Transform), glm::value_ptr(translation), glm::value_ptr(rotation), glm::value_ptr(scale));
+
+				newEntity.GetComponent<TransformComponent>().Translation = translation;
+				newEntity.GetComponent<TransformComponent>().Rotation = glm::radians(rotation);
+				newEntity.GetComponent<TransformComponent>().Scale = scale;
+
 				newEntity.GetComponent<SceneNodeComponent>().Parent = parentEntity;
 
 				parentEntity.AddChild(newEntity);
@@ -222,5 +254,40 @@ namespace E3D
 		}
 	}
 
-	
+	template<typename T>
+	void Scene::OnComponentAdded(Entity entity, T& component)
+	{
+		static_assert(false);
+	}
+
+	template<>
+	void Scene::OnComponentAdded<TransformComponent>(Entity entity, TransformComponent& component)
+	{
+	}
+
+	template<>
+	void Scene::OnComponentAdded<CameraComponent>(Entity entity, CameraComponent& component)
+	{
+		component.Camera.SetViewportSize(m_ViewportWidth, m_ViewportHeight);
+	}
+
+	template<>
+	void Scene::OnComponentAdded<MeshComponent>(Entity entity, MeshComponent& component)
+	{
+	}
+
+	template<>
+	void Scene::OnComponentAdded<NameComponent>(Entity entity, NameComponent& component)
+	{
+	}
+
+	template<>
+	void Scene::OnComponentAdded<ScriptComponent>(Entity entity, ScriptComponent& component)
+	{
+	}
+
+	template<>
+	void Scene::OnComponentAdded<SceneNodeComponent>(Entity entity, SceneNodeComponent& component)
+	{
+	}
 }

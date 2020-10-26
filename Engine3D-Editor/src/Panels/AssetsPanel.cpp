@@ -1,10 +1,15 @@
 #include "AssetsPanel.h"
 
+#include "Engine3D\ResourceManager\ModelManager.h"
+#include "Engine3D\ResourceManager\TextureManager.h"
+#include "Engine3D\ResourceManager\MaterialManager.h"
+#include "Engine3D\ResourceManager\MeshManager.h"
+
 #include <ImGui\imgui.h>
 
 namespace E3D
 {
-	void E3D::AssetsPanel::OnImGuiRender()
+	void AssetsPanel::OnImGuiRender()
 	{
 		ImGui::Begin("Assets");
 
@@ -17,6 +22,13 @@ namespace E3D
 
 		ImGui::BeginGroup();
 		for (auto& element : ModelManager::GetLoadedModels())
+			ImGui::Text(element.second->GetName().c_str());
+		ImGui::EndGroup();
+
+		ImGui::SameLine();
+
+		ImGui::BeginGroup();
+		for (auto& element : MeshManager::GetLoadedMeshes())
 			ImGui::Text(element.second->GetName().c_str());
 		ImGui::EndGroup();
 

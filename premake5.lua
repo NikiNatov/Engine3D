@@ -20,10 +20,14 @@ workspace "Engine3D"
 	IncludeDirs["entt"] = "Engine3D/vendor/entt/include"
 	IncludeDirs["ImGuizmo"] = "Engine3D/vendor/ImGuizmo/include"
 	IncludeDirs["Assimp"] = "Engine3D/vendor/Assimp/include"
+	IncludeDirs["yaml_cpp"] = "Engine3D/vendor/yaml-cpp/include"
 
+group "Dependencies"
 	include "Engine3D/vendor/GLFW"
 	include "Engine3D/vendor/Glad"
 	include "Engine3D/vendor/ImGui"
+	include "Engine3D/vendor/yaml-cpp"
+group ""
 project "Engine3D"
 	location "Engine3D"
 	kind "StaticLib"
@@ -59,7 +63,8 @@ project "Engine3D"
 		"%{IncludeDirs.stb_image}",
 		"%{IncludeDirs.entt}",
 		"%{IncludeDirs.ImGuizmo}",
-		"%{IncludeDirs.Assimp}"
+		"%{IncludeDirs.Assimp}",
+		"%{IncludeDirs.yaml_cpp}"
 	}
 
 	defines
@@ -73,6 +78,7 @@ project "Engine3D"
 		"GLFW",
 		"Glad",
 		"ImGui",
+		"yaml-cpp",
 		"opengl32.lib"
 	}
 
@@ -122,7 +128,7 @@ project "Engine3D-Editor"
 		"%{IncludeDirs.glm}",
 		"%{IncludeDirs.entt}",
 		"%{IncludeDirs.ImGuizmo}",
-		"%{IncludeDirs.Assimp}"
+		"%{IncludeDirs.Assimp}",
 	}
 
 	links

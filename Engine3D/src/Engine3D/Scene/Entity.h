@@ -15,6 +15,7 @@ namespace E3D
 	public:
 		Entity() = default;
 		Entity(entt::entity entity, Scene* scene);
+		Entity(uint32_t entity, Scene* scene);
 		Entity(const Entity& other) = default;
 
 		void AddChild(Entity child);
@@ -23,7 +24,11 @@ namespace E3D
 		T& AddComponent(Args&&... args)
 		{
 			E3D_CORE_ASSERT(!HasComponent<T>(), "Component already exists!");
-			return m_Scene->m_Registry.emplace<T>(m_Entity, std::forward<Args>(args)...);
+
+			T& component = m_Scene->m_Registry.emplace<T>(m_Entity, std::forward<Args>(args)...);
+			m_Scene->OnComponentAdded<T>(*this, component);
+
+			return component;
 		}
 
 		template<typename T>
@@ -50,6 +55,7 @@ namespace E3D
 
 		operator bool() const { return m_Entity != entt::null; }
 		operator uint32_t() const { return (uint32_t)m_Entity; }
+		operator entt::entity() const { return m_Entity; }
 
 		bool operator==(const Entity& other) const 
 		{ 

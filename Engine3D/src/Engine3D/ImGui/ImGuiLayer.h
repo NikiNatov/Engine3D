@@ -20,6 +20,8 @@ namespace E3D
 		void End();
 
 		inline void BlockEvents(bool block) { m_BlockEvents = block; }
+
+		void SetDarkTheme();
 	private:
 		bool m_BlockEvents = true;
 	};

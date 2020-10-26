@@ -22,6 +22,12 @@ namespace E3D
 		virtual void OnAttach() override;
 		virtual void OnDetach() override;
 	private:
+		bool OnKeyPressed(KeyPressedEvent& e);
+
+		void SaveSceneAs();
+		void NewScene();
+		void OpenScene();
+	private:
 		Ref<Texture2D> m_PlayButtonTexture;
 		Ref<Texture2D> m_StopButtonTexture;
 		Ref<Framebuffer> m_Framebuffer;

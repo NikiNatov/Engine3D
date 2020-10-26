@@ -37,6 +37,8 @@ namespace E3D
 			return ss.str();
 		}
 
+		inline int GetRepeatCount() const { return m_RepeatCount; }
+
 		EVENT_CLASS_TYPE(KeyPressed)
 
 	private:

@@ -1,133 +1,70 @@
 #include "pch.h"
 #include "FileDialog.h"
 
+#include <Windows.h>
+#include <commdlg.h>
+
+#include <GLFW\glfw3.h>
+#define GLFW_EXPOSE_NATIVE_WIN32
+#include <GLFW\glfw3native.h>
+
+#include "Engine3D\Core\Application.h"
+
 namespace E3D
 {
-	std::string FileDialog::OpenFile(const COMDLG_FILTERSPEC* fileTypes, UINT fileTypeCount)
+	std::string FileDialog::OpenFile(const char* filters)
 	{
-		HRESULT hr = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED |
-			COINIT_DISABLE_OLE1DDE);
-		if (SUCCEEDED(hr))
+		OPENFILENAMEA ofn;
+		CHAR szFile[260] = { 0 };
+		ZeroMemory(&ofn, sizeof(OPENFILENAME));
+		ofn.lStructSize = sizeof(OPENFILENAME);
+		ofn.hwndOwner = glfwGetWin32Window((GLFWwindow*)Application::GetInstance().GetWindow().GetNativeWindow());
+		ofn.lpstrFile = szFile;
+		ofn.nMaxFile = sizeof(szFile);
+		ofn.lpstrFilter = filters;
+		ofn.nFilterIndex = 1;
+		ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;
+
+		if (GetOpenFileNameA(&ofn) == TRUE)
 		{
-			IFileOpenDialog* pFileOpen;
-			/*COMDLG_FILTERSPEC rgSpec[] =
-			{
-				{ L"JPEG", L"*.jpg;*.jpeg" },
-				{ L"PNG", L"*.png" },
-				{ L"HDR", L"*.hdr" },
-				{ L"TGA", L"*.tga" },
-				{ L"Images", L"*.jpg;*.png;*.tga;*bmp;*.hdr" }
-			};*/
-			// Create the FileOpenDialog object.
-			hr = CoCreateInstance(CLSID_FileOpenDialog, NULL, CLSCTX_ALL,
-				IID_IFileOpenDialog, reinterpret_cast<void**>(&pFileOpen));
-
-			pFileOpen->SetFileTypes(fileTypeCount, fileTypes);
-			if (SUCCEEDED(hr))
-			{
-				// Show the Open dialog box.
-				hr = pFileOpen->Show(NULL);
-
-				// Get the file name from the dialog box.
-				if (SUCCEEDED(hr))
-				{
-					IShellItem* pItem;
-					hr = pFileOpen->GetResult(&pItem);
-					if (SUCCEEDED(hr))
-					{
-						PWSTR pszFilePath;
-						hr = pItem->GetDisplayName(SIGDN_FILESYSPATH, &pszFilePath);
-
-						// Display the file name to the user.
-						if (SUCCEEDED(hr))
-						{
-							char cstrPath[260 * 2]{ 0 };
-							int ret = wcstombs(cstrPath, pszFilePath, sizeof(cstrPath));
-							CoUninitialize();
-
-							return std::string(cstrPath);
-						}
-						pItem->Release();
-					}
-				}
-				pFileOpen->Release();
-			}
+			return ofn.lpstrFile;
 		}
-
-		CoUninitialize();
 
 		return std::string();
 	}
 
-	std::string FileDialog::SaveFile(const COMDLG_FILTERSPEC* fileTypes, UINT fileTypeCount)
+	std::string FileDialog::SaveFile(const char* filters)
 	{
-		HRESULT hr = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED |
-			COINIT_DISABLE_OLE1DDE);
-		if (SUCCEEDED(hr))
+		OPENFILENAMEA ofn;
+		CHAR szFile[260] = { 0 };
+		ZeroMemory(&ofn, sizeof(OPENFILENAME));
+		ofn.lStructSize = sizeof(OPENFILENAME);
+		ofn.hwndOwner = glfwGetWin32Window((GLFWwindow*)Application::GetInstance().GetWindow().GetNativeWindow());
+		ofn.lpstrFile = szFile;
+		ofn.nMaxFile = sizeof(szFile);
+		ofn.lpstrFilter = filters;
+		ofn.nFilterIndex = 1;
+		ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;
+
+		if (GetSaveFileNameA(&ofn) == TRUE)
 		{
-			IFileSaveDialog* pFileSave;
-
-			hr = CoCreateInstance(CLSID_FileSaveDialog, NULL, CLSCTX_ALL,
-				IID_IFileSaveDialog, reinterpret_cast<void**>(&pFileSave));
-
-			pFileSave->SetFileTypes(fileTypeCount, fileTypes);
-			if (SUCCEEDED(hr))
-			{
-				hr = pFileSave->Show(NULL);
-
-				if (SUCCEEDED(hr))
-				{
-					IShellItem* pItem;
-					hr = pFileSave->GetResult(&pItem);
-					if (SUCCEEDED(hr))
-					{
-						PWSTR pszFilePath;
-						hr = pItem->GetDisplayName(SIGDN_FILESYSPATH, &pszFilePath);
-
-						if (SUCCEEDED(hr))
-						{
-							char cstrPath[260 * 2]{ 0 };
-							int ret = wcstombs(cstrPath, pszFilePath, sizeof(cstrPath));
-							CoUninitialize();
-
-							return std::string(cstrPath);
-						}
-						pItem->Release();
-					}
-				}
-				pFileSave->Release();
-			}
+			return ofn.lpstrFile;
 		}
-
-		CoUninitialize();
 
 		return std::string();
 	}
 
 	std::string FileDialog::OpenModelFile()
 	{
-		COMDLG_FILTERSPEC rgSpec[] =
-		{
-			{ L"Models", L"*.fbx;*.obj"},
-			{ L"FBX", L"*.fbx" },
-			{ L"OBJ", L"*.obj" }
-		};
+		const char* filters = "All Models (*.fbx; *.obj)\0*.fbx;*obj\0FBX (*.fbx)\0*.fbx\0OBJ (*.obj)\0.obj";
 
-		return OpenFile(rgSpec, 3);
+		return OpenFile(filters);
 	}
 
 	std::string FileDialog::OpenTextureFile()
 	{
-		COMDLG_FILTERSPEC rgSpec[] =
-		{
-			{ L"Images", L"*.jpg;*.png;*.tga;*bmp;*.hdr" },
-			{ L"JPEG", L"*.jpg;*.jpeg" },
-			{ L"PNG", L"*.png" },
-			{ L"HDR", L"*.hdr" },
-			{ L"TGA", L"*.tga" },
-			{ L"BMP", L"*.bmp" }
-		};
+		const char* filters = "Images (*.jpg;*.png;*.tga;*bmp;*.hdr)\0*.jpg;*.png;*.tga;*bmp;*.hdr\0";
 
-		return OpenFile(rgSpec, 6);
+		return OpenFile(filters);
 	}
 }

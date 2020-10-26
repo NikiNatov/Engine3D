@@ -155,7 +155,7 @@ namespace E3D
 
 		newNode->Name = std::string(node->mName.C_Str());
 		newNode->Transform = aiToGLM(node->mTransformation);
-
+		
 		for (size_t i = 0; i < node->mNumMeshes; i++)
 		{
 			const uint32_t index = node->mMeshes[i];

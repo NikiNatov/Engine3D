@@ -1,0 +1,156 @@
+Scene: Untitled
+Entities:
+  - Entity: 11
+    NameComponent:
+      Name: Camera
+    TransformComponent:
+      Translation: [0.000156402588, 130.899994, -168.320007]
+      Rotation: [2.76809239, 3.2061078e-15, -3.14158821]
+      Scale: [3.99997854, 4, 3.99997854]
+    CameraComponent:
+      Camera:
+        ProjectionType: 0
+        PerspectiveFOV: 65
+        PerspectiveNear: 0.100000001
+        PerspectiveFar: 1000
+        OrthographicSize: 10
+        OrthographicNear: 1000
+        OrthographicFar: -1000
+      Primary: true
+    SceneNodeComponent:
+      Parent: 5
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 10
+    NameComponent:
+      Name: cloth_baby_yoda
+    TransformComponent:
+      Translation: [-4.91142273e-05, 2.45571136e-05, 2.76565552e-05]
+      Rotation: [-7.82311531e-08, 1.78814787e-07, 4.47036939e-07]
+      Scale: [0.999995232, 0.999999166, 1.00000048]
+    SceneNodeComponent:
+      Parent: 6
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 9
+    NameComponent:
+      Name: Sphere
+    TransformComponent:
+      Translation: [3.28278446, 83.0420914, 5.97715521]
+      Rotation: [0.188454181, -0.384699941, -0.071450755]
+      Scale: [1, 1, 0.99999994]
+    SceneNodeComponent:
+      Parent: 6
+      FirstChild: 1048575
+      NextSibling: 10
+      PreviousSibling: 1048575
+  - Entity: 8
+    NameComponent:
+      Name: Sphere_1
+    TransformComponent:
+      Translation: [-4.62987661, 83.0420914, 3.87063003]
+      Rotation: [0.231565133, -0.712647915, -0.152967677]
+      Scale: [1, 0.99999994, 0.99999994]
+    SceneNodeComponent:
+      Parent: 6
+      FirstChild: 1048575
+      NextSibling: 9
+      PreviousSibling: 1048575
+  - Entity: 7
+    NameComponent:
+      Name: yoidahairmesh
+    TransformComponent:
+      Translation: [0.947702408, 83.3577347, -0.129333496]
+      Rotation: [-1.04429652e-07, -0.272271663, 2.24331174e-07]
+      Scale: [0.999997556, 1.00000107, 0.999999046]
+    SceneNodeComponent:
+      Parent: 6
+      FirstChild: 1048575
+      NextSibling: 8
+      PreviousSibling: 1048575
+  - Entity: 6
+    NameComponent:
+      Name: Model Hierarchy
+    TransformComponent:
+      Translation: [0, 0, 0.000235557556]
+      Rotation: [0, 3.08748722, 0]
+      Scale: [1, 1, 1]
+    SceneNodeComponent:
+      Parent: 5
+      FirstChild: 7
+      NextSibling: 11
+      PreviousSibling: 1048575
+  - Entity: 5
+    NameComponent:
+      Name: YODA_Export.fbx
+    TransformComponent:
+      Translation: [-0.923563004, 0.428555489, 0.77976799]
+      Rotation: [0.193731546, 2.11359358, 0.183259577]
+      Scale: [0.110000014, 0.110000014, 0.110000014]
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 6
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 4
+    NameComponent:
+      Name: Unnamed Entity
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [80, 1, 80]
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 3
+    NameComponent:
+      Name: Wall4
+    TransformComponent:
+      Translation: [39, 20, -3.54885851e-05]
+      Rotation: [-3.14159083, 1.57079542, -3.14159083]
+      Scale: [80, 39.9996071, 1]
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 2
+    NameComponent:
+      Name: Wall1
+    TransformComponent:
+      Translation: [-39, 20, -3.54885524e-05]
+      Rotation: [1.81992505e-06, 1.57079542, 1.81992505e-06]
+      Scale: [80, 39.9991837, 1]
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 1
+    NameComponent:
+      Name: Wall2
+    TransformComponent:
+      Translation: [0, 20, 39]
+      Rotation: [0, -0, 0]
+      Scale: [80, 40, 1]
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 0
+    NameComponent:
+      Name: Wall3
+    TransformComponent:
+      Translation: [0, 20, -39]
+      Rotation: [0, -0, 0]
+      Scale: [80, 40, 1]
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575

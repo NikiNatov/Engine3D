@@ -5,6 +5,8 @@
 #include <glm\gtc\matrix_transform.hpp>
 #include <glm\gtc\type_ptr.hpp>
 
+#include "Engine3D\Scene\SceneSerializer.h"
+
 #include "../assets/scripts/Player.h"
 
 namespace E3D
@@ -26,8 +28,8 @@ namespace E3D
 		{
 		case Scene::SceneState::Edit:
 		{
-			if (m_ViewportFocused)
-				m_Scene->GetCamera().Update(ts);
+			//if (m_ViewportFocused)
+			m_Scene->GetCamera().Update(ts);
 
 			m_Scene->OnEditRender();
 			break;
@@ -52,6 +54,9 @@ namespace E3D
 	{
 		if (m_Scene->GetSceneState() != Scene::SceneState::Running && !ImGuizmo::IsUsing())
 			m_Scene->GetCamera().OnEvent(event);
+
+		EventDispatcher dispatcher(event);
+		dispatcher.Dispatch<KeyPressedEvent>(E3D_BIND_EVENT_FN(EditorLayer::OnKeyPressed));
 	}
 
 	void EditorLayer::OnImGuiRender()
@@ -85,16 +90,31 @@ namespace E3D
 			ImGui::PopStyleVar(2);
 
 		ImGuiIO& io = ImGui::GetIO();
+		ImGuiStyle& style = ImGui::GetStyle();
+		float minWinSizeX = style.WindowMinSize.x;
+		style.WindowMinSize.x = 370.0f;
+
 		if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
 		{
 			ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
 			ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
 		}
 
+		style.WindowMinSize.x = minWinSizeX;
+
 		if (ImGui::BeginMenuBar())
 		{
 			if (ImGui::BeginMenu("File"))
 			{
+				if (ImGui::MenuItem("New", "Ctrl+N"))
+					NewScene();
+
+				if (ImGui::MenuItem("Open Scene...", "Ctrl+O"))
+					OpenScene();
+
+				if (ImGui::MenuItem("Save As...", "Ctrl+S"))
+					SaveSceneAs();
+
 				if (ImGui::MenuItem("Exit"))
 					Application::GetInstance().Close();
 
@@ -124,8 +144,9 @@ namespace E3D
 		ImGui::End();
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0.0f, 0.0f });
-		ImGui::Begin("Scene Control", 0, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar);
+		ImGui::Begin("Scene Control", 0, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar);
 
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0, 0, 0, 1 });
 		if (ImGui::ImageButton((void*)m_PlayButtonTexture->GetTextureID(), { 40.0f, 40.0f }, { 0, 1 }, { 1, 0 }))
 		{
 			if (m_Scene->GetSceneState() != Scene::SceneState::Running)
@@ -143,6 +164,7 @@ namespace E3D
 				m_Scene->OnSceneEnd();
 			}
 		}
+		ImGui::PopStyleColor();
 		
 		ImGui::End();
 		ImGui::PopStyleVar();
@@ -160,7 +182,8 @@ namespace E3D
 			float snap[3] = { 1.0f, 1.0f, 1.0f };
 			bool useSnap = false;
 
-			auto& entityTransform = m_SelectedEntity.GetComponent<TransformComponent>().Transform;
+			auto& tc = m_SelectedEntity.GetComponent<TransformComponent>();
+			auto entityTransform = tc.GetTransform();
 			glm::mat4 entityWorldTransform = entityTransform;
 			glm::mat4 parentWorldTransform = glm::mat4(1.0f);
 
@@ -169,7 +192,7 @@ namespace E3D
 				auto currentParent = m_SelectedEntity.GetComponent<SceneNodeComponent>().Parent;
 				while (currentParent)
 				{
-					auto& parentTransform = currentParent.GetComponent<TransformComponent>().Transform;
+					auto parentTransform = currentParent.GetComponent<TransformComponent>().GetTransform();
 					entityWorldTransform = parentTransform * entityWorldTransform;
 					currentParent = currentParent.GetComponent<SceneNodeComponent>().Parent;
 				}
@@ -190,6 +213,13 @@ namespace E3D
 			ImGuizmo::Manipulate(glm::value_ptr(viewMatrix), glm::value_ptr(projMatrix), currentGuizmoOp, ImGuizmo::LOCAL, glm::value_ptr(entityWorldTransform), NULL, useSnap ? &snap[0] : NULL);
 
 			entityTransform = glm::inverse(parentWorldTransform) * entityWorldTransform;
+
+			glm::vec3 translation, rotation, scale;
+			ImGuizmo::DecomposeMatrixToComponents(glm::value_ptr(entityTransform), glm::value_ptr(translation), glm::value_ptr(rotation), glm::value_ptr(scale));
+
+			tc.Translation = translation;
+			tc.Rotation = glm::radians(rotation);
+			tc.Scale = scale;
 		}
 
 		m_ViewportFocused = ImGui::IsWindowFocused();
@@ -226,6 +256,15 @@ namespace E3D
 
 		m_Grid = MeshFactory::CreateGrid(80, 80, 80, CreateRef<Material>(shader));
 
+		m_Framebuffer = Framebuffer::Create({ 1280, 720, TextureTarget::Texture2D, TextureFormat::RGBA8, 1 });
+
+		m_Skybox = CreateRef<Skybox>();
+		m_Skybox->SetTexture("assets/textures/skybox/birchwood_4k.hdr");
+
+		m_Scene = CreateRef<Scene>(m_Skybox);
+
+		m_SceneGraphPanel.SetScene(m_Scene);
+#if 1
 		m_Gold = CreateRef<Material>(shader);
 		m_Grass = CreateRef<Material>(shader);
 		m_Marble = CreateRef<Material>(shader);
@@ -291,14 +330,6 @@ namespace E3D
 		MaterialManager::LoadMaterial(m_Wood);
 		MaterialManager::LoadMaterial(m_PistolMaterial);
 
-
-		m_Framebuffer = Framebuffer::Create({ 1280, 720, TextureTarget::Texture2D, TextureFormat::RGBA8, 1 });
-
-		m_Skybox = CreateRef<Skybox>();
-		m_Skybox->SetTexture("assets/textures/skybox/birchwood_4k.hdr");
-
-		m_Scene = CreateRef<Scene>(m_Skybox);
-
 		auto spaceShip = ModelManager::LoadModel("assets/models/starwars/spaceship/tie-fighter.fbx");
 		m_Player = m_Scene->CreateFromModel(spaceShip, "Player");
 		m_Player.AddComponent<ScriptComponent>().Bind<Player>();
@@ -309,8 +340,8 @@ namespace E3D
 		m_MainCamera = m_Scene->CreateEntity("Main Camera");
 		m_MainCamera.AddComponent<MeshComponent>(cameraMesh);
 		m_MainCamera.AddComponent<CameraComponent>().Primary = true;
-		auto& cameraTransform = m_MainCamera.GetComponent<TransformComponent>().Transform;
-		cameraTransform = glm::scale(glm::mat4(1.0f), glm::vec3(0.5f, 0.5f, 0.5f)) * glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 3.0f, 5.0f));
+		m_MainCamera.GetComponent<TransformComponent>().Translation = { 0.0f, 3.0f, 5.0f };
+		m_MainCamera.GetComponent<TransformComponent>().Scale = { 0.5f, 0.5f, 0.5f };
 
 		m_Player.AddChild(m_MainCamera);
 
@@ -319,33 +350,108 @@ namespace E3D
 
 		Entity e = m_Scene->CreateEntity("Sphere");
 		e.AddComponent<MeshComponent>(std::make_shared<Mesh>(*sphereMesh)).Mesh->SetMaterial(m_Gold);
-		e.GetComponent<TransformComponent>().Transform = glm::translate(glm::mat4(1.0f), glm::vec3(-100.0f, 8.0f, -90.0f)) * glm::scale(glm::mat4(1.0f), glm::vec3(30.0f));
+		e.GetComponent<TransformComponent>().Translation = { -100.0f, 8.0f, -90.0f };
+		e.GetComponent<TransformComponent>().Scale = { 30.0f, 30.0f, 30.0f };
 
 		e = m_Scene->CreateEntity("Sphere");
 		e.AddComponent<MeshComponent>(std::make_shared<Mesh>(*sphereMesh)).Mesh->SetMaterial(m_Grass);
-		e.GetComponent<TransformComponent>().Transform = glm::translate(glm::mat4(1.0f), glm::vec3(-60.0f, 8.0f, -90.0f)) * glm::scale(glm::mat4(1.0f), glm::vec3(30.0f));
+		e.GetComponent<TransformComponent>().Translation = { -60.0f, 8.0f, -90.0f };
+		e.GetComponent<TransformComponent>().Scale = { 30.0f, 30.0f, 30.0f };
 
 		e = m_Scene->CreateEntity("Sphere");
 		e.AddComponent<MeshComponent>(std::make_shared<Mesh>(*sphereMesh)).Mesh->SetMaterial(m_Marble);
-		e.GetComponent<TransformComponent>().Transform = glm::translate(glm::mat4(1.0f), glm::vec3(-20.0f, 8.0f, -90.0f)) * glm::scale(glm::mat4(1.0f), glm::vec3(30.0f));
+		e.GetComponent<TransformComponent>().Translation = { -20.0f, 8.0f, -90.0f };
+		e.GetComponent<TransformComponent>().Scale = { 30.0f, 30.0f, 30.0f };
 
 		e = m_Scene->CreateEntity("Sphere");
 		e.AddComponent<MeshComponent>(std::make_shared<Mesh>(*sphereMesh)).Mesh->SetMaterial(m_Rock);
-		e.GetComponent<TransformComponent>().Transform = glm::translate(glm::mat4(1.0f), glm::vec3(20.0f, 8.0f, -90.0f)) * glm::scale(glm::mat4(1.0f), glm::vec3(30.0f));
+		e.GetComponent<TransformComponent>().Translation = { 20.0f, 8.0f, -90.0f };
+		e.GetComponent<TransformComponent>().Scale = { 30.0f, 30.0f, 30.0f };
 
 		e = m_Scene->CreateEntity("Sphere");
 		e.AddComponent<MeshComponent>(std::make_shared<Mesh>(*sphereMesh)).Mesh->SetMaterial(m_RustedIron);
-		e.GetComponent<TransformComponent>().Transform = glm::translate(glm::mat4(1.0f), glm::vec3(60.0f, 8.0f, -90.0f)) * glm::scale(glm::mat4(1.0f), glm::vec3(30.0f));
+		e.GetComponent<TransformComponent>().Translation = { 60.0f, 8.0f, -90.0f };
+		e.GetComponent<TransformComponent>().Scale = { 30.0f, 30.0f, 30.0f };
 
 		e = m_Scene->CreateEntity("Sphere");
 		e.AddComponent<MeshComponent>(std::make_shared<Mesh>(*sphereMesh)).Mesh->SetMaterial(m_Wood);
-		e.GetComponent<TransformComponent>().Transform = glm::translate(glm::mat4(1.0f), glm::vec3(100.0f, 8.0f, -90.0f)) * glm::scale(glm::mat4(1.0f), glm::vec3(30.0f));
-
-		
-		m_SceneGraphPanel.SetScene(m_Scene);
+		e.GetComponent<TransformComponent>().Translation = { 100.0f, 8.0f, -90.0f };
+		e.GetComponent<TransformComponent>().Scale = { 30.0f, 30.0f, 30.0f };		
+#endif
 	}
 
 	void EditorLayer::OnDetach()
 	{
+	}
+	bool EditorLayer::OnKeyPressed(KeyPressedEvent& e)
+	{
+
+		if (e.GetRepeatCount() > 0)
+			return false;
+
+		bool control = Input::IsKeyPressed(E3D_KEY_LEFT_CONTROL) || Input::IsKeyPressed(E3D_KEY_RIGHT_CONTROL);
+		bool shift = Input::IsKeyPressed(E3D_KEY_LEFT_SHIFT) || Input::IsKeyPressed(E3D_KEY_RIGHT_SHIFT);
+
+		switch (e.GetKeyCode())
+		{
+			case E3D_KEY_S:
+			{
+				if (control)
+					SaveSceneAs();
+
+				break;
+			}
+			case E3D_KEY_N:
+			{
+				if (control)
+					NewScene();
+
+				break;
+			}
+			case E3D_KEY_O:
+			{
+				if (control)
+					OpenScene();
+
+				break;
+			}
+		}
+
+		return true;
+	}
+
+	void EditorLayer::SaveSceneAs()
+	{
+		const std::string& path = FileDialog::SaveFile("Engine3D Scene (*.e3d)\0*.e3d\0");
+
+		if (!path.empty())
+		{
+			SceneSerializer serializer(m_Scene);
+			serializer.Serialize(path);
+		}
+	}
+
+	void EditorLayer::NewScene()
+	{
+		m_Scene = CreateRef<Scene>(m_Skybox);
+		m_Scene->OnViewportResize(m_ViewportSize.x, m_ViewportSize.y);
+		m_Scene->GetCamera().SetProjection(65.0f, m_ViewportSize.x / m_ViewportSize.y);
+		m_SceneGraphPanel.SetScene(m_Scene);
+	}
+
+	void EditorLayer::OpenScene()
+	{
+		const std::string& path = FileDialog::OpenFile("Engine3D Scene (*.e3d)\0*.e3d\0");
+
+		if (!path.empty())
+		{
+			m_Scene = CreateRef<Scene>(m_Skybox);
+			m_Scene->OnViewportResize(m_ViewportSize.x, m_ViewportSize.y);
+			m_Scene->GetCamera().SetProjection(65.0f, m_ViewportSize.x / m_ViewportSize.y);
+			m_SceneGraphPanel.SetScene(m_Scene);
+
+			SceneSerializer serializer(m_Scene);
+			serializer.Deserialize(path);
+		}
 	}
 }
