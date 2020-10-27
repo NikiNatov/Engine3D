@@ -23,7 +23,7 @@ namespace E3D
 
 	Ref<Texture2D> TextureManager::GetTexture(const std::string& name)
 	{
-		E3D_CORE_ASSERT(Exists(name), "Material does not exist!");
+		E3D_CORE_ASSERT(Exists(name), "Texture does not exist!");
 		return m_LoadedTextures[name];
 	}
 

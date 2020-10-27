@@ -48,6 +48,7 @@ namespace E3D
 		virtual void GenerateMipMaps() override;
 
 		virtual uint32_t GetTextureID() const override { return m_TextureID; }
+		virtual const std::string& GetName() const override { return m_Name; }
 
 		virtual uint32_t GetSize() const override { return m_Size; }
 
@@ -56,6 +57,7 @@ namespace E3D
 			return m_TextureID == ((OpenGLTextureCubeMap&)other).m_TextureID;
 		}
 	private:
+		std::string m_Name = "";
 		uint32_t m_TextureID;
 		uint32_t m_Size;
 		TextureSpecification m_TextureSpec;

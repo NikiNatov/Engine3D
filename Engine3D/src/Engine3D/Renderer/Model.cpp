@@ -1,6 +1,9 @@
 #include "pch.h"
 #include "Model.h"
 
+#include "Engine3D\ResourceManager\MaterialManager.h"
+#include "Engine3D\ResourceManager\TextureManager.h"
+
 #include <assimp/postprocess.h>
 #include <assimp/pbrmaterial.h>
 
@@ -114,6 +117,8 @@ namespace E3D
 		}
 
 		Ref<Material> meshMaterial = CreateRef<Material>(ShaderLibrary::Get("StaticModelShader"));
+		meshMaterial->SetName(std::string(mesh->mName.C_Str()) + "_Material");
+		MaterialManager::LoadMaterial(meshMaterial);
 
 		if (mesh->mMaterialIndex >= 0)
 		{
@@ -123,7 +128,7 @@ namespace E3D
 			if (material->GetTexture(aiTextureType_DIFFUSE, 0, &textureName) == aiReturn_SUCCESS)
 			{
 				std::string textureFilepath = m_Filepath + "/" + textureName.C_Str();
-				meshMaterial->SetAlbedoMap(Texture2D::Create(textureFilepath));
+				meshMaterial->SetAlbedoMap(TextureManager::LoadTexture(Texture2D::Create(textureFilepath)));
 				meshMaterial->GetAlbedoMap()->GenerateMipMaps();
 			}
 			if (material->GetTexture(aiTextureType_NORMALS, 0, &textureName) == aiReturn_SUCCESS)
@@ -145,6 +150,7 @@ namespace E3D
 
 		Ref<Mesh> newMesh = CreateRef<Mesh>(vertices, indices, meshMaterial);
 		newMesh->SetName(mesh->mName.C_Str());
+		
 
 		return newMesh;
 	}

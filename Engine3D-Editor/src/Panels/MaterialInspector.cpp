@@ -11,14 +11,8 @@ namespace E3D
 {
 	MaterialInspector::MaterialInspector()
 	{
-		m_WhiteTexture = Texture2D::Create("assets/textures/checkerboard.png");
+		m_WhiteTexture = TextureManager::LoadTexture(Texture2D::Create("assets/textures/checkerboard.png"));
 		m_WhiteTexture->GenerateMipMaps();
-		m_Normal = Texture2D::Create("assets/models/gun/Textures/Cerberus_N.tga");
-		m_Normal->GenerateMipMaps();
-		m_Roughness = Texture2D::Create("assets/models/gun/Textures/Cerberus_R.tga");
-		m_Roughness->GenerateMipMaps();
-		m_Metalness = Texture2D::Create("assets/models/gun/Textures/Cerberus_M.tga");
-		m_Metalness->GenerateMipMaps();
 	}
 
 	void MaterialInspector::OnImGuiRender(Entity entity)

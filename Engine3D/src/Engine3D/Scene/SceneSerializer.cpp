@@ -5,6 +5,9 @@
 #include "Engine3D\Scene\Entity.h"
 
 #include "Engine3D\ResourceManager\MeshManager.h"
+#include "Engine3D\ResourceManager\MaterialManager.h"
+#include "Engine3D\ResourceManager\TextureManager.h"
+#include "Engine3D\Renderer\Shader.h"
 
 #include <yaml-cpp\yaml.h>
 
@@ -114,6 +117,24 @@ namespace E3D
 
 			auto& mc = entity.GetComponent<MeshComponent>();
 			out << YAML::Key << "Mesh" << YAML::Value << mc.Mesh->GetName();
+			out << YAML::Key << "Material" << YAML::Value;
+
+			out << YAML::BeginMap;
+			auto material = mc.Mesh->GetMaterial();
+			auto albedoMap = material->GetAlbedoMap();
+			auto normalMap = material->GetNormalMap();
+			auto metalnessMap = material->GetMetalnessMap();
+			auto roughnessMap = material->GetRoughnessMap();
+			out << YAML::Key << "Name" << YAML::Value << material->GetName();
+			out << YAML::Key << "AlbedoMap" << YAML::Value << (albedoMap ? albedoMap->GetName() : "<NO TEXTURE>");
+			out << YAML::Key << "NormalMap" << YAML::Value << (normalMap ? normalMap->GetName() : "<NO TEXTURE>");
+			out << YAML::Key << "RoughnessMap" << YAML::Value << (roughnessMap ? roughnessMap->GetName() : "<NO TEXTURE>");
+			out << YAML::Key << "MetalnessMap" << YAML::Value << (metalnessMap ? metalnessMap->GetName() : "<NO TEXTURE>");
+			out << YAML::Key << "AlbedoColor" << YAML::Value << material->GetAlbedoColor();
+			out << YAML::Key << "RoughnessValue" << YAML::Value << material->GetRoughness();
+			out << YAML::Key << "MetalnessValue" << YAML::Value << material->GetMetalness();
+
+			out << YAML::EndMap;
 
 			out << YAML::EndMap;
 		}
@@ -242,8 +263,28 @@ namespace E3D
 				{
 					auto& mc = deserializedEntity.AddComponent<MeshComponent>();
 					auto mesh = MeshManager::GetMesh(meshComponent["Mesh"].as<std::string>());
-					mc.Mesh = CreateRef<Mesh>(mesh->GetVertexArray(), CreateRef<Material>(mesh->GetMaterial()->GetShader())); // TODO: Material Instances
-					mc.Mesh->SetName(mesh->GetName());
+
+					auto material = meshComponent["Material"];
+					if (material)
+					{
+						Ref<Material> meshMaterial = CreateRef<Material>(ShaderLibrary::Get("StaticModelShader"));
+
+						meshMaterial->SetAlbedoColor(material["AlbedoColor"].as<glm::vec3>());
+						meshMaterial->SetRoughness(material["RoughnessValue"].as<float>());
+						meshMaterial->SetMetalness(material["MetalnessValue"].as<float>());
+
+						if(material["AlbedoMap"].as<std::string>() != "<NO TEXTURE>")
+							meshMaterial->SetAlbedoMap(TextureManager::GetTexture(material["AlbedoMap"].as<std::string>()));
+						if (material["NormalMap"].as<std::string>() != "<NO TEXTURE>")
+							meshMaterial->SetNormalMap(TextureManager::GetTexture(material["NormalMap"].as<std::string>()));
+						if (material["RoughnessMap"].as<std::string>() != "<NO TEXTURE>")
+							meshMaterial->SetRoughnessMap(TextureManager::GetTexture(material["RoughnessMap"].as<std::string>()));
+						if (material["MetalnessMap"].as<std::string>() != "<NO TEXTURE>")
+							meshMaterial->SetMetalnessMap(TextureManager::GetTexture(material["MetalnessMap"].as<std::string>()));
+
+						mc.Mesh = CreateRef<Mesh>(mesh->GetVertexArray(), meshMaterial); // TODO: Material Instances
+						mc.Mesh->SetName(mesh->GetName());
+					}
 				}
 
 				auto cameraComponent = entities[it]["CameraComponent"];

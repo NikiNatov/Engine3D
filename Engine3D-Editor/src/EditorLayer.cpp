@@ -275,52 +275,52 @@ namespace E3D
 
 		// Gold
 		m_Gold->SetName("GoldMaterial");
-		m_Gold->SetAlbedoMap(Texture2D::Create("assets/PBR/gold/lightgold_albedo.png", {}, true));
-		m_Gold->SetNormalMap(Texture2D::Create("assets/PBR/gold/lightgold_normal-ogl.png", {}, true));
-		m_Gold->SetMetalnessMap(Texture2D::Create("assets/PBR/gold/lightgold_metallic.png", {}, true));
-		m_Gold->SetRoughnessMap(Texture2D::Create("assets/PBR/gold/lightgold_roughness.png", {}, true));
+		m_Gold->SetAlbedoMap(TextureManager::LoadTexture(Texture2D::Create("assets/PBR/gold/lightgold_albedo.png", {}, true)));
+		m_Gold->SetNormalMap(TextureManager::LoadTexture(Texture2D::Create("assets/PBR/gold/lightgold_normal-ogl.png", {}, true)));
+		m_Gold->SetMetalnessMap(TextureManager::LoadTexture(Texture2D::Create("assets/PBR/gold/lightgold_metallic.png", {}, true)));
+		m_Gold->SetRoughnessMap(TextureManager::LoadTexture(Texture2D::Create("assets/PBR/gold/lightgold_roughness.png", {}, true)));
 
 		// Grass
 		m_Grass->SetName("GrassMaterial");
-		m_Grass->SetAlbedoMap(Texture2D::Create("assets/PBR/grass/leafy-grass2-albedo.png", {}, true));
-		m_Grass->SetNormalMap(Texture2D::Create("assets/PBR/grass/leafy-grass2-normal-ogl.png", {}, true));
-		m_Grass->SetMetalnessMap(Texture2D::Create("assets/PBR/grass/leafy-grass2-metallic.png", {}, true));
-		m_Grass->SetRoughnessMap(Texture2D::Create("assets/PBR/grass/leafy-grass2-roughness.png", {}, true));
+		m_Grass->SetAlbedoMap(TextureManager::LoadTexture(Texture2D::Create("assets/PBR/grass/leafy-grass2-albedo.png", {}, true)));
+		m_Grass->SetNormalMap(TextureManager::LoadTexture(Texture2D::Create("assets/PBR/grass/leafy-grass2-normal-ogl.png", {}, true)));
+		m_Grass->SetMetalnessMap(TextureManager::LoadTexture(Texture2D::Create("assets/PBR/grass/leafy-grass2-metallic.png", {}, true)));
+		m_Grass->SetRoughnessMap(TextureManager::LoadTexture(Texture2D::Create("assets/PBR/grass/leafy-grass2-roughness.png", {}, true)));
 
 		// Marble
 		m_Marble->SetName("MarbleMaterial");
-		m_Marble->SetAlbedoMap(Texture2D::Create("assets/PBR/marble/stringy_marble_albedo.png", {}, true));
-		m_Marble->SetNormalMap(Texture2D::Create("assets/PBR/marble/stringy_marble_Normal-ogl.png", {}, true));
-		m_Marble->SetMetalnessMap(Texture2D::Create("assets/PBR/marble/stringy_marble_Metallic.png", {}, true));
-		m_Marble->SetRoughnessMap(Texture2D::Create("assets/PBR/marble/stringy_marble_Roughness.png", {}, true));
+		m_Marble->SetAlbedoMap(TextureManager::LoadTexture(Texture2D::Create("assets/PBR/marble/stringy_marble_albedo.png", {}, true)));
+		m_Marble->SetNormalMap(TextureManager::LoadTexture(Texture2D::Create("assets/PBR/marble/stringy_marble_Normal-ogl.png", {}, true)));
+		m_Marble->SetMetalnessMap(TextureManager::LoadTexture(Texture2D::Create("assets/PBR/marble/stringy_marble_Metallic.png", {}, true)));
+		m_Marble->SetRoughnessMap(TextureManager::LoadTexture(Texture2D::Create("assets/PBR/marble/stringy_marble_Roughness.png", {}, true)));
 
 		// Rock
 		m_Rock->SetName("RockMaterial");
-		m_Rock->SetAlbedoMap(Texture2D::Create("assets/PBR/rock/layered-rock1-albedo.png", {}, true));
-		m_Rock->SetNormalMap(Texture2D::Create("assets/PBR/rock/layered-rock1-normal-ogl.png", {}, true));
-		m_Rock->SetMetalnessMap(Texture2D::Create("assets/PBR/rock/layered-rock1-Metalness.png", {}, true));
-		m_Rock->SetRoughnessMap(Texture2D::Create("assets/PBR/rock/layered-rock1-rough.png", {}, true));
+		m_Rock->SetAlbedoMap(TextureManager::LoadTexture(Texture2D::Create("assets/PBR/rock/layered-rock1-albedo.png", {}, true)));
+		m_Rock->SetNormalMap(TextureManager::LoadTexture(Texture2D::Create("assets/PBR/rock/layered-rock1-normal-ogl.png", {}, true)));
+		m_Rock->SetMetalnessMap(TextureManager::LoadTexture(Texture2D::Create("assets/PBR/rock/layered-rock1-Metalness.png", {}, true)));
+		m_Rock->SetRoughnessMap(TextureManager::LoadTexture(Texture2D::Create("assets/PBR/rock/layered-rock1-rough.png", {}, true)));
 
 		// Rusted Iron
 		m_RustedIron->SetName("RustedIronMaterial");
-		m_RustedIron->SetAlbedoMap(Texture2D::Create("assets/PBR/rusted_iron/rustediron2_basecolor.png", {}, true));
-		m_RustedIron->SetNormalMap(Texture2D::Create("assets/PBR/rusted_iron/rustediron2_normal.png", {}, true));
-		m_RustedIron->SetMetalnessMap(Texture2D::Create("assets/PBR/rusted_iron/rustediron2_metallic.png", {}, true));
-		m_RustedIron->SetRoughnessMap(Texture2D::Create("assets/PBR/rusted_iron/rustediron2_roughness.png", {}, true));
+		m_RustedIron->SetAlbedoMap(TextureManager::LoadTexture(Texture2D::Create("assets/PBR/rusted_iron/rustediron2_basecolor.png", {}, true)));
+		m_RustedIron->SetNormalMap(TextureManager::LoadTexture(Texture2D::Create("assets/PBR/rusted_iron/rustediron2_normal.png", {}, true)));
+		m_RustedIron->SetMetalnessMap(TextureManager::LoadTexture(Texture2D::Create("assets/PBR/rusted_iron/rustediron2_metallic.png", {}, true)));
+		m_RustedIron->SetRoughnessMap(TextureManager::LoadTexture(Texture2D::Create("assets/PBR/rusted_iron/rustediron2_roughness.png", {}, true)));
 
 		// Wood
 		m_Wood->SetName("WoodMaterial");
-		m_Wood->SetAlbedoMap(Texture2D::Create("assets/PBR/wood/bamboo-wood-semigloss-albedo.png", {}, true));
-		m_Wood->SetNormalMap(Texture2D::Create("assets/PBR/wood/bamboo-wood-semigloss-normal.png", {}, true));
-		m_Wood->SetMetalnessMap(Texture2D::Create("assets/PBR/wood/bamboo-wood-semigloss-metal.png", {}, true));
-		m_Wood->SetRoughnessMap(Texture2D::Create("assets/PBR/wood/bamboo-wood-semigloss-roughness.png", {}, true));
+		m_Wood->SetAlbedoMap(TextureManager::LoadTexture(Texture2D::Create("assets/PBR/wood/bamboo-wood-semigloss-albedo.png", {}, true)));
+		m_Wood->SetNormalMap(TextureManager::LoadTexture(Texture2D::Create("assets/PBR/wood/bamboo-wood-semigloss-normal.png", {}, true)));
+		m_Wood->SetMetalnessMap(TextureManager::LoadTexture(Texture2D::Create("assets/PBR/wood/bamboo-wood-semigloss-metal.png", {}, true)));
+		m_Wood->SetRoughnessMap(TextureManager::LoadTexture(Texture2D::Create("assets/PBR/wood/bamboo-wood-semigloss-roughness.png", {}, true)));
 
 		// Pistol
 		m_PistolMaterial->SetName("PistolMaterial");
-		m_PistolMaterial->SetAlbedoMap(Texture2D::Create("assets/models/gun/Textures/Cerberus_A.tga", {}, true));
-		m_PistolMaterial->SetNormalMap(Texture2D::Create("assets/models/gun/Textures/Cerberus_N.tga", {}, true));
-		m_PistolMaterial->SetMetalnessMap(Texture2D::Create("assets/models/gun/Textures/Cerberus_M.tga", {}, true));
-		m_PistolMaterial->SetRoughnessMap(Texture2D::Create("assets/models/gun/Textures/Cerberus_R.tga", {}, true));
+		m_PistolMaterial->SetAlbedoMap(TextureManager::LoadTexture(Texture2D::Create("assets/models/gun/Textures/Cerberus_A.tga", {}, true)));
+		m_PistolMaterial->SetNormalMap(TextureManager::LoadTexture(Texture2D::Create("assets/models/gun/Textures/Cerberus_N.tga", {}, true)));
+		m_PistolMaterial->SetMetalnessMap(TextureManager::LoadTexture(Texture2D::Create("assets/models/gun/Textures/Cerberus_M.tga", {}, true)));
+		m_PistolMaterial->SetRoughnessMap(TextureManager::LoadTexture(Texture2D::Create("assets/models/gun/Textures/Cerberus_R.tga", {}, true)));
 
 		MaterialManager::LoadMaterial(m_Gold);
 		MaterialManager::LoadMaterial(m_Grass);
@@ -330,10 +330,6 @@ namespace E3D
 		MaterialManager::LoadMaterial(m_Wood);
 		MaterialManager::LoadMaterial(m_PistolMaterial);
 
-		auto spaceShip = ModelManager::LoadModel("assets/models/starwars/spaceship/tie-fighter.fbx");
-		m_Player = m_Scene->CreateFromModel(spaceShip, "Player");
-		m_Player.AddComponent<ScriptComponent>().Bind<Player>();
-
 
 		auto cameraModel = ModelManager::LoadModel("assets/models/camera/camera.obj");
 		auto& cameraMesh = cameraModel->GetMesh(0);
@@ -342,6 +338,12 @@ namespace E3D
 		m_MainCamera.AddComponent<CameraComponent>().Primary = true;
 		m_MainCamera.GetComponent<TransformComponent>().Translation = { 0.0f, 3.0f, 5.0f };
 		m_MainCamera.GetComponent<TransformComponent>().Scale = { 0.5f, 0.5f, 0.5f };
+
+		auto pistol = ModelManager::LoadModel("assets/models/gun/Cerberus_LP.fbx");
+
+		auto spaceShip = ModelManager::LoadModel("assets/models/starwars/spaceship/tie-fighter.fbx");
+		m_Player = m_Scene->CreateFromModel(spaceShip, "Player");
+		m_Player.AddComponent<ScriptComponent>().Bind<Player>();
 
 		m_Player.AddChild(m_MainCamera);
 
