@@ -18,7 +18,7 @@ namespace E3D
 
 		void OnImGuiRender();
 
-		inline Entity& GetSelectedEntity() { return m_SelectedEntity; }
+		inline Entity GetSelectedEntity() const { return m_SelectedEntity; }
 	private:
 		void DrawNode(Entity entity);
 	private:

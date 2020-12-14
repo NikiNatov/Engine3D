@@ -162,6 +162,7 @@ namespace E3D
 		
 		m_PrefilterMapFB->Unbind();
 
+		// BRDF ////////////////////////////////////////////////
 		
 	}
 }

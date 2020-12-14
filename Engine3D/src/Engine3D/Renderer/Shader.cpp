@@ -30,7 +30,10 @@ namespace E3D
 
 	void ShaderLibrary::Add(const std::string& name, const Ref<Shader>& shader)
 	{
-		E3D_CORE_ASSERT(!Exists(name), "Shader with that name already exists!");
+		//E3D_CORE_ASSERT(!Exists(name), "Shader with that name already exists!");
+		if (m_ShaderMap.find(name) != m_ShaderMap.end())
+			return;
+
 		m_ShaderMap[name] = shader;
 	}
 

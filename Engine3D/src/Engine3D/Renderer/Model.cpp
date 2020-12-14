@@ -49,7 +49,7 @@ namespace E3D
 	void Model::LoadFromFile(const std::string& filepath)
 	{
 		m_Scene = m_Importer.ReadFile(filepath, aiProcess_CalcTangentSpace |
-			aiProcess_Triangulate | aiProcess_GenNormals | aiProcess_GenBoundingBoxes | aiProcess_JoinIdenticalVertices);
+			aiProcess_Triangulate | aiProcess_GenNormals | aiProcess_JoinIdenticalVertices);
 
 		E3D_CORE_ASSERT(m_Scene, "Failed to load scene: {0}", m_Importer.GetErrorString());
 

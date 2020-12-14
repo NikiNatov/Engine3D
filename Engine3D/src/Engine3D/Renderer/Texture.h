@@ -28,7 +28,7 @@ namespace E3D
 		TextureWrap Wrap;
 
 		TextureSpecification() 
-			: Format(TextureFormat::RGBA8), Filter(TextureFilter::Linear), Wrap(TextureWrap::Clamp_To_Edge)
+			: Format(TextureFormat::RGBA8), Filter(TextureFilter::Linear), Wrap(TextureWrap::Repeat)
 		{
 		}
 

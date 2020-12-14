@@ -52,7 +52,7 @@ namespace E3D
 		entt::registry m_Registry;
 		SceneState m_State = SceneState::Edit;
 		EditorCamera m_Camera;
-		Ref<Skybox> m_Skybox;
+		Ref<Skybox> m_Skybox = nullptr;
 		uint32_t m_ViewportWidth = 0, m_ViewportHeight = 0;
 	
 	};

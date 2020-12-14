@@ -19,7 +19,9 @@ namespace E3D
 	{
 		auto& sceneNode = GetComponent<SceneNodeComponent>();
 		if (!sceneNode.FirstChild)
+		{
 			sceneNode.FirstChild = child;
+		}
 		else
 		{
 			Entity currentChild = sceneNode.FirstChild;
@@ -27,9 +29,47 @@ namespace E3D
 				currentChild = currentChild.GetComponent<SceneNodeComponent>().NextSibling;
 
 			currentChild.GetComponent<SceneNodeComponent>().NextSibling = child;
+			child.GetComponent<SceneNodeComponent>().PreviousSibling = currentChild;
 		}
 
 		child.GetComponent<SceneNodeComponent>().Parent = *this;
+	}
+
+	void Entity::RemoveChildren()
+	{
+		Entity current = GetComponent<SceneNodeComponent>().FirstChild;
+
+		if (!current)
+		{
+			return;
+		}
+
+		while (current)
+		{
+			Entity temp = current;
+			current = current.GetComponent<SceneNodeComponent>().NextSibling;
+
+			Entity parent = GetComponent<SceneNodeComponent>().Parent;
+			if (parent)
+			{
+				if (temp == parent.GetComponent<SceneNodeComponent>().FirstChild)
+					parent.GetComponent<SceneNodeComponent>().FirstChild == temp.GetComponent<SceneNodeComponent>().NextSibling;
+				else
+				{
+					Entity prev = temp.GetComponent<SceneNodeComponent>().PreviousSibling;
+					Entity next = temp.GetComponent<SceneNodeComponent>().NextSibling;
+
+					if(prev)
+						prev.GetComponent<SceneNodeComponent>().NextSibling = next;
+
+					if(next)
+						next.GetComponent<SceneNodeComponent>().PreviousSibling = prev;
+				}
+			}
+
+			temp.RemoveChildren();
+			m_Scene->m_Registry.destroy((entt::entity)(temp));
+		}
 	}
 
 	bool Entity::HasComponent(uint32_t id)

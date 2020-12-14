@@ -8,6 +8,7 @@
 #include <ImGui\imgui.h>
 
 #include "Engine3D\ResourceManager\ModelManager.h"
+#include "Engine3D\ResourceManager\MeshManager.h"
 #include "Engine3D\Core\FileDialog.h"
 
 namespace E3D
@@ -45,7 +46,7 @@ namespace E3D
 			if (ImGui::MenuItem("New Entity"))
 			{
 				Entity newEntity = m_Scene->CreateEntity();
-				newEntity.AddComponent<MeshComponent>(MeshFactory::CreateCube(1.0f, CreateRef<Material>(ShaderLibrary::Get("StaticModelShader"))));
+				newEntity.AddComponent<MeshComponent>(MeshManager::LoadMesh(MeshFactory::CreatePlane({ 1.0f, 1.0f }, CreateRef<Material>(ShaderLibrary::Get("StaticModelShader")))));
 			}
 			if (ImGui::MenuItem("New Model"))
 			{
@@ -86,17 +87,34 @@ namespace E3D
 
 		ImGui::PushID((void*)(uint64_t)(uint32_t)entity);
 
+
 		bool removeEntity = false;
-		if (ImGui::BeginPopupContextItem("Options Menu", 1))
+		if (ImGui::BeginPopupContextItem())
 		{
 			m_SelectedEntity = entity;
-			if (ImGui::Selectable("Add Child"))
+
+			if (ImGui::BeginMenu("Add type"))
 			{
-				Entity newEntity = m_Scene->CreateEntity();
-				newEntity.AddComponent<MeshComponent>(MeshFactory::CreateCube(1.0f, CreateRef<Material>(ShaderLibrary::Get("StaticModelShader"))));
-				entity.AddChild(newEntity);
+				if (ImGui::MenuItem("Empty entity"))
+				{
+					Entity newEntity = m_Scene->CreateEntity();
+						newEntity.AddComponent<MeshComponent>(MeshFactory::CreateCube(1.0f, CreateRef<Material>(ShaderLibrary::Get("StaticModelShader"))));
+						entity.AddChild(newEntity);
+				}
+				if (ImGui::MenuItem("Model entity"))
+				{
+					const std::string& path = FileDialog::OpenModelFile();
+
+						if (!path.empty())
+						{
+							auto& newModel = ModelManager::LoadModel(path);
+							Entity newEntity = m_Scene->CreateFromModel(newModel, newModel->GetName());
+							entity.AddChild(newEntity);
+						}
+				}
+				ImGui::EndMenu();
 			}
-			if (ImGui::Selectable("Remove Entity"))
+			if (ImGui::MenuItem("Remove Entity"))
 			{
 				removeEntity = true;
 			}

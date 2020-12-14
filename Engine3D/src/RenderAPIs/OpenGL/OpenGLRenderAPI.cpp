@@ -2,6 +2,7 @@
 #include "OpenGLRenderAPI.h"
 
 #include <glad\glad.h>
+#include <imgui.h>
 
 namespace E3D
 {

@@ -53,18 +53,28 @@ namespace E3D
 
 	void Scene::DeleteEntity(Entity entity)
 	{
-		auto& sceneNodeComponent = entity.GetComponent<SceneNodeComponent>();
-		if (sceneNodeComponent.Parent)
-			if (sceneNodeComponent.Parent.GetComponent<SceneNodeComponent>().FirstChild == entity)
-				sceneNodeComponent.Parent.GetComponent<SceneNodeComponent>().FirstChild = sceneNodeComponent.NextSibling;
+		entity.RemoveChildren();
 
-		auto currentChild = sceneNodeComponent.FirstChild;
+		Entity parent = entity.GetComponent<SceneNodeComponent>().Parent;
 
-		while (currentChild)
+		if (parent)
 		{
-			auto deleted = currentChild;
-			currentChild = currentChild.GetComponent<SceneNodeComponent>().NextSibling;
-			DeleteEntity(deleted);
+			if (parent.GetComponent<SceneNodeComponent>().FirstChild == entity)
+			{
+				parent.GetComponent<SceneNodeComponent>().FirstChild = entity.GetComponent<SceneNodeComponent>().NextSibling;
+				if(entity.GetComponent<SceneNodeComponent>().NextSibling)
+					entity.GetComponent<SceneNodeComponent>().NextSibling.GetComponent<SceneNodeComponent>().PreviousSibling = {};
+			}
+			else
+			{
+				Entity prev = entity.GetComponent<SceneNodeComponent>().PreviousSibling;
+				Entity next = entity.GetComponent<SceneNodeComponent>().NextSibling;
+
+				if (prev)
+					prev.GetComponent<SceneNodeComponent>().NextSibling = next;
+				if (next)
+					next.GetComponent<SceneNodeComponent>().PreviousSibling = prev;
+			}
 		}
 
 		m_Registry.destroy((entt::entity)entity);

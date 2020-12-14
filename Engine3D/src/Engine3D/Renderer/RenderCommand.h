@@ -41,7 +41,6 @@ namespace E3D
 		{
 			s_RenderAPI->DrawIndexedLines(vertexArray);
 		}
-
 	private:
 		static Scope<RenderAPI> s_RenderAPI;
 	};

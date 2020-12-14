@@ -13,7 +13,7 @@ namespace E3D
 	EditorCamera::EditorCamera(const glm::mat4& projectionMatrix)
 		: Camera(projectionMatrix)
 	{
-		m_MoveSpeed = 0.1f;
+		m_MoveSpeed = 5.1f;
 		m_RotationSpeed = 30.00f;
 		m_ZoomSpeed = 30.0f;
 
@@ -70,8 +70,8 @@ namespace E3D
 
 	void EditorCamera::MouseMove(const glm::vec2& mouseDelta, Timestep ts)
 	{
-		m_TargetPoint += -GetCameraRight() * mouseDelta.x * m_MoveSpeed * m_Distance * (float)ts;
-		m_TargetPoint += GetCameraUp() * mouseDelta.y * m_MoveSpeed * m_Distance * (float)ts;
+		m_TargetPoint += -GetCameraRight() * mouseDelta.x * m_MoveSpeed  * (float)ts;
+		m_TargetPoint += GetCameraUp() * mouseDelta.y * m_MoveSpeed  * (float)ts;
 	}
 
 	void EditorCamera::MouseRotate(const glm::vec2& mouseDelta, Timestep ts)

@@ -4,8 +4,8 @@ Entities:
     NameComponent:
       Name: Cerberus00_Fixed
     TransformComponent:
-      Translation: [-1.52587891e-05, 14.8926897, -191.954193]
-      Rotation: [-1.49336827, -0, 0]
+      Translation: [-1.52587891e-05, 4.76496069e-07, 6.96334104e-13]
+      Rotation: [0, -0, 0]
       Scale: [1, 0.999994993, 0.999994993]
     MeshComponent:
       Mesh: Cerberus00_Fixed
@@ -27,9 +27,9 @@ Entities:
     NameComponent:
       Name: Model Hierarchy
     TransformComponent:
-      Translation: [0, 0, 0]
-      Rotation: [0, -0, 0]
-      Scale: [1, 1, 1]
+      Translation: [0, 45.0239906, -96.8509445]
+      Rotation: [-1.57079637, -0, 0]
+      Scale: [0.999975801, 1, 1]
     SceneNodeComponent:
       Parent: 23
       FirstChild: 25
@@ -39,7 +39,7 @@ Entities:
     NameComponent:
       Name: Cerberus_LP.FBX
     TransformComponent:
-      Translation: [-75.5778351, 0, 65.5697556]
+      Translation: [0, 0, 0]
       Rotation: [0, -0, 0]
       Scale: [1, 1, 1]
     SceneNodeComponent:
@@ -51,7 +51,7 @@ Entities:
     NameComponent:
       Name: Sphere
     TransformComponent:
-      Translation: [100, 53.1127739, -23.4438]
+      Translation: [100, 50, 20]
       Rotation: [0, -0, 0]
       Scale: [30, 30, 30]
     MeshComponent:
@@ -74,7 +74,7 @@ Entities:
     NameComponent:
       Name: Sphere
     TransformComponent:
-      Translation: [60, 8, 44.0374298]
+      Translation: [100, 10, 20]
       Rotation: [0, -0, 0]
       Scale: [30, 30, 30]
     MeshComponent:
@@ -97,7 +97,7 @@ Entities:
     NameComponent:
       Name: Sphere
     TransformComponent:
-      Translation: [-14.7356796, 8, -90]
+      Translation: [100, 50, -60]
       Rotation: [0, -0, 0]
       Scale: [30, 30, 30]
     MeshComponent:
@@ -120,7 +120,7 @@ Entities:
     NameComponent:
       Name: Sphere
     TransformComponent:
-      Translation: [-20, 8, 78.4982452]
+      Translation: [100, 10, -60]
       Rotation: [0, -0, 0]
       Scale: [30, 30, 30]
     MeshComponent:
@@ -131,7 +131,7 @@ Entities:
         NormalMap: stringy_marble_Normal-ogl.png
         RoughnessMap: stringy_marble_Roughness.png
         MetalnessMap: stringy_marble_Metallic.png
-        AlbedoColor: [0.800000012, 0.800000012, 0.800000012]
+        AlbedoColor: [0.980695009, 0, 0]
         RoughnessValue: 1
         MetalnessValue: 0.5
     SceneNodeComponent:
@@ -143,7 +143,7 @@ Entities:
     NameComponent:
       Name: Sphere
     TransformComponent:
-      Translation: [-60, 51.4714584, -90]
+      Translation: [100, 50, -20]
       Rotation: [0, -0, 0]
       Scale: [30, 30, 30]
     MeshComponent:
@@ -166,7 +166,7 @@ Entities:
     NameComponent:
       Name: Sphere
     TransformComponent:
-      Translation: [-100, 8, 5.69190788]
+      Translation: [100, 10, -20]
       Rotation: [0, -0, 0]
       Scale: [30, 30, 30]
     MeshComponent:
@@ -523,7 +523,7 @@ Entities:
     NameComponent:
       Name: Player
     TransformComponent:
-      Translation: [0, 42.2693253, 0]
+      Translation: [-57.0484467, 42.2693253, 65.8949127]
       Rotation: [0, -0, 0]
       Scale: [20, 20, 20]
     SceneNodeComponent:

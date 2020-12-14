@@ -14,6 +14,7 @@ out mat3 v_TBN;
 
 uniform mat4 u_ViewProjection;
 uniform mat4 u_Transform;
+uniform mat4 u_LightSpaceTransform;
 
 void main()
 {
@@ -65,6 +66,7 @@ in mat3 v_TBN;
 uniform samplerCube u_IrradianceMap;
 uniform samplerCube u_PrefilterMap;
 uniform sampler2D u_BRDFLUT;
+uniform sampler2D u_ShadowMap;
 
 uniform float u_Exposure;
 

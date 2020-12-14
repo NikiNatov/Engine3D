@@ -6,8 +6,11 @@
 #include <glm\gtc\type_ptr.hpp>
 
 #include "Engine3D\Scene\SceneSerializer.h"
+#include "Engine3D\ResourceManager\MeshManager.h"
 
 #include "../assets/scripts/Player.h"
+
+#include <fstream>
 
 namespace E3D
 {
@@ -21,16 +24,14 @@ namespace E3D
 	{
 		m_Framebuffer->Bind();
 
-		RenderCommand::SetClearColor({ 0.2f, 0.2f, 0.2f, 1.0f });
+		RenderCommand::SetClearColor({ 1.0f, 1.0f, 1.0f, 1.0f });
 		RenderCommand::ClearScreen();
 
 		switch (m_Scene->GetSceneState())
 		{
 		case Scene::SceneState::Edit:
 		{
-			//if (m_ViewportFocused)
 			m_Scene->GetCamera().Update(ts);
-
 			m_Scene->OnEditRender();
 			break;
 		}
@@ -123,13 +124,15 @@ namespace E3D
 
 			ImGui::EndMenuBar();
 		}
-		
+
 		m_SceneGraphPanel.OnImGuiRender();
 		m_SelectedEntity = m_SceneGraphPanel.GetSelectedEntity();
 		m_InspectorPanel.OnImGuiRender(m_SelectedEntity);
 
 		m_MaterialPanel.OnImGuiRender(m_SelectedEntity);
 		m_AssetsPanel.OnImGuiRender();
+
+		
 
 		ImGui::Begin("Environment");
 		if (ImGui::Button("Upload Environment Map"))
@@ -139,8 +142,9 @@ namespace E3D
 			if(!path.empty())
 				m_Skybox->SetTexture(path);
 		}
-		ImGui::DragFloat("Exposure", &m_Skybox->GetExposure(), 0.01f, 0.01f, 3.0f);
+		ImGui::DragFloat("Exposure", &m_Skybox->GetExposure(), 0.01f, 0.01f, 5.0f);
 		ImGui::DragFloat("LOD", &m_Skybox->GetLOD(), 0.1f, 0.0f, 10.0f);
+
 		ImGui::End();
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0.0f, 0.0f });
@@ -171,16 +175,38 @@ namespace E3D
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0.0f, 0.0f });
 		ImGui::Begin("Scene");
-		
-		auto& viewMatrix = m_Scene->GetCamera().GetViewMatrix();
-		auto& projMatrix = m_Scene->GetCamera().GetProjection();
-		ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, ImGui::GetWindowSize().x, ImGui::GetWindowSize().y);
 
-		if (m_SelectedEntity && m_Scene->GetSceneState() == Scene::SceneState::Edit)
+		m_ViewportFocused = ImGui::IsWindowFocused();
+		m_ViewportHovered = ImGui::IsWindowHovered();
+		Application::GetInstance().GetImGuiLayer()->BlockEvents(!m_ViewportFocused && !m_ViewportHovered);
+
+		ImVec2 panelSize = ImGui::GetContentRegionAvail();
+		if (m_ViewportSize != *((glm::vec2*)&panelSize))
 		{
-			static ImGuizmo::OPERATION currentGuizmoOp = ImGuizmo::OPERATION::TRANSLATE;
-			float snap[3] = { 1.0f, 1.0f, 1.0f };
-			bool useSnap = false;
+			m_ViewportSize = { panelSize.x, panelSize.y };
+			m_Framebuffer->Resize(m_ViewportSize.x, m_ViewportSize.y);
+
+			m_Scene->OnViewportResize(m_ViewportSize.x, m_ViewportSize.y);
+			m_Scene->GetCamera().SetProjection(65.0f, m_ViewportSize.x / m_ViewportSize.y);
+		}
+		
+		uint32_t texture = m_Framebuffer->GetColorAttachment()->GetTextureID();
+		ImGui::Image((void*)texture, { m_ViewportSize.x , m_ViewportSize.y }, { 0, 1 }, { 1, 0 });
+
+
+		if (m_SelectedEntity && m_Scene->GetSceneState() == Scene::SceneState::Edit && m_GuizmoOperation != -1)
+		{
+			ImGuizmo::SetOrthographic(false);
+			ImGuizmo::SetDrawlist();
+			ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, ImGui::GetWindowWidth(), ImGui::GetWindowHeight());
+
+			auto& viewMatrix = m_Scene->GetCamera().GetViewMatrix();
+			auto& projMatrix = m_Scene->GetCamera().GetProjection();
+
+			float snapValue = m_GuizmoOperation == ImGuizmo::OPERATION::ROTATE ? 45.0f : 0.5f;
+
+			float snap[3] = { snapValue, snapValue, snapValue };
+			m_GuizmoSnap = Input::IsKeyPressed(E3D_KEY_LEFT_CONTROL);
 
 			auto& tc = m_SelectedEntity.GetComponent<TransformComponent>();
 			auto entityTransform = tc.GetTransform();
@@ -200,44 +226,24 @@ namespace E3D
 				parentWorldTransform = entityWorldTransform * glm::inverse(entityTransform);
 			}
 
-			if (Input::IsKeyPressed(E3D_KEY_T))
-				currentGuizmoOp = ImGuizmo::TRANSLATE;
-			if (Input::IsKeyPressed(E3D_KEY_R))
-				currentGuizmoOp = ImGuizmo::ROTATE;
-			if (Input::IsKeyPressed(E3D_KEY_E))
-				currentGuizmoOp = ImGuizmo::SCALE;
-			if (Input::IsKeyPressed(E3D_KEY_LEFT_SHIFT))
-				useSnap = true;
-
-			
-			ImGuizmo::Manipulate(glm::value_ptr(viewMatrix), glm::value_ptr(projMatrix), currentGuizmoOp, ImGuizmo::LOCAL, glm::value_ptr(entityWorldTransform), NULL, useSnap ? &snap[0] : NULL);
+			ImGuizmo::Manipulate(glm::value_ptr(viewMatrix), glm::value_ptr(projMatrix), (ImGuizmo::OPERATION)m_GuizmoOperation, ImGuizmo::LOCAL, glm::value_ptr(entityWorldTransform), NULL, m_GuizmoSnap ? &snap[0] : NULL);
 
 			entityTransform = glm::inverse(parentWorldTransform) * entityWorldTransform;
 
-			glm::vec3 translation, rotation, scale;
-			ImGuizmo::DecomposeMatrixToComponents(glm::value_ptr(entityTransform), glm::value_ptr(translation), glm::value_ptr(rotation), glm::value_ptr(scale));
+			if (ImGuizmo::IsUsing())
+			{
+				glm::vec3 translation, rotation, scale;
+				ImGuizmo::DecomposeMatrixToComponents(glm::value_ptr(entityTransform), glm::value_ptr(translation), glm::value_ptr(rotation), glm::value_ptr(scale));
 
-			tc.Translation = translation;
-			tc.Rotation = glm::radians(rotation);
-			tc.Scale = scale;
+				glm::vec3 deltaRotation = glm::radians(rotation) - tc.Rotation;
+
+				tc.Translation = translation;
+				//tc.Rotation = glm::radians(rotation);
+				tc.Rotation += deltaRotation;
+				tc.Scale = scale;
+			}
 		}
 
-		m_ViewportFocused = ImGui::IsWindowFocused();
-		m_ViewportHovered = ImGui::IsWindowHovered();
-		Application::GetInstance().GetImGuiLayer()->BlockEvents(!m_ViewportFocused || !m_ViewportHovered);
-
-		ImVec2 panelSize = ImGui::GetContentRegionAvail();
-		if (m_ViewportSize != *((glm::vec2*)&panelSize))
-		{
-			m_ViewportSize = { panelSize.x, panelSize.y };
-			m_Framebuffer->Resize(m_ViewportSize.x, m_ViewportSize.y);
-
-			m_Scene->OnViewportResize(m_ViewportSize.x, m_ViewportSize.y);
-			m_Scene->GetCamera().SetProjection(65.0f, m_ViewportSize.x / m_ViewportSize.y);
-		}
-		ImGuizmo::SetDrawlist();
-		uint32_t texture = m_Framebuffer->GetColorAttachment()->GetTextureID();
-		ImGui::Image((void*)texture, { m_ViewportSize.x , m_ViewportSize.y }, { 0, 1 }, { 1, 0 });
 		ImGui::PopStyleVar();
 
 		ImGui::End();
@@ -247,14 +253,19 @@ namespace E3D
 
 	void EditorLayer::OnAttach()
 	{
-		ShaderLibrary::Load("assets/shaders/FlatColorShader.glsl");
+
+		//ShaderLibrary::Load("assets/shaders/FlatColorShader.glsl");
 
 		m_PlayButtonTexture = TextureManager::LoadTexture(Texture2D::Create("assets/textures/playButton.png", {}, true));
 		m_StopButtonTexture = TextureManager::LoadTexture(Texture2D::Create("assets/textures/pauseButton.png", {}, true));
 
-		auto shader = ShaderLibrary::Load("assets/shaders/StaticModelShader.glsl");
+		//auto shader = ShaderLibrary::Load("assets/shaders/StaticModelShader.glsl");
 
-		m_Grid = MeshFactory::CreateGrid(80, 80, 80, CreateRef<Material>(shader));
+		LoadAssets();
+		auto& shader = ShaderLibrary::Get("StaticModelShader");
+		MeshManager::LoadMesh(MeshFactory::CreateCube(1.0f, CreateRef<Material>(shader)));
+		MeshManager::LoadMesh(MeshFactory::CreatePlane({ 1.0f, 1.0f }, CreateRef<Material>(shader)));
+		m_Grid = MeshFactory::CreateGrid(80, 80, 80, CreateRef<Material>(ShaderLibrary::Get("StaticModelShader")));
 
 		m_Framebuffer = Framebuffer::Create({ 1280, 720, TextureTarget::Texture2D, TextureFormat::RGBA8, 1 });
 
@@ -264,7 +275,6 @@ namespace E3D
 		m_Scene = CreateRef<Scene>(m_Skybox);
 
 		m_SceneGraphPanel.SetScene(m_Scene);
-#if 1
 		m_Gold = CreateRef<Material>(shader);
 		m_Grass = CreateRef<Material>(shader);
 		m_Marble = CreateRef<Material>(shader);
@@ -272,6 +282,7 @@ namespace E3D
 		m_RustedIron = CreateRef<Material>(shader);
 		m_Wood = CreateRef<Material>(shader);
 		m_PistolMaterial = CreateRef<Material>(shader);
+		
 
 		// Gold
 		m_Gold->SetName("GoldMaterial");
@@ -322,6 +333,14 @@ namespace E3D
 		m_PistolMaterial->SetMetalnessMap(TextureManager::LoadTexture(Texture2D::Create("assets/models/gun/Textures/Cerberus_M.tga", {}, true)));
 		m_PistolMaterial->SetRoughnessMap(TextureManager::LoadTexture(Texture2D::Create("assets/models/gun/Textures/Cerberus_R.tga", {}, true)));
 
+		// Pistol
+		m_TestMat = CreateRef<Material>(shader);
+		m_TestMat->SetName("TestMat");
+		m_TestMat->SetAlbedoMap(TextureManager::LoadTexture(Texture2D::Create("assets/models/pistol/m1911_color.png", {}, true)));
+		m_TestMat->SetNormalMap(TextureManager::LoadTexture(Texture2D::Create("assets/models/pistol/m1911_normal.png", {}, true)));
+		m_TestMat->SetRoughnessMap(TextureManager::LoadTexture(Texture2D::Create("assets/models/pistol/m1911_roughness.png", {}, true)));
+		m_TestMat->SetMetalnessMap(TextureManager::LoadTexture(Texture2D::Create("assets/models/pistol/m1911_metalness.png", {}, true)));
+
 		MaterialManager::LoadMaterial(m_Gold);
 		MaterialManager::LoadMaterial(m_Grass);
 		MaterialManager::LoadMaterial(m_Marble);
@@ -329,25 +348,27 @@ namespace E3D
 		MaterialManager::LoadMaterial(m_RustedIron);
 		MaterialManager::LoadMaterial(m_Wood);
 		MaterialManager::LoadMaterial(m_PistolMaterial);
+		MaterialManager::LoadMaterial(m_TestMat);
 
-
-		auto cameraModel = ModelManager::LoadModel("assets/models/camera/camera.obj");
+#if 0
+		auto cameraModel = ModelManager::GetModel("assets/models/camera/camera.obj");
 		auto& cameraMesh = cameraModel->GetMesh(0);
 		m_MainCamera = m_Scene->CreateEntity("Main Camera");
 		m_MainCamera.AddComponent<MeshComponent>(cameraMesh);
 		m_MainCamera.AddComponent<CameraComponent>().Primary = true;
-		m_MainCamera.GetComponent<TransformComponent>().Translation = { 0.0f, 3.0f, 5.0f };
+		m_MainCamera.GetComponent<TransformComponent>().Translation = { 0.0f, 1.0f, 5.0f };
 		m_MainCamera.GetComponent<TransformComponent>().Scale = { 0.5f, 0.5f, 0.5f };
 
-		auto pistol = ModelManager::LoadModel("assets/models/gun/Cerberus_LP.fbx");
+		auto pistol = ModelManager::GetModel("assets/models/gun/Cerberus_LP.fbx");
 
-		auto spaceShip = ModelManager::LoadModel("assets/models/starwars/spaceship/tie-fighter.fbx");
+		auto spaceShip = ModelManager::GetModel("assets/models/starwars/spaceship/tie-fighter.fbx");
 		m_Player = m_Scene->CreateFromModel(spaceShip, "Player");
 		m_Player.AddComponent<ScriptComponent>().Bind<Player>();
+		m_Player.GetComponent<TransformComponent>().Scale = { 9.0f, 9.0f, 9.0f };
 
 		m_Player.AddChild(m_MainCamera);
 
-		auto sphereModel = ModelManager::LoadModel("assets/models/primitives/globe-sphere.fbx");
+		auto sphereModel = ModelManager::GetModel("assets/models/primitives/sphere.fbx");
 		auto& sphereMesh = sphereModel->GetMesh(0);
 
 		Entity e = m_Scene->CreateEntity("Sphere");
@@ -417,9 +438,67 @@ namespace E3D
 
 				break;
 			}
+			case E3D_KEY_Q:
+				m_GuizmoOperation = -1;
+				break;
+			case E3D_KEY_T:
+				m_GuizmoOperation = ImGuizmo::OPERATION::TRANSLATE;
+				break;
+			case E3D_KEY_R:
+				m_GuizmoOperation = ImGuizmo::OPERATION::ROTATE;
+				break;
+			case E3D_KEY_E:
+				m_GuizmoOperation = ImGuizmo::OPERATION::SCALE;
+				break;
 		}
 
 		return true;
+	}
+
+	void EditorLayer::LoadAssets()
+	{
+		LoadShaders();
+		LoadTextures();
+		LoadModels();
+	}
+
+	void EditorLayer::LoadModels()
+	{
+		std::ifstream stream("src/Models.txt");
+		std::string path;
+		std::vector<std::string> filepaths;
+
+		while (std::getline(stream, path))
+			filepaths.push_back(path);
+
+		for (const auto& file : filepaths)
+			ModelManager::LoadModel(file);
+	}
+
+	void EditorLayer::LoadTextures()
+	{
+		std::ifstream stream("src/Textures.txt");
+		std::string path;
+		std::vector<std::string> filepaths;
+
+		while (std::getline(stream, path))
+			filepaths.push_back(path);
+
+		for (const auto& file : filepaths)
+			TextureManager::LoadTexture(Texture2D::Create(file));
+	}
+
+	void EditorLayer::LoadShaders()
+	{
+		std::ifstream stream("src/Shaders.txt");
+		std::string path;
+		std::vector<std::string> filepaths;
+
+		while (std::getline(stream, path))
+			filepaths.push_back(path);
+
+		for (const auto& file : filepaths)
+			ShaderLibrary::Load(file);
 	}
 
 	void EditorLayer::SaveSceneAs()

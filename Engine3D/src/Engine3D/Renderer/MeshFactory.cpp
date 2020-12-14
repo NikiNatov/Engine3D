@@ -13,25 +13,25 @@ namespace E3D
 			vertices.resize(4);
 
 			vertices[0].Position = glm::vec3(-width / 2.0f, 0.0f, -height / 2.0f);
-			vertices[0].TextureCoord = glm::vec2(0.0f, 0.0f);
+			vertices[0].TextureCoord = glm::vec2(0.0f, 0.0f) * 20.0f;
 			vertices[0].Normal = glm::vec3(0.0f, 1.0f, 0.0f);
 			vertices[0].Tangent = glm::vec3(1.0f, 0.0f, 0.0f);
 			vertices[0].Bitangent = glm::vec3(0.0f, 0.0f, 1.0f);
 
 			vertices[1].Position = glm::vec3(width / 2.0f, 0.0f, -height / 2.0f);
-			vertices[1].TextureCoord = glm::vec2(1.0f, 0.0f);
+			vertices[1].TextureCoord = glm::vec2(1.0f, 0.0f) * 20.0f;
 			vertices[1].Normal = glm::vec3(0.0f, 1.0f, 0.0f);
 			vertices[1].Tangent = glm::vec3(1.0f, 0.0f, 0.0f);
 			vertices[1].Bitangent = glm::vec3(0.0f, 0.0f, 1.0f);
 
 			vertices[2].Position = glm::vec3(width / 2.0f, 0.0f, height / 2.0f);
-			vertices[2].TextureCoord = glm::vec2(1.0f, 1.0f);
+			vertices[2].TextureCoord = glm::vec2(1.0f, 1.0f) * 20.0f;
 			vertices[2].Normal = glm::vec3(0.0f, 1.0f, 0.0f);
 			vertices[2].Tangent = glm::vec3(1.0f, 0.0f, 0.0f);
 			vertices[2].Bitangent = glm::vec3(0.0f, 0.0f, 1.0f);
 
 			vertices[3].Position = glm::vec3(-width / 2.0f, 0.0f, height / 2.0f);
-			vertices[3].TextureCoord = glm::vec2(0.0f, 1.0f);
+			vertices[3].TextureCoord = glm::vec2(0.0f, 1.0f) * 20.0f;
 			vertices[3].Normal = glm::vec3(0.0f, 1.0f, 0.0f);
 			vertices[3].Tangent = glm::vec3(1.0f, 0.0f, 0.0f);
 			vertices[3].Bitangent = glm::vec3(0.0f, 0.0f, 1.0f);

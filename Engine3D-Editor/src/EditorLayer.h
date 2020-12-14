@@ -6,6 +6,7 @@
 #include "Panels\MaterialInspector.h"
 #include "Panels\AssetsPanel.h"
 
+
 namespace E3D
 {
 	class EditorLayer : public Layer
@@ -24,6 +25,11 @@ namespace E3D
 	private:
 		bool OnKeyPressed(KeyPressedEvent& e);
 
+		void LoadAssets();
+		void LoadModels();
+		void LoadTextures();
+		void LoadShaders();
+
 		void SaveSceneAs();
 		void NewScene();
 		void OpenScene();
@@ -31,6 +37,7 @@ namespace E3D
 		Ref<Texture2D> m_PlayButtonTexture;
 		Ref<Texture2D> m_StopButtonTexture;
 		Ref<Framebuffer> m_Framebuffer;
+		Ref<Framebuffer> m_ShadowFB;
 
 		bool m_ViewportFocused = false;
 		bool m_ViewportHovered = false;
@@ -53,6 +60,8 @@ namespace E3D
 		AssetsPanel m_AssetsPanel;
 
 		Entity m_SelectedEntity{};
+		int m_GuizmoOperation = 0;
+		bool m_GuizmoSnap = false;
 
 		Ref<Material> m_Gold;
 		Ref<Material> m_Grass;
@@ -61,5 +70,8 @@ namespace E3D
 		Ref<Material> m_RustedIron;
 		Ref<Material> m_Wood;
 		Ref<Material> m_PistolMaterial;
+		Ref<Material> m_TestMat;
+
+		
 	};
 }

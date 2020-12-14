@@ -19,6 +19,7 @@ namespace E3D
 		Entity(const Entity& other) = default;
 
 		void AddChild(Entity child);
+		void RemoveChildren();
 
 		template<typename T, typename... Args>
 		T& AddComponent(Args&&... args)

@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Renderer.h"
 
+#include "Engine3D\ResourceManager\TextureManager.h"
+
 #include <glad\glad.h>
 
 namespace E3D
@@ -44,7 +46,7 @@ namespace E3D
 		shader->SetMat4("u_ViewProjection", m_SceneData->ViewProjectionMatrix);
 		shader->SetMat4("u_Transform", transform);
 		shader->SetFloat3("u_CameraPosition", glm::inverse(m_SceneData->ViewMatrix)[3]);
-		shader->SetFloat3("u_Light.Direction", glm::vec3(0.0f, 0.0f, -0.0));
+		shader->SetFloat3("u_Light.Direction", glm::vec3(0.0f, 0.0f, 0.0));
 		shader->SetFloat3("u_Light.Radiance", glm::vec3(1.0f, 1.0f, 1.0f));
 		shader->SetInt("u_IrradianceMap", 4);
 		shader->SetInt("u_PrefilterMap", 5);
@@ -56,7 +58,7 @@ namespace E3D
 
 		m_SceneData->Skybox->GetIrradianceMap()->Bind(4);
 		m_SceneData->Skybox->GetPrefilterMap()->Bind(5);
-		m_SceneData->Skybox->GetBRDFTexture()->Bind(6);
+		TextureManager::GetTexture("PreintegratedFG.bmp")->Bind(6);
 
 		auto& vao = mesh->GetVertexArray();
 		vao->Bind();
@@ -86,4 +88,5 @@ namespace E3D
 		RenderCommand::DrawIndexed(vao);
 
 	}
+
 }
