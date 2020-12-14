@@ -1,0 +1,2614 @@
+Scene: Untitled
+Entities:
+  - Entity: 148
+    NameComponent:
+      Name: Camera
+    TransformComponent:
+      Translation: [0, 12, 40]
+      Rotation: [6.63932451e-11, 6.19596874e-11, -2.51464446e-22]
+      Scale: [0.99999398, 0.999998033, 0.999925315]
+    CameraComponent:
+      Camera:
+        ProjectionType: 0
+        PerspectiveFOV: 45
+        PerspectiveNear: 0.100000001
+        PerspectiveFar: 1000
+        OrthographicSize: 10
+        OrthographicNear: 1000
+        OrthographicFar: -1000
+      Primary: true
+    SceneNodeComponent:
+      Parent: 145
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 147
+    NameComponent:
+      Name: Cube-mesh
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Cube-mesh
+      Material:
+        Name: Cube-mesh_Material
+        AlbedoMap: diffuse.png
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0.800000012, 0.800000012, 0.800000012]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 146
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 146
+    NameComponent:
+      Name: Model Hierarchy
+    TransformComponent:
+      Translation: [4.09781933e-06, 1, 0]
+      Rotation: [1.57079542, -1.49016572e-07, -3.14159083]
+      Scale: [0.999966621, 0.999997199, 0.999994516]
+    SceneNodeComponent:
+      Parent: 145
+      FirstChild: 147
+      NextSibling: 148
+      PreviousSibling: 1048575
+  - Entity: 145
+    NameComponent:
+      Name: Player
+    TransformComponent:
+      Translation: [-11.3999996, 0, -12.6000004]
+      Rotation: [1.81992118e-06, 2.24100256, 0]
+      Scale: [0.99985683, 0.999991238, 0.999988675]
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 146
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 144
+    NameComponent:
+      Name: Ground
+    TransformComponent:
+      Translation: [0, 1, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1000, 1, 1000]
+    MeshComponent:
+      Mesh: PlaneMesh
+      Material:
+        Name: ""
+        AlbedoMap: leafy-grass2-albedo.png
+        NormalMap: leafy-grass2-normal-ogl.png
+        RoughnessMap: leafy-grass2-roughness.png
+        MetalnessMap: leafy-grass2-metallic.png
+        AlbedoColor: [0.79999429, 0.800000012, 0.799992025]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 143
+    NameComponent:
+      Name: Bark
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Bark
+      Material:
+        Name: Bark_Material
+        AlbedoMap: <NO TEXTURE>
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0.0772200823, 0.0461015031, 0]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 141
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 142
+    NameComponent:
+      Name: Cylinder
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Cylinder
+      Material:
+        Name: Cylinder_Material
+        AlbedoMap: leafy-grass2-albedo.png
+        NormalMap: leafy-grass2-normal-ogl.png
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0, 0.289575279, 0.0111804269]
+        RoughnessValue: 1
+        MetalnessValue: 0
+    SceneNodeComponent:
+      Parent: 141
+      FirstChild: 1048575
+      NextSibling: 143
+      PreviousSibling: 1048575
+  - Entity: 141
+    NameComponent:
+      Name: Model Hierarchy
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    SceneNodeComponent:
+      Parent: 140
+      FirstChild: 142
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 140
+    NameComponent:
+      Name: Tree
+    TransformComponent:
+      Translation: [160, 8, 160]
+      Rotation: [0, -0, 0]
+      Scale: [4, 4, 4]
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 141
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 139
+    NameComponent:
+      Name: Bark
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Bark
+      Material:
+        Name: Bark_Material
+        AlbedoMap: <NO TEXTURE>
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0.0772200823, 0.0461015031, 0]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 137
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 138
+    NameComponent:
+      Name: Cylinder
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Cylinder
+      Material:
+        Name: Cylinder_Material
+        AlbedoMap: leafy-grass2-albedo.png
+        NormalMap: leafy-grass2-normal-ogl.png
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0, 0.289575279, 0.0111804269]
+        RoughnessValue: 1
+        MetalnessValue: 0
+    SceneNodeComponent:
+      Parent: 137
+      FirstChild: 1048575
+      NextSibling: 139
+      PreviousSibling: 1048575
+  - Entity: 137
+    NameComponent:
+      Name: Model Hierarchy
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SceneNodeComponent:
+      Parent: 136
+      FirstChild: 138
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 136
+    NameComponent:
+      Name: Tree
+    TransformComponent:
+      Translation: [320, 8, -40]
+      Rotation: [0, 0, 0]
+      Scale: [4, 4, 4]
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 137
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 135
+    NameComponent:
+      Name: Bark
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Bark
+      Material:
+        Name: Bark_Material
+        AlbedoMap: <NO TEXTURE>
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0.0772200823, 0.0461015031, 0]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 133
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 134
+    NameComponent:
+      Name: Cylinder
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Cylinder
+      Material:
+        Name: Cylinder_Material
+        AlbedoMap: leafy-grass2-albedo.png
+        NormalMap: leafy-grass2-normal-ogl.png
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0, 0.289575279, 0.0111804269]
+        RoughnessValue: 1
+        MetalnessValue: 0
+    SceneNodeComponent:
+      Parent: 133
+      FirstChild: 1048575
+      NextSibling: 135
+      PreviousSibling: 1048575
+  - Entity: 133
+    NameComponent:
+      Name: Model Hierarchy
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SceneNodeComponent:
+      Parent: 132
+      FirstChild: 134
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 132
+    NameComponent:
+      Name: Tree
+    TransformComponent:
+      Translation: [-80, 8, -240]
+      Rotation: [0, 0, 0]
+      Scale: [4, 4, 4]
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 133
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 131
+    NameComponent:
+      Name: Bark
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Bark
+      Material:
+        Name: Bark_Material
+        AlbedoMap: <NO TEXTURE>
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0.0772200823, 0.0461015031, 0]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 129
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 130
+    NameComponent:
+      Name: Cylinder
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Cylinder
+      Material:
+        Name: Cylinder_Material
+        AlbedoMap: leafy-grass2-albedo.png
+        NormalMap: leafy-grass2-normal-ogl.png
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0, 0.289575279, 0.0111804269]
+        RoughnessValue: 1
+        MetalnessValue: 0
+    SceneNodeComponent:
+      Parent: 129
+      FirstChild: 1048575
+      NextSibling: 131
+      PreviousSibling: 1048575
+  - Entity: 129
+    NameComponent:
+      Name: Model Hierarchy
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SceneNodeComponent:
+      Parent: 128
+      FirstChild: 130
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 128
+    NameComponent:
+      Name: Tree
+    TransformComponent:
+      Translation: [80, 8, -160]
+      Rotation: [0, 0, 0]
+      Scale: [4, 4, 4]
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 129
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 127
+    NameComponent:
+      Name: Bark
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Bark
+      Material:
+        Name: Bark_Material
+        AlbedoMap: <NO TEXTURE>
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0.0772200823, 0.0461015031, 0]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 125
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 126
+    NameComponent:
+      Name: Cylinder
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Cylinder
+      Material:
+        Name: Cylinder_Material
+        AlbedoMap: leafy-grass2-albedo.png
+        NormalMap: leafy-grass2-normal-ogl.png
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0, 0.289575279, 0.0111804269]
+        RoughnessValue: 1
+        MetalnessValue: 0
+    SceneNodeComponent:
+      Parent: 125
+      FirstChild: 1048575
+      NextSibling: 127
+      PreviousSibling: 1048575
+  - Entity: 125
+    NameComponent:
+      Name: Model Hierarchy
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SceneNodeComponent:
+      Parent: 124
+      FirstChild: 126
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 124
+    NameComponent:
+      Name: Tree
+    TransformComponent:
+      Translation: [80, 8, 200]
+      Rotation: [0, 0, 0]
+      Scale: [4, 4, 4]
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 125
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 123
+    NameComponent:
+      Name: Bark
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Bark
+      Material:
+        Name: Bark_Material
+        AlbedoMap: <NO TEXTURE>
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0.0772200823, 0.0461015031, 0]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 121
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 122
+    NameComponent:
+      Name: Cylinder
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Cylinder
+      Material:
+        Name: Cylinder_Material
+        AlbedoMap: leafy-grass2-albedo.png
+        NormalMap: leafy-grass2-normal-ogl.png
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0, 0.289575279, 0.0111804269]
+        RoughnessValue: 1
+        MetalnessValue: 0
+    SceneNodeComponent:
+      Parent: 121
+      FirstChild: 1048575
+      NextSibling: 123
+      PreviousSibling: 1048575
+  - Entity: 121
+    NameComponent:
+      Name: Model Hierarchy
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SceneNodeComponent:
+      Parent: 120
+      FirstChild: 122
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 120
+    NameComponent:
+      Name: Tree
+    TransformComponent:
+      Translation: [-200, 8, 120]
+      Rotation: [0, 0, 0]
+      Scale: [4, 4, 4]
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 121
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 119
+    NameComponent:
+      Name: Bark
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Bark
+      Material:
+        Name: Bark_Material
+        AlbedoMap: <NO TEXTURE>
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0.0772200823, 0.0461015031, 0]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 117
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 118
+    NameComponent:
+      Name: Cylinder
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Cylinder
+      Material:
+        Name: Cylinder_Material
+        AlbedoMap: leafy-grass2-albedo.png
+        NormalMap: leafy-grass2-normal-ogl.png
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0, 0.289575279, 0.0111804269]
+        RoughnessValue: 1
+        MetalnessValue: 0
+    SceneNodeComponent:
+      Parent: 117
+      FirstChild: 1048575
+      NextSibling: 119
+      PreviousSibling: 1048575
+  - Entity: 117
+    NameComponent:
+      Name: Model Hierarchy
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SceneNodeComponent:
+      Parent: 116
+      FirstChild: 118
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 116
+    NameComponent:
+      Name: Tree
+    TransformComponent:
+      Translation: [320, 8, 0]
+      Rotation: [0, 0, 0]
+      Scale: [4, 4, 4]
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 117
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 115
+    NameComponent:
+      Name: Bark
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Bark
+      Material:
+        Name: Bark_Material
+        AlbedoMap: <NO TEXTURE>
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0.0772200823, 0.0461015031, 0]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 113
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 114
+    NameComponent:
+      Name: Cylinder
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Cylinder
+      Material:
+        Name: Cylinder_Material
+        AlbedoMap: leafy-grass2-albedo.png
+        NormalMap: leafy-grass2-normal-ogl.png
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0, 0.289575279, 0.0111804269]
+        RoughnessValue: 1
+        MetalnessValue: 0
+    SceneNodeComponent:
+      Parent: 113
+      FirstChild: 1048575
+      NextSibling: 115
+      PreviousSibling: 1048575
+  - Entity: 113
+    NameComponent:
+      Name: Model Hierarchy
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SceneNodeComponent:
+      Parent: 112
+      FirstChild: 114
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 112
+    NameComponent:
+      Name: Tree
+    TransformComponent:
+      Translation: [-280, 8, -80]
+      Rotation: [0, 0, 0]
+      Scale: [4, 4, 4]
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 113
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 111
+    NameComponent:
+      Name: Bark
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Bark
+      Material:
+        Name: Bark_Material
+        AlbedoMap: <NO TEXTURE>
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0.0772200823, 0.0461015031, 0]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 109
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 110
+    NameComponent:
+      Name: Cylinder
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Cylinder
+      Material:
+        Name: Cylinder_Material
+        AlbedoMap: leafy-grass2-albedo.png
+        NormalMap: leafy-grass2-normal-ogl.png
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0, 0.289575279, 0.0111804269]
+        RoughnessValue: 1
+        MetalnessValue: 0
+    SceneNodeComponent:
+      Parent: 109
+      FirstChild: 1048575
+      NextSibling: 111
+      PreviousSibling: 1048575
+  - Entity: 109
+    NameComponent:
+      Name: Model Hierarchy
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SceneNodeComponent:
+      Parent: 108
+      FirstChild: 110
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 108
+    NameComponent:
+      Name: Tree
+    TransformComponent:
+      Translation: [40, 8, 240]
+      Rotation: [0, 0, 0]
+      Scale: [4, 4, 4]
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 109
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 107
+    NameComponent:
+      Name: Bark
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Bark
+      Material:
+        Name: Bark_Material
+        AlbedoMap: <NO TEXTURE>
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0.0772200823, 0.0461015031, 0]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 105
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 106
+    NameComponent:
+      Name: Cylinder
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Cylinder
+      Material:
+        Name: Cylinder_Material
+        AlbedoMap: leafy-grass2-albedo.png
+        NormalMap: leafy-grass2-normal-ogl.png
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0, 0.289575279, 0.0111804269]
+        RoughnessValue: 1
+        MetalnessValue: 0
+    SceneNodeComponent:
+      Parent: 105
+      FirstChild: 1048575
+      NextSibling: 107
+      PreviousSibling: 1048575
+  - Entity: 105
+    NameComponent:
+      Name: Model Hierarchy
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SceneNodeComponent:
+      Parent: 104
+      FirstChild: 106
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 104
+    NameComponent:
+      Name: Tree
+    TransformComponent:
+      Translation: [80, 8, 40]
+      Rotation: [0, 0, 0]
+      Scale: [4, 4, 4]
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 105
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 103
+    NameComponent:
+      Name: Bark
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Bark
+      Material:
+        Name: Bark_Material
+        AlbedoMap: <NO TEXTURE>
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0.0772200823, 0.0461015031, 0]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 101
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 102
+    NameComponent:
+      Name: Cylinder
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Cylinder
+      Material:
+        Name: Cylinder_Material
+        AlbedoMap: leafy-grass2-albedo.png
+        NormalMap: leafy-grass2-normal-ogl.png
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0, 0.289575279, 0.0111804269]
+        RoughnessValue: 1
+        MetalnessValue: 0
+    SceneNodeComponent:
+      Parent: 101
+      FirstChild: 1048575
+      NextSibling: 103
+      PreviousSibling: 1048575
+  - Entity: 101
+    NameComponent:
+      Name: Model Hierarchy
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SceneNodeComponent:
+      Parent: 100
+      FirstChild: 102
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 100
+    NameComponent:
+      Name: Tree
+    TransformComponent:
+      Translation: [120, 8, 160]
+      Rotation: [0, 0, 0]
+      Scale: [4, 4, 4]
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 101
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 99
+    NameComponent:
+      Name: Bark
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Bark
+      Material:
+        Name: Bark_Material
+        AlbedoMap: <NO TEXTURE>
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0.0772200823, 0.0461015031, 0]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 97
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 98
+    NameComponent:
+      Name: Cylinder
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Cylinder
+      Material:
+        Name: Cylinder_Material
+        AlbedoMap: leafy-grass2-albedo.png
+        NormalMap: leafy-grass2-normal-ogl.png
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0, 0.289575279, 0.0111804269]
+        RoughnessValue: 1
+        MetalnessValue: 0
+    SceneNodeComponent:
+      Parent: 97
+      FirstChild: 1048575
+      NextSibling: 99
+      PreviousSibling: 1048575
+  - Entity: 97
+    NameComponent:
+      Name: Model Hierarchy
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SceneNodeComponent:
+      Parent: 96
+      FirstChild: 98
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 96
+    NameComponent:
+      Name: Tree
+    TransformComponent:
+      Translation: [-40, 8, -320]
+      Rotation: [0, 0, 0]
+      Scale: [4, 4, 4]
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 97
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 95
+    NameComponent:
+      Name: Bark
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Bark
+      Material:
+        Name: Bark_Material
+        AlbedoMap: <NO TEXTURE>
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0.0772200823, 0.0461015031, 0]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 93
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 94
+    NameComponent:
+      Name: Cylinder
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Cylinder
+      Material:
+        Name: Cylinder_Material
+        AlbedoMap: leafy-grass2-albedo.png
+        NormalMap: leafy-grass2-normal-ogl.png
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0, 0.289575279, 0.0111804269]
+        RoughnessValue: 1
+        MetalnessValue: 0
+    SceneNodeComponent:
+      Parent: 93
+      FirstChild: 1048575
+      NextSibling: 95
+      PreviousSibling: 1048575
+  - Entity: 93
+    NameComponent:
+      Name: Model Hierarchy
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SceneNodeComponent:
+      Parent: 92
+      FirstChild: 94
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 92
+    NameComponent:
+      Name: Tree
+    TransformComponent:
+      Translation: [80, 8, -320]
+      Rotation: [0, 0, 0]
+      Scale: [4, 4, 4]
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 93
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 91
+    NameComponent:
+      Name: Bark
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Bark
+      Material:
+        Name: Bark_Material
+        AlbedoMap: <NO TEXTURE>
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0.0772200823, 0.0461015031, 0]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 89
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 90
+    NameComponent:
+      Name: Cylinder
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Cylinder
+      Material:
+        Name: Cylinder_Material
+        AlbedoMap: leafy-grass2-albedo.png
+        NormalMap: leafy-grass2-normal-ogl.png
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0, 0.289575279, 0.0111804269]
+        RoughnessValue: 1
+        MetalnessValue: 0
+    SceneNodeComponent:
+      Parent: 89
+      FirstChild: 1048575
+      NextSibling: 91
+      PreviousSibling: 1048575
+  - Entity: 89
+    NameComponent:
+      Name: Model Hierarchy
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SceneNodeComponent:
+      Parent: 88
+      FirstChild: 90
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 88
+    NameComponent:
+      Name: Tree
+    TransformComponent:
+      Translation: [-160, 8, 200]
+      Rotation: [0, 0, 0]
+      Scale: [4, 4, 4]
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 89
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 87
+    NameComponent:
+      Name: Bark
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Bark
+      Material:
+        Name: Bark_Material
+        AlbedoMap: <NO TEXTURE>
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0.0772200823, 0.0461015031, 0]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 85
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 86
+    NameComponent:
+      Name: Cylinder
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Cylinder
+      Material:
+        Name: Cylinder_Material
+        AlbedoMap: leafy-grass2-albedo.png
+        NormalMap: leafy-grass2-normal-ogl.png
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0, 0.289575279, 0.0111804269]
+        RoughnessValue: 1
+        MetalnessValue: 0
+    SceneNodeComponent:
+      Parent: 85
+      FirstChild: 1048575
+      NextSibling: 87
+      PreviousSibling: 1048575
+  - Entity: 85
+    NameComponent:
+      Name: Model Hierarchy
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SceneNodeComponent:
+      Parent: 84
+      FirstChild: 86
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 84
+    NameComponent:
+      Name: Tree
+    TransformComponent:
+      Translation: [-160, 8, 320]
+      Rotation: [0, 0, 0]
+      Scale: [4, 4, 4]
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 85
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 83
+    NameComponent:
+      Name: Bark
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Bark
+      Material:
+        Name: Bark_Material
+        AlbedoMap: <NO TEXTURE>
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0.0772200823, 0.0461015031, 0]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 81
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 82
+    NameComponent:
+      Name: Cylinder
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Cylinder
+      Material:
+        Name: Cylinder_Material
+        AlbedoMap: leafy-grass2-albedo.png
+        NormalMap: leafy-grass2-normal-ogl.png
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0, 0.289575279, 0.0111804269]
+        RoughnessValue: 1
+        MetalnessValue: 0
+    SceneNodeComponent:
+      Parent: 81
+      FirstChild: 1048575
+      NextSibling: 83
+      PreviousSibling: 1048575
+  - Entity: 81
+    NameComponent:
+      Name: Model Hierarchy
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SceneNodeComponent:
+      Parent: 80
+      FirstChild: 82
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 80
+    NameComponent:
+      Name: Tree
+    TransformComponent:
+      Translation: [200, 8, 240]
+      Rotation: [0, 0, 0]
+      Scale: [4, 4, 4]
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 81
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 79
+    NameComponent:
+      Name: Bark
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Bark
+      Material:
+        Name: Bark_Material
+        AlbedoMap: <NO TEXTURE>
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0.0772200823, 0.0461015031, 0]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 77
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 78
+    NameComponent:
+      Name: Cylinder
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Cylinder
+      Material:
+        Name: Cylinder_Material
+        AlbedoMap: leafy-grass2-albedo.png
+        NormalMap: leafy-grass2-normal-ogl.png
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0, 0.289575279, 0.0111804269]
+        RoughnessValue: 1
+        MetalnessValue: 0
+    SceneNodeComponent:
+      Parent: 77
+      FirstChild: 1048575
+      NextSibling: 79
+      PreviousSibling: 1048575
+  - Entity: 77
+    NameComponent:
+      Name: Model Hierarchy
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SceneNodeComponent:
+      Parent: 76
+      FirstChild: 78
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 76
+    NameComponent:
+      Name: Tree
+    TransformComponent:
+      Translation: [240, 8, 200]
+      Rotation: [0, 0, 0]
+      Scale: [4, 4, 4]
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 77
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 75
+    NameComponent:
+      Name: Bark
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Bark
+      Material:
+        Name: Bark_Material
+        AlbedoMap: <NO TEXTURE>
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0.0772200823, 0.0461015031, 0]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 73
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 74
+    NameComponent:
+      Name: Cylinder
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Cylinder
+      Material:
+        Name: Cylinder_Material
+        AlbedoMap: leafy-grass2-albedo.png
+        NormalMap: leafy-grass2-normal-ogl.png
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0, 0.289575279, 0.0111804269]
+        RoughnessValue: 1
+        MetalnessValue: 0
+    SceneNodeComponent:
+      Parent: 73
+      FirstChild: 1048575
+      NextSibling: 75
+      PreviousSibling: 1048575
+  - Entity: 73
+    NameComponent:
+      Name: Model Hierarchy
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SceneNodeComponent:
+      Parent: 72
+      FirstChild: 74
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 72
+    NameComponent:
+      Name: Tree
+    TransformComponent:
+      Translation: [-80, 8, 80]
+      Rotation: [0, 0, 0]
+      Scale: [4, 4, 4]
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 73
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 71
+    NameComponent:
+      Name: Bark
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Bark
+      Material:
+        Name: Bark_Material
+        AlbedoMap: <NO TEXTURE>
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0.0772200823, 0.0461015031, 0]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 69
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 70
+    NameComponent:
+      Name: Cylinder
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Cylinder
+      Material:
+        Name: Cylinder_Material
+        AlbedoMap: leafy-grass2-albedo.png
+        NormalMap: leafy-grass2-normal-ogl.png
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0, 0.289575279, 0.0111804269]
+        RoughnessValue: 1
+        MetalnessValue: 0
+    SceneNodeComponent:
+      Parent: 69
+      FirstChild: 1048575
+      NextSibling: 71
+      PreviousSibling: 1048575
+  - Entity: 69
+    NameComponent:
+      Name: Model Hierarchy
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SceneNodeComponent:
+      Parent: 68
+      FirstChild: 70
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 68
+    NameComponent:
+      Name: Tree
+    TransformComponent:
+      Translation: [-280, 8, 320]
+      Rotation: [0, 0, 0]
+      Scale: [4, 4, 4]
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 69
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 67
+    NameComponent:
+      Name: Bark
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Bark
+      Material:
+        Name: Bark_Material
+        AlbedoMap: <NO TEXTURE>
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0.0772200823, 0.0461015031, 0]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 65
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 66
+    NameComponent:
+      Name: Cylinder
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Cylinder
+      Material:
+        Name: Cylinder_Material
+        AlbedoMap: leafy-grass2-albedo.png
+        NormalMap: leafy-grass2-normal-ogl.png
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0, 0.289575279, 0.0111804269]
+        RoughnessValue: 1
+        MetalnessValue: 0
+    SceneNodeComponent:
+      Parent: 65
+      FirstChild: 1048575
+      NextSibling: 67
+      PreviousSibling: 1048575
+  - Entity: 65
+    NameComponent:
+      Name: Model Hierarchy
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SceneNodeComponent:
+      Parent: 64
+      FirstChild: 66
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 64
+    NameComponent:
+      Name: Tree
+    TransformComponent:
+      Translation: [-120, 8, 40]
+      Rotation: [0, 0, 0]
+      Scale: [4, 4, 4]
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 65
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 63
+    NameComponent:
+      Name: Bark
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Bark
+      Material:
+        Name: Bark_Material
+        AlbedoMap: <NO TEXTURE>
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0.0772200823, 0.0461015031, 0]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 61
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 62
+    NameComponent:
+      Name: Cylinder
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Cylinder
+      Material:
+        Name: Cylinder_Material
+        AlbedoMap: leafy-grass2-albedo.png
+        NormalMap: leafy-grass2-normal-ogl.png
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0, 0.289575279, 0.0111804269]
+        RoughnessValue: 1
+        MetalnessValue: 0
+    SceneNodeComponent:
+      Parent: 61
+      FirstChild: 1048575
+      NextSibling: 63
+      PreviousSibling: 1048575
+  - Entity: 61
+    NameComponent:
+      Name: Model Hierarchy
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SceneNodeComponent:
+      Parent: 60
+      FirstChild: 62
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 60
+    NameComponent:
+      Name: Tree
+    TransformComponent:
+      Translation: [120, 8, 80]
+      Rotation: [0, 0, 0]
+      Scale: [4, 4, 4]
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 61
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 59
+    NameComponent:
+      Name: Bark
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Bark
+      Material:
+        Name: Bark_Material
+        AlbedoMap: <NO TEXTURE>
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0.0772200823, 0.0461015031, 0]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 57
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 58
+    NameComponent:
+      Name: Cylinder
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Cylinder
+      Material:
+        Name: Cylinder_Material
+        AlbedoMap: leafy-grass2-albedo.png
+        NormalMap: leafy-grass2-normal-ogl.png
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0, 0.289575279, 0.0111804269]
+        RoughnessValue: 1
+        MetalnessValue: 0
+    SceneNodeComponent:
+      Parent: 57
+      FirstChild: 1048575
+      NextSibling: 59
+      PreviousSibling: 1048575
+  - Entity: 57
+    NameComponent:
+      Name: Model Hierarchy
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SceneNodeComponent:
+      Parent: 56
+      FirstChild: 58
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 56
+    NameComponent:
+      Name: Tree
+    TransformComponent:
+      Translation: [360, 8, -80]
+      Rotation: [0, 0, 0]
+      Scale: [4, 4, 4]
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 57
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 55
+    NameComponent:
+      Name: Bark
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Bark
+      Material:
+        Name: Bark_Material
+        AlbedoMap: <NO TEXTURE>
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0.0772200823, 0.0461015031, 0]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 53
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 54
+    NameComponent:
+      Name: Cylinder
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Cylinder
+      Material:
+        Name: Cylinder_Material
+        AlbedoMap: leafy-grass2-albedo.png
+        NormalMap: leafy-grass2-normal-ogl.png
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0, 0.289575279, 0.0111804269]
+        RoughnessValue: 1
+        MetalnessValue: 0
+    SceneNodeComponent:
+      Parent: 53
+      FirstChild: 1048575
+      NextSibling: 55
+      PreviousSibling: 1048575
+  - Entity: 53
+    NameComponent:
+      Name: Model Hierarchy
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SceneNodeComponent:
+      Parent: 52
+      FirstChild: 54
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 52
+    NameComponent:
+      Name: Tree
+    TransformComponent:
+      Translation: [-80, 8, -160]
+      Rotation: [0, 0, 0]
+      Scale: [4, 4, 4]
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 53
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 51
+    NameComponent:
+      Name: Bark
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Bark
+      Material:
+        Name: Bark_Material
+        AlbedoMap: <NO TEXTURE>
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0.0772200823, 0.0461015031, 0]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 49
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 50
+    NameComponent:
+      Name: Cylinder
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Cylinder
+      Material:
+        Name: Cylinder_Material
+        AlbedoMap: leafy-grass2-albedo.png
+        NormalMap: leafy-grass2-normal-ogl.png
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0, 0.289575279, 0.0111804269]
+        RoughnessValue: 1
+        MetalnessValue: 0
+    SceneNodeComponent:
+      Parent: 49
+      FirstChild: 1048575
+      NextSibling: 51
+      PreviousSibling: 1048575
+  - Entity: 49
+    NameComponent:
+      Name: Model Hierarchy
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SceneNodeComponent:
+      Parent: 48
+      FirstChild: 50
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 48
+    NameComponent:
+      Name: Tree
+    TransformComponent:
+      Translation: [-200, 8, 120]
+      Rotation: [0, 0, 0]
+      Scale: [4, 4, 4]
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 49
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 47
+    NameComponent:
+      Name: Bark
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Bark
+      Material:
+        Name: Bark_Material
+        AlbedoMap: <NO TEXTURE>
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0.0772200823, 0.0461015031, 0]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 45
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 46
+    NameComponent:
+      Name: Cylinder
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Cylinder
+      Material:
+        Name: Cylinder_Material
+        AlbedoMap: leafy-grass2-albedo.png
+        NormalMap: leafy-grass2-normal-ogl.png
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0, 0.289575279, 0.0111804269]
+        RoughnessValue: 1
+        MetalnessValue: 0
+    SceneNodeComponent:
+      Parent: 45
+      FirstChild: 1048575
+      NextSibling: 47
+      PreviousSibling: 1048575
+  - Entity: 45
+    NameComponent:
+      Name: Model Hierarchy
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SceneNodeComponent:
+      Parent: 44
+      FirstChild: 46
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 44
+    NameComponent:
+      Name: Tree
+    TransformComponent:
+      Translation: [-280, 8, -240]
+      Rotation: [0, 0, 0]
+      Scale: [4, 4, 4]
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 45
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 43
+    NameComponent:
+      Name: Bark
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Bark
+      Material:
+        Name: Bark_Material
+        AlbedoMap: <NO TEXTURE>
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0.0772200823, 0.0461015031, 0]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 41
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 42
+    NameComponent:
+      Name: Cylinder
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Cylinder
+      Material:
+        Name: Cylinder_Material
+        AlbedoMap: leafy-grass2-albedo.png
+        NormalMap: leafy-grass2-normal-ogl.png
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0, 0.289575279, 0.0111804269]
+        RoughnessValue: 1
+        MetalnessValue: 0
+    SceneNodeComponent:
+      Parent: 41
+      FirstChild: 1048575
+      NextSibling: 43
+      PreviousSibling: 1048575
+  - Entity: 41
+    NameComponent:
+      Name: Model Hierarchy
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SceneNodeComponent:
+      Parent: 40
+      FirstChild: 42
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 40
+    NameComponent:
+      Name: Tree
+    TransformComponent:
+      Translation: [-320, 8, -80]
+      Rotation: [0, 0, 0]
+      Scale: [4, 4, 4]
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 41
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 39
+    NameComponent:
+      Name: Bark
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Bark
+      Material:
+        Name: Bark_Material
+        AlbedoMap: <NO TEXTURE>
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0.0772200823, 0.0461015031, 0]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 37
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 38
+    NameComponent:
+      Name: Cylinder
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Cylinder
+      Material:
+        Name: Cylinder_Material
+        AlbedoMap: leafy-grass2-albedo.png
+        NormalMap: leafy-grass2-normal-ogl.png
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0, 0.289575279, 0.0111804269]
+        RoughnessValue: 1
+        MetalnessValue: 0
+    SceneNodeComponent:
+      Parent: 37
+      FirstChild: 1048575
+      NextSibling: 39
+      PreviousSibling: 1048575
+  - Entity: 37
+    NameComponent:
+      Name: Model Hierarchy
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SceneNodeComponent:
+      Parent: 36
+      FirstChild: 38
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 36
+    NameComponent:
+      Name: Tree
+    TransformComponent:
+      Translation: [120, 8, 200]
+      Rotation: [0, 0, 0]
+      Scale: [4, 4, 4]
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 37
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 35
+    NameComponent:
+      Name: Bark
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Bark
+      Material:
+        Name: Bark_Material
+        AlbedoMap: <NO TEXTURE>
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0.0772200823, 0.0461015031, 0]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 33
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 34
+    NameComponent:
+      Name: Cylinder
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Cylinder
+      Material:
+        Name: Cylinder_Material
+        AlbedoMap: leafy-grass2-albedo.png
+        NormalMap: leafy-grass2-normal-ogl.png
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0, 0.289575279, 0.0111804269]
+        RoughnessValue: 1
+        MetalnessValue: 0
+    SceneNodeComponent:
+      Parent: 33
+      FirstChild: 1048575
+      NextSibling: 35
+      PreviousSibling: 1048575
+  - Entity: 33
+    NameComponent:
+      Name: Model Hierarchy
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SceneNodeComponent:
+      Parent: 32
+      FirstChild: 34
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 32
+    NameComponent:
+      Name: Tree
+    TransformComponent:
+      Translation: [-160, 8, 120]
+      Rotation: [0, 0, 0]
+      Scale: [4, 4, 4]
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 33
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 31
+    NameComponent:
+      Name: Bark
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Bark
+      Material:
+        Name: Bark_Material
+        AlbedoMap: <NO TEXTURE>
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0.0772200823, 0.0461015031, 0]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 29
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 30
+    NameComponent:
+      Name: Cylinder
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Cylinder
+      Material:
+        Name: Cylinder_Material
+        AlbedoMap: leafy-grass2-albedo.png
+        NormalMap: leafy-grass2-normal-ogl.png
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0, 0.289575279, 0.0111804269]
+        RoughnessValue: 1
+        MetalnessValue: 0
+    SceneNodeComponent:
+      Parent: 29
+      FirstChild: 1048575
+      NextSibling: 31
+      PreviousSibling: 1048575
+  - Entity: 29
+    NameComponent:
+      Name: Model Hierarchy
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SceneNodeComponent:
+      Parent: 28
+      FirstChild: 30
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 28
+    NameComponent:
+      Name: Tree
+    TransformComponent:
+      Translation: [-200, 8, -200]
+      Rotation: [0, 0, 0]
+      Scale: [4, 4, 4]
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 29
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 27
+    NameComponent:
+      Name: Bark
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Bark
+      Material:
+        Name: Bark_Material
+        AlbedoMap: <NO TEXTURE>
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0.0772200823, 0.0461015031, 0]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 25
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 26
+    NameComponent:
+      Name: Cylinder
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Cylinder
+      Material:
+        Name: Cylinder_Material
+        AlbedoMap: leafy-grass2-albedo.png
+        NormalMap: leafy-grass2-normal-ogl.png
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0, 0.289575279, 0.0111804269]
+        RoughnessValue: 1
+        MetalnessValue: 0
+    SceneNodeComponent:
+      Parent: 25
+      FirstChild: 1048575
+      NextSibling: 27
+      PreviousSibling: 1048575
+  - Entity: 25
+    NameComponent:
+      Name: Model Hierarchy
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SceneNodeComponent:
+      Parent: 24
+      FirstChild: 26
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 24
+    NameComponent:
+      Name: Tree
+    TransformComponent:
+      Translation: [-320, 8, -120]
+      Rotation: [0, 0, 0]
+      Scale: [4, 4, 4]
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 25
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 23
+    NameComponent:
+      Name: Bark
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Bark
+      Material:
+        Name: Bark_Material
+        AlbedoMap: <NO TEXTURE>
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0.0772200823, 0.0461015031, 0]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 21
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 22
+    NameComponent:
+      Name: Cylinder
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Cylinder
+      Material:
+        Name: Cylinder_Material
+        AlbedoMap: leafy-grass2-albedo.png
+        NormalMap: leafy-grass2-normal-ogl.png
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0, 0.289575279, 0.0111804269]
+        RoughnessValue: 1
+        MetalnessValue: 0
+    SceneNodeComponent:
+      Parent: 21
+      FirstChild: 1048575
+      NextSibling: 23
+      PreviousSibling: 1048575
+  - Entity: 21
+    NameComponent:
+      Name: Model Hierarchy
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SceneNodeComponent:
+      Parent: 20
+      FirstChild: 22
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 20
+    NameComponent:
+      Name: Tree
+    TransformComponent:
+      Translation: [-80, 8, -280]
+      Rotation: [0, 0, 0]
+      Scale: [4, 4, 4]
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 21
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 19
+    NameComponent:
+      Name: Bark
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Bark
+      Material:
+        Name: Bark_Material
+        AlbedoMap: <NO TEXTURE>
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0.0772200823, 0.0461015031, 0]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 17
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 18
+    NameComponent:
+      Name: Cylinder
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Cylinder
+      Material:
+        Name: Cylinder_Material
+        AlbedoMap: leafy-grass2-albedo.png
+        NormalMap: leafy-grass2-normal-ogl.png
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0, 0.289575279, 0.0111804269]
+        RoughnessValue: 1
+        MetalnessValue: 0
+    SceneNodeComponent:
+      Parent: 17
+      FirstChild: 1048575
+      NextSibling: 19
+      PreviousSibling: 1048575
+  - Entity: 17
+    NameComponent:
+      Name: Model Hierarchy
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SceneNodeComponent:
+      Parent: 16
+      FirstChild: 18
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 16
+    NameComponent:
+      Name: Tree
+    TransformComponent:
+      Translation: [80, 8, -280]
+      Rotation: [0, 0, 0]
+      Scale: [4, 4, 4]
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 17
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 15
+    NameComponent:
+      Name: Bark
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Bark
+      Material:
+        Name: Bark_Material
+        AlbedoMap: <NO TEXTURE>
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0.0772200823, 0.0461015031, 0]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 13
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 14
+    NameComponent:
+      Name: Cylinder
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Cylinder
+      Material:
+        Name: Cylinder_Material
+        AlbedoMap: leafy-grass2-albedo.png
+        NormalMap: leafy-grass2-normal-ogl.png
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0, 0.289575279, 0.0111804269]
+        RoughnessValue: 1
+        MetalnessValue: 0
+    SceneNodeComponent:
+      Parent: 13
+      FirstChild: 1048575
+      NextSibling: 15
+      PreviousSibling: 1048575
+  - Entity: 13
+    NameComponent:
+      Name: Model Hierarchy
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SceneNodeComponent:
+      Parent: 12
+      FirstChild: 14
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 12
+    NameComponent:
+      Name: Tree
+    TransformComponent:
+      Translation: [-320, 8, 360]
+      Rotation: [0, 0, 0]
+      Scale: [4, 4, 4]
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 13
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 11
+    NameComponent:
+      Name: Bark
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Bark
+      Material:
+        Name: Bark_Material
+        AlbedoMap: <NO TEXTURE>
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0.0772200823, 0.0461015031, 0]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 9
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 10
+    NameComponent:
+      Name: Cylinder
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Cylinder
+      Material:
+        Name: Cylinder_Material
+        AlbedoMap: leafy-grass2-albedo.png
+        NormalMap: leafy-grass2-normal-ogl.png
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0, 0.289575279, 0.0111804269]
+        RoughnessValue: 1
+        MetalnessValue: 0
+    SceneNodeComponent:
+      Parent: 9
+      FirstChild: 1048575
+      NextSibling: 11
+      PreviousSibling: 1048575
+  - Entity: 9
+    NameComponent:
+      Name: Model Hierarchy
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SceneNodeComponent:
+      Parent: 8
+      FirstChild: 10
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 8
+    NameComponent:
+      Name: Tree
+    TransformComponent:
+      Translation: [-80, 8, 360]
+      Rotation: [0, 0, 0]
+      Scale: [4, 4, 4]
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 9
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 7
+    NameComponent:
+      Name: Bark
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Bark
+      Material:
+        Name: Bark_Material
+        AlbedoMap: <NO TEXTURE>
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0.0772200823, 0.0461015031, 0]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 5
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 6
+    NameComponent:
+      Name: Cylinder
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Cylinder
+      Material:
+        Name: Cylinder_Material
+        AlbedoMap: leafy-grass2-albedo.png
+        NormalMap: leafy-grass2-normal-ogl.png
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0, 0.289575279, 0.0111804269]
+        RoughnessValue: 1
+        MetalnessValue: 0
+    SceneNodeComponent:
+      Parent: 5
+      FirstChild: 1048575
+      NextSibling: 7
+      PreviousSibling: 1048575
+  - Entity: 5
+    NameComponent:
+      Name: Model Hierarchy
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SceneNodeComponent:
+      Parent: 4
+      FirstChild: 6
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 4
+    NameComponent:
+      Name: Tree
+    TransformComponent:
+      Translation: [120, 8, -240]
+      Rotation: [0, 0, 0]
+      Scale: [4, 4, 4]
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 5
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 3
+    NameComponent:
+      Name: Bark
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Bark
+      Material:
+        Name: Bark_Material
+        AlbedoMap: <NO TEXTURE>
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0.0772200823, 0.0461015031, 0]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 1
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 2
+    NameComponent:
+      Name: Cylinder
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    MeshComponent:
+      Mesh: Cylinder
+      Material:
+        Name: Cylinder_Material
+        AlbedoMap: leafy-grass2-albedo.png
+        NormalMap: leafy-grass2-normal-ogl.png
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0, 0.289575279, 0.0111804269]
+        RoughnessValue: 1
+        MetalnessValue: 0
+    SceneNodeComponent:
+      Parent: 1
+      FirstChild: 1048575
+      NextSibling: 3
+      PreviousSibling: 1048575
+  - Entity: 1
+    NameComponent:
+      Name: Model Hierarchy
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SceneNodeComponent:
+      Parent: 0
+      FirstChild: 2
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 0
+    NameComponent:
+      Name: Tree
+    TransformComponent:
+      Translation: [40, 8, 160]
+      Rotation: [0, 0, 0]
+      Scale: [4, 4, 4]
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 1
+      NextSibling: 1048575
+      PreviousSibling: 1048575

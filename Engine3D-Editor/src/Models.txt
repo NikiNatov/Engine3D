@@ -1,0 +1,11 @@
+assets/models/camera/camera.obj
+assets/models/gun/Cerberus_LP.fbx
+assets/models/pistol/m1911_finalFire.fbx
+assets/models/primitives/sphere.fbx
+assets/models/starwars/spaceship/tie-fighter.fbx
+assets/models/tree/lowpolytree.obj
+assets/models/character/model.dae
+assets/models/starwars/darth vader/darthVader.obj
+assets/models/starwars/lightsaber/LIGHTSABER.obj
+assets/models/primitives/simpleScene.fbx
+assets/models/starwars/stromtrooper/silly_dancing.fbx

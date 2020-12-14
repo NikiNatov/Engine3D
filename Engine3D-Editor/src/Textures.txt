@@ -1,0 +1,22 @@
+assets/textures/PreintegratedFG.bmp
+assets/textures/skybox/birchwood_4k.hdr
+assets/textures/skybox/rathaus_4k.hdr
+assets/textures/skybox/the_sky_is_on_fire_4k.hdr
+assets/textures/skybox/space.png
+assets/textures/skybox/sky.jpg
+assets/textures/checkerboard.png
+assets/textures/pauseButton.png
+assets/textures/playButton.png
+assets/models/character/diffuse.png
+assets/textures/grass.jpg
+assets/textures/snow.jpg
+assets/models/starwars/darth vader/body_color.png
+assets/models/starwars/darth vader/body_normal.png
+assets/models/starwars/darth vader/cape_color.png
+assets/models/starwars/darth vader/cape_normal.png
+assets/models/starwars/darth vader/gloves_color.png
+assets/models/starwars/darth vader/helmet_color.png
+assets/models/starwars/darth vader/helmet_normal.png
+assets/models/starwars/darth vader/normal.png
+assets/models/starwars/darth vader/skirt_color.png
+assets/models/starwars/darth vader/skirt_normal.png

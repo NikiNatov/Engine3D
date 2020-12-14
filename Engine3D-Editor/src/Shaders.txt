@@ -1,0 +1,8 @@
+assets/shaders/FlatColorShader.glsl
+assets/shaders/SkyboxBRDFShader.glsl
+assets/shaders/SkyboxComputeShader.glsl
+assets/shaders/SkyboxIrradianceShader.glsl
+assets/shaders/SkyboxPrefilterShader.glsl
+assets/shaders/SkyboxShader.glsl
+assets/shaders/StaticModelShader.glsl
+assets/shaders/ShadowsShader.glsl

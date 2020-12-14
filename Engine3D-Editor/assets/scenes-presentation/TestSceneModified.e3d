@@ -1,0 +1,682 @@
+Scene: Untitled
+Entities:
+  - Entity: 31
+    NameComponent:
+      Name: Icosphere
+    TransformComponent:
+      Translation: [0, 45.7161446, -124.422211]
+      Rotation: [-1.57079649, -0, 0]
+      Scale: [54.4720955, 54.4720993, 54.4720993]
+    MeshComponent:
+      Mesh: Icosphere
+      Material:
+        Name: ""
+        AlbedoMap: <NO TEXTURE>
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0.888030887, 0.63773644, 0]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 27
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 30
+  - Entity: 30
+    NameComponent:
+      Name: Cone
+    TransformComponent:
+      Translation: [3.05175781e-05, 44.4589539, 117.264587]
+      Rotation: [-1.57079649, -0, 0]
+      Scale: [43.8562927, 43.856308, 43.856308]
+    MeshComponent:
+      Mesh: Cone
+      Material:
+        Name: ""
+        AlbedoMap: <NO TEXTURE>
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0, 0.938223958, 0.0362248085]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 27
+      FirstChild: 1048575
+      NextSibling: 31
+      PreviousSibling: 29
+  - Entity: 29
+    NameComponent:
+      Name: Cube.001
+    TransformComponent:
+      Translation: [-9.15527344e-05, 36.6171036, -6.10351563e-05]
+      Rotation: [-1.57079649, -0, 0]
+      Scale: [36.030159, 36.0302124, 36.0302124]
+    MeshComponent:
+      Mesh: Cube.001
+      Material:
+        Name: ""
+        AlbedoMap: <NO TEXTURE>
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [1, 0, 0]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 27
+      FirstChild: 1048575
+      NextSibling: 30
+      PreviousSibling: 28
+  - Entity: 28
+    NameComponent:
+      Name: Plane.001
+    TransformComponent:
+      Translation: [-4.57763672e-05, -6.9388939e-18, -0.000381469727]
+      Rotation: [-1.57079649, -0, 0]
+      Scale: [674.275146, 674.276306, 674.276306]
+    MeshComponent:
+      Mesh: Plane.001
+      Material:
+        Name: ""
+        AlbedoMap: <NO TEXTURE>
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0.00363739952, 0.0398710705, 0.942084968]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 27
+      FirstChild: 1048575
+      NextSibling: 29
+      PreviousSibling: 1048575
+  - Entity: 27
+    NameComponent:
+      Name: Model Hierarchy
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    SceneNodeComponent:
+      Parent: 26
+      FirstChild: 28
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 26
+    NameComponent:
+      Name: simpleScene.fbx
+    TransformComponent:
+      Translation: [339.645844, 1.02127743, -128.183182]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 27
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 25
+    NameComponent:
+      Name: Cerberus00_Fixed
+    TransformComponent:
+      Translation: [-1.52587891e-05, 4.76496069e-07, 6.96334104e-13]
+      Rotation: [0, -0, 0]
+      Scale: [1, 0.999994993, 0.999994993]
+    MeshComponent:
+      Mesh: Cerberus00_Fixed
+      Material:
+        Name: ""
+        AlbedoMap: Cerberus_A.tga
+        NormalMap: Cerberus_N.tga
+        RoughnessMap: Cerberus_R.tga
+        MetalnessMap: Cerberus_M.tga
+        AlbedoColor: [0.800000012, 0.800000012, 0.800000012]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 24
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 24
+    NameComponent:
+      Name: Model Hierarchy
+    TransformComponent:
+      Translation: [0, 45.0239906, -96.8509445]
+      Rotation: [-1.57079637, -0, 0]
+      Scale: [0.999975801, 1, 1]
+    SceneNodeComponent:
+      Parent: 23
+      FirstChild: 25
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 23
+    NameComponent:
+      Name: Cerberus_LP.FBX
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 24
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 22
+    NameComponent:
+      Name: Sphere
+    TransformComponent:
+      Translation: [100, 60, 20]
+      Rotation: [0, -0, 0]
+      Scale: [30, 30, 30]
+    MeshComponent:
+      Mesh: Sphere-mesh
+      Material:
+        Name: ""
+        AlbedoMap: bamboo-wood-semigloss-albedo.png
+        NormalMap: bamboo-wood-semigloss-normal.png
+        RoughnessMap: bamboo-wood-semigloss-roughness.png
+        MetalnessMap: bamboo-wood-semigloss-metal.png
+        AlbedoColor: [0.800000012, 0.800000012, 0.800000012]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 21
+    NameComponent:
+      Name: Sphere
+    TransformComponent:
+      Translation: [100, 20, 20]
+      Rotation: [0, -0, 0]
+      Scale: [30, 30, 30]
+    MeshComponent:
+      Mesh: Sphere-mesh
+      Material:
+        Name: ""
+        AlbedoMap: rustediron2_basecolor.png
+        NormalMap: rustediron2_normal.png
+        RoughnessMap: rustediron2_roughness.png
+        MetalnessMap: rustediron2_metallic.png
+        AlbedoColor: [0.800000012, 0.800000012, 0.800000012]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 20
+    NameComponent:
+      Name: Sphere
+    TransformComponent:
+      Translation: [100, 60, -60]
+      Rotation: [0, -0, 0]
+      Scale: [30, 30, 30]
+    MeshComponent:
+      Mesh: Sphere-mesh
+      Material:
+        Name: ""
+        AlbedoMap: layered-rock1-albedo.png
+        NormalMap: layered-rock1-normal-ogl.png
+        RoughnessMap: layered-rock1-rough.png
+        MetalnessMap: layered-rock1-Metalness.png
+        AlbedoColor: [0.800000012, 0.800000012, 0.800000012]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 19
+    NameComponent:
+      Name: Sphere
+    TransformComponent:
+      Translation: [100, 20, -60]
+      Rotation: [0, -0, 0]
+      Scale: [30, 30, 30]
+    MeshComponent:
+      Mesh: Sphere-mesh
+      Material:
+        Name: ""
+        AlbedoMap: stringy_marble_albedo.png
+        NormalMap: stringy_marble_Normal-ogl.png
+        RoughnessMap: stringy_marble_Roughness.png
+        MetalnessMap: stringy_marble_Metallic.png
+        AlbedoColor: [0.980695009, 0, 0]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 18
+    NameComponent:
+      Name: Sphere
+    TransformComponent:
+      Translation: [100, 60, -20]
+      Rotation: [0, -0, 0]
+      Scale: [30, 30, 30]
+    MeshComponent:
+      Mesh: Sphere-mesh
+      Material:
+        Name: ""
+        AlbedoMap: leafy-grass2-albedo.png
+        NormalMap: leafy-grass2-normal-ogl.png
+        RoughnessMap: leafy-grass2-roughness.png
+        MetalnessMap: leafy-grass2-metallic.png
+        AlbedoColor: [0.800000012, 0.800000012, 0.800000012]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 17
+    NameComponent:
+      Name: Sphere
+    TransformComponent:
+      Translation: [100, 20, -20]
+      Rotation: [0, -0, 0]
+      Scale: [30, 30, 30]
+    MeshComponent:
+      Mesh: Sphere-mesh
+      Material:
+        Name: ""
+        AlbedoMap: lightgold_albedo.png
+        NormalMap: lightgold_normal-ogl.png
+        RoughnessMap: lightgold_roughness.png
+        MetalnessMap: lightgold_metallic.png
+        AlbedoColor: [0.800000012, 0.800000012, 0.800000012]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 16
+    NameComponent:
+      Name: Object03_windowblack-mesh
+    TransformComponent:
+      Translation: [-0.00467139576, 0.0271428749, -0.0783000141]
+      Rotation: [0, -0, 0]
+      Scale: [0.0100000007, 0.0100000007, 0.0100000007]
+    MeshComponent:
+      Mesh: Object03_windowblack-mesh
+      Material:
+        Name: ""
+        AlbedoMap: <NO TEXTURE>
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0.800000012, 0.800000012, 0.800000012]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 2
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 15
+    NameComponent:
+      Name: ChamferBox_engine-mesh
+    TransformComponent:
+      Translation: [-0.00927138887, 0.0314426422, -0.121300243]
+      Rotation: [0, -0, 0]
+      Scale: [0.0100000044, 0.0100000044, 0.0100000044]
+    MeshComponent:
+      Mesh: ChamferBox_engine-mesh
+      Material:
+        Name: ""
+        AlbedoMap: <NO TEXTURE>
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0.749034762, 0, 0]
+        RoughnessValue: 1
+        MetalnessValue: 0
+    SceneNodeComponent:
+      Parent: 2
+      FirstChild: 1048575
+      NextSibling: 16
+      PreviousSibling: 1048575
+  - Entity: 14
+    NameComponent:
+      Name: Circle07_bluehull-mesh
+    TransformComponent:
+      Translation: [-0.00467139622, 0.0226421356, 0.24819997]
+      Rotation: [0, -0, 0]
+      Scale: [0.0100000044, 0.0100000044, 0.0100000044]
+    MeshComponent:
+      Mesh: Circle07_bluehull-mesh
+      Material:
+        Name: ""
+        AlbedoMap: <NO TEXTURE>
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [1, 0.999989986, 0.999989986]
+        RoughnessValue: 0.600000024
+        MetalnessValue: 1
+    SceneNodeComponent:
+      Parent: 2
+      FirstChild: 1048575
+      NextSibling: 15
+      PreviousSibling: 1048575
+  - Entity: 13
+    NameComponent:
+      Name: Rectangle0_bluehull-mesh
+    TransformComponent:
+      Translation: [-0.00927138887, 0.0309429169, -0.0897002444]
+      Rotation: [0, -0, 0]
+      Scale: [0.0100000044, 0.0100000044, 0.0100000044]
+    MeshComponent:
+      Mesh: Rectangle0_bluehull-mesh
+      Material:
+        Name: ""
+        AlbedoMap: <NO TEXTURE>
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [1, 0.999989986, 0.999989986]
+        RoughnessValue: 0.600000024
+        MetalnessValue: 1
+    SceneNodeComponent:
+      Parent: 2
+      FirstChild: 1048575
+      NextSibling: 14
+      PreviousSibling: 1048575
+  - Entity: 12
+    NameComponent:
+      Name: Line53_bluehull-mesh
+    TransformComponent:
+      Translation: [0.00662857527, 0.0251426697, -0.0675001368]
+      Rotation: [0, -0, 0]
+      Scale: [0.0100000044, 0.0100000044, 0.0100000044]
+    MeshComponent:
+      Mesh: Line53_bluehull-mesh
+      Material:
+        Name: ""
+        AlbedoMap: <NO TEXTURE>
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [1, 0.999989986, 0.999989986]
+        RoughnessValue: 0.600000024
+        MetalnessValue: 1
+    SceneNodeComponent:
+      Parent: 2
+      FirstChild: 1048575
+      NextSibling: 13
+      PreviousSibling: 1048575
+  - Entity: 11
+    NameComponent:
+      Name: Sphere04_bluehull-mesh
+    TransformComponent:
+      Translation: [-0.00467139576, 0.0251426697, -0.0776000246]
+      Rotation: [0, -0, 0]
+      Scale: [0.0100000044, 0.0100000044, 0.0100000044]
+    MeshComponent:
+      Mesh: Sphere04_bluehull-mesh
+      Material:
+        Name: ""
+        AlbedoMap: <NO TEXTURE>
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [1, 0.999989986, 0.999989986]
+        RoughnessValue: 0.600000024
+        MetalnessValue: 1
+    SceneNodeComponent:
+      Parent: 2
+      FirstChild: 1048575
+      NextSibling: 12
+      PreviousSibling: 1048575
+  - Entity: 10
+    NameComponent:
+      Name: EnginGlo_gunred-mesh
+    TransformComponent:
+      Translation: [-0.00917141885, -0.337482572, 0.353399903]
+      Rotation: [-1.19208984e-07, -1.50995831e-07, -3.14159083]
+      Scale: [0.0100000044, 0.0100000044, 0.0100000044]
+    MeshComponent:
+      Mesh: EnginGlo_gunred-mesh
+      Material:
+        Name: ""
+        AlbedoMap: <NO TEXTURE>
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0.633204639, 0, 0]
+        RoughnessValue: 1
+        MetalnessValue: 0
+    SceneNodeComponent:
+      Parent: 2
+      FirstChild: 1048575
+      NextSibling: 11
+      PreviousSibling: 1048575
+  - Entity: 9
+    NameComponent:
+      Name: Bulkhead_bluehull-mesh
+    TransformComponent:
+      Translation: [0.00662857527, 0.0251426697, -0.0674003139]
+      Rotation: [0, -0, 0]
+      Scale: [0.0100000044, 0.0100000044, 0.0100000044]
+    MeshComponent:
+      Mesh: Bulkhead_bluehull-mesh
+      Material:
+        Name: ""
+        AlbedoMap: <NO TEXTURE>
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [1, 0.999989986, 0.999989986]
+        RoughnessValue: 0.600000024
+        MetalnessValue: 1
+    SceneNodeComponent:
+      Parent: 2
+      FirstChild: 1048575
+      NextSibling: 10
+      PreviousSibling: 1048575
+  - Entity: 8
+    NameComponent:
+      Name: NGon03_bluehull-mesh
+    TransformComponent:
+      Translation: [0.00662857527, 0.0251426697, 0.263799906]
+      Rotation: [0, -0, 0]
+      Scale: [0.0100000044, 0.0100000044, 0.0100000044]
+    MeshComponent:
+      Mesh: NGon03_bluehull-mesh
+      Material:
+        Name: ""
+        AlbedoMap: <NO TEXTURE>
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [1, 0.999989986, 0.999989986]
+        RoughnessValue: 0.600000024
+        MetalnessValue: 1
+    SceneNodeComponent:
+      Parent: 2
+      FirstChild: 1048575
+      NextSibling: 9
+      PreviousSibling: 1048575
+  - Entity: 7
+    NameComponent:
+      Name: Box08_darkbluehull-mesh
+    TransformComponent:
+      Translation: [0.00662857527, 0.0274429321, -0.0761001781]
+      Rotation: [0, -0, 0]
+      Scale: [0.0100000044, 0.0100000044, 0.0100000044]
+    MeshComponent:
+      Mesh: Box08_darkbluehull-mesh
+      Material:
+        Name: ""
+        AlbedoMap: <NO TEXTURE>
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [1, 0.999989986, 0.999989986]
+        RoughnessValue: 0.600000024
+        MetalnessValue: 1
+    SceneNodeComponent:
+      Parent: 2
+      FirstChild: 1048575
+      NextSibling: 8
+      PreviousSibling: 1048575
+  - Entity: 6
+    NameComponent:
+      Name: Line60_solar-mesh
+    TransformComponent:
+      Translation: [0.0066285762, 0.0217418671, -0.0734001175]
+      Rotation: [0, -0, 0]
+      Scale: [0.0100000044, 0.0100000044, 0.0100000044]
+    MeshComponent:
+      Mesh: Line60_solar-mesh
+      Material:
+        Name: ""
+        AlbedoMap: <NO TEXTURE>
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [9.99999997e-07, 9.99989993e-07, 9.99989993e-07]
+        RoughnessValue: 1
+        MetalnessValue: 0
+    SceneNodeComponent:
+      Parent: 2
+      FirstChild: 1048575
+      NextSibling: 7
+      PreviousSibling: 1048575
+  - Entity: 5
+    NameComponent:
+      Name: Object04_bluehull-mesh
+    TransformComponent:
+      Translation: [-0.00467139576, 0.0251426697, -0.0723002627]
+      Rotation: [0, -0, 0]
+      Scale: [0.0100000044, 0.0100000044, 0.0100000044]
+    MeshComponent:
+      Mesh: Object04_bluehull-mesh
+      Material:
+        Name: ""
+        AlbedoMap: <NO TEXTURE>
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0.800000012, 0.800000012, 0.800000012]
+        RoughnessValue: 0.600000024
+        MetalnessValue: 1
+    SceneNodeComponent:
+      Parent: 2
+      FirstChild: 1048575
+      NextSibling: 6
+      PreviousSibling: 1048575
+  - Entity: 4
+    NameComponent:
+      Name: Sphere03_bluehull-mesh
+    TransformComponent:
+      Translation: [0.00662857527, 0.0251426697, -0.0723002627]
+      Rotation: [0, -0, 0]
+      Scale: [0.0100000044, 0.0100000044, 0.0100000044]
+    MeshComponent:
+      Mesh: Sphere03_bluehull-mesh
+      Material:
+        Name: ""
+        AlbedoMap: <NO TEXTURE>
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [1, 0.999989986, 0.999989986]
+        RoughnessValue: 0.600000024
+        MetalnessValue: 1
+    SceneNodeComponent:
+      Parent: 2
+      FirstChild: 1048575
+      NextSibling: 5
+      PreviousSibling: 1048575
+  - Entity: 3
+    NameComponent:
+      Name: Spot03_bluehull-mesh
+    TransformComponent:
+      Translation: [0.0066285762, 0.0251426697, -0.0695002824]
+      Rotation: [0, -0, 0]
+      Scale: [0.0100000044, 0.0100000044, 0.0100000044]
+    MeshComponent:
+      Mesh: Spot03_bluehull-mesh
+      Material:
+        Name: ""
+        AlbedoMap: <NO TEXTURE>
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [1, 0.999989986, 0.999989986]
+        RoughnessValue: 0.600000024
+        MetalnessValue: 1
+    SceneNodeComponent:
+      Parent: 2
+      FirstChild: 1048575
+      NextSibling: 4
+      PreviousSibling: 1048575
+  - Entity: 2
+    NameComponent:
+      Name: Model Hierarchy
+    TransformComponent:
+      Translation: [0, -4.76837158e-07, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    SceneNodeComponent:
+      Parent: 1
+      FirstChild: 3
+      NextSibling: 0
+      PreviousSibling: 1048575
+  - Entity: 1
+    NameComponent:
+      Name: Player
+    TransformComponent:
+      Translation: [-57.0484467, 42.2693253, 65.8949127]
+      Rotation: [0, -0, 0]
+      Scale: [20, 20, 20]
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 2
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 0
+    NameComponent:
+      Name: Main Camera
+    TransformComponent:
+      Translation: [0, 3, 5]
+      Rotation: [0, -0, 0]
+      Scale: [0.5, 0.5, 0.5]
+    MeshComponent:
+      Mesh: 10124_SLR_Camera_SG_V1_Iteration2
+      Material:
+        Name: ""
+        AlbedoMap: 10124_SLR_Camera_V1_Diffuse.jpg
+        NormalMap: <NO TEXTURE>
+        RoughnessMap: <NO TEXTURE>
+        MetalnessMap: <NO TEXTURE>
+        AlbedoColor: [0.800000012, 0.800000012, 0.800000012]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    CameraComponent:
+      Camera:
+        ProjectionType: 0
+        PerspectiveFOV: 45
+        PerspectiveNear: 0.100000001
+        PerspectiveFar: 1000
+        OrthographicSize: 10
+        OrthographicNear: 1000
+        OrthographicFar: -1000
+      Primary: true
+    SceneNodeComponent:
+      Parent: 1
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575

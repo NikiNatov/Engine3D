@@ -1,0 +1,162 @@
+Scene: Untitled
+Entities:
+  - Entity: 6
+    NameComponent:
+      Name: Camera
+    TransformComponent:
+      Translation: [-58, 58.9000015, 2.9000001]
+      Rotation: [-0.246091425, -0.603883862, 0]
+      Scale: [1, 1, 1]
+    CameraComponent:
+      Camera:
+        ProjectionType: 0
+        PerspectiveFOV: 45
+        PerspectiveNear: 0.100000001
+        PerspectiveFar: 1000
+        OrthographicSize: 10
+        OrthographicNear: 1000
+        OrthographicFar: -1000
+      Primary: true
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 5
+    NameComponent:
+      Name: Sphere
+    TransformComponent:
+      Translation: [60, 50, -90]
+      Rotation: [0, -0, 0]
+      Scale: [30, 30, 30]
+    MeshComponent:
+      Mesh: Sphere-mesh
+      Material:
+        Name: WoodMaterial
+        AlbedoMap: bamboo-wood-semigloss-albedo.png
+        NormalMap: bamboo-wood-semigloss-normal.png
+        RoughnessMap: bamboo-wood-semigloss-roughness.png
+        MetalnessMap: bamboo-wood-semigloss-metal.png
+        AlbedoColor: [0.800000012, 0.800000012, 0.800000012]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 4
+    NameComponent:
+      Name: Sphere
+    TransformComponent:
+      Translation: [60, 8, -90]
+      Rotation: [0, -0, 0]
+      Scale: [30, 30, 30]
+    MeshComponent:
+      Mesh: Sphere-mesh
+      Material:
+        Name: RustedIronMaterial
+        AlbedoMap: rustediron2_basecolor.png
+        NormalMap: rustediron2_normal.png
+        RoughnessMap: rustediron2_roughness.png
+        MetalnessMap: rustediron2_metallic.png
+        AlbedoColor: [0.800000012, 0.800000012, 0.800000012]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 3
+    NameComponent:
+      Name: Sphere
+    TransformComponent:
+      Translation: [20, 8, -90]
+      Rotation: [0, -0, 0]
+      Scale: [30, 30, 30]
+    MeshComponent:
+      Mesh: Sphere-mesh
+      Material:
+        Name: RockMaterial
+        AlbedoMap: layered-rock1-albedo.png
+        NormalMap: layered-rock1-normal-ogl.png
+        RoughnessMap: layered-rock1-rough.png
+        MetalnessMap: layered-rock1-Metalness.png
+        AlbedoColor: [0.800000012, 0.800000012, 0.800000012]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 2
+    NameComponent:
+      Name: Sphere
+    TransformComponent:
+      Translation: [20, 50, -90]
+      Rotation: [0, -0, 0]
+      Scale: [30, 30, 30]
+    MeshComponent:
+      Mesh: Sphere-mesh
+      Material:
+        Name: MarbleMaterial
+        AlbedoMap: stringy_marble_albedo.png
+        NormalMap: stringy_marble_Normal-ogl.png
+        RoughnessMap: stringy_marble_Roughness.png
+        MetalnessMap: stringy_marble_Metallic.png
+        AlbedoColor: [0.800000012, 0.800000012, 0.800000012]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 1
+    NameComponent:
+      Name: Sphere
+    TransformComponent:
+      Translation: [-20, 8, -90]
+      Rotation: [0, -0, 0]
+      Scale: [30, 30, 30]
+    MeshComponent:
+      Mesh: Sphere-mesh
+      Material:
+        Name: GrassMaterial
+        AlbedoMap: leafy-grass2-albedo.png
+        NormalMap: leafy-grass2-normal-ogl.png
+        RoughnessMap: leafy-grass2-roughness.png
+        MetalnessMap: leafy-grass2-metallic.png
+        AlbedoColor: [0.800000012, 0.800000012, 0.800000012]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
+  - Entity: 0
+    NameComponent:
+      Name: Sphere
+    TransformComponent:
+      Translation: [-20, 50, -90]
+      Rotation: [0, -0, 0]
+      Scale: [30, 30, 30]
+    MeshComponent:
+      Mesh: Sphere-mesh
+      Material:
+        Name: GoldMaterial
+        AlbedoMap: lightgold_albedo.png
+        NormalMap: lightgold_normal-ogl.png
+        RoughnessMap: lightgold_roughness.png
+        MetalnessMap: lightgold_metallic.png
+        AlbedoColor: [0.800000012, 0.800000012, 0.800000012]
+        RoughnessValue: 1
+        MetalnessValue: 0.5
+    SceneNodeComponent:
+      Parent: 1048575
+      FirstChild: 1048575
+      NextSibling: 1048575
+      PreviousSibling: 1048575
