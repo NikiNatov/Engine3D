@@ -6,3 +6,4 @@ assets/shaders/SkyboxPrefilterShader.glsl
 assets/shaders/SkyboxShader.glsl
 assets/shaders/StaticModelShader.glsl
 assets/shaders/ShadowsShader.glsl
+assets/shaders/AnimatedModelShader.glsl

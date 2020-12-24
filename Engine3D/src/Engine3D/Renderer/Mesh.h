@@ -15,27 +15,34 @@ namespace E3D
 		glm::vec3 Bitangent;
 	};
 
+	struct AnimatedVertex
+	{
+		glm::vec3 Position;
+		glm::vec2 TextureCoord;
+		glm::vec3 Normal;
+		glm::vec3 Tangent;
+		glm::vec3 Bitangent;
+		glm::ivec4 BoneIDs = glm::ivec4(0);
+		glm::vec4 BoneWeights = glm::vec4(0.0f);
+	};
+
 	class Mesh
 	{
 	public:
-		Mesh(const Ref<VertexArray>& vertexArray, const Ref<Material>& material);
-		Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices, const Ref<Material>& material);
-		Mesh(const Ref<Mesh>& other);
-		~Mesh();
+		virtual const Ref<VertexArray>& GetVertexArray() const = 0;
 
-		void Render();
+		virtual Ref<Material>& GetMaterial() = 0;
+		virtual void SetMaterial(const Ref<Material>& material) = 0;
 
-		inline const Ref<VertexArray>& GetVertexArray() const { return m_VertexArray; }
+		virtual const std::string& GetName() const = 0;
+		virtual void SetName(const std::string& name) = 0;
 
-		inline Ref<Material>& GetMaterial() { return m_Material; }
-		inline void SetMaterial(const Ref<Material>& material) { m_Material = material; }
+		virtual void Render() = 0;
 
-		inline const std::string& GetName() const { return m_Name; }
-		inline void SetName(const std::string& name) { m_Name = name; }
-	private:
-		Ref<VertexArray> m_VertexArray;
-		Ref<Material> m_Material;
+		static Ref<Mesh> CreateStaticMesh(const Ref<VertexArray>& vertexArray, const Ref<Material>& material);
+		static Ref<Mesh> CreateStaticMesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices, const Ref<Material>& material);
 
-		std::string m_Name = "";
-	};	
+		static Ref<Mesh> CreateAnimatedMesh(const Ref<VertexArray>& vertexArray, const Ref<Material>& material);
+		static Ref<Mesh> CreateAnimatedMesh(const std::vector<AnimatedVertex>& vertices, const std::vector<uint32_t>& indices, const Ref<Material>& material);
+	};
 }

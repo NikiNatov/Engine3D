@@ -43,8 +43,8 @@ namespace E3D
 		auto& material = mesh->GetMaterial();
 		auto& shader = material->GetShader();
 		shader->Bind();
-		shader->SetMat4("u_ViewProjection", m_SceneData->ViewProjectionMatrix);
-		shader->SetMat4("u_Transform", transform);
+		shader->SetMat4("u_ViewProjection", 1, m_SceneData->ViewProjectionMatrix);
+		shader->SetMat4("u_Transform", 1, transform);
 		shader->SetFloat3("u_CameraPosition", glm::inverse(m_SceneData->ViewMatrix)[3]);
 		shader->SetFloat3("u_Light.Direction", glm::vec3(0.0f, 0.0f, 0.0));
 		shader->SetFloat3("u_Light.Radiance", glm::vec3(1.0f, 1.0f, 1.0f));
@@ -76,8 +76,8 @@ namespace E3D
 	{
 		auto& shader = skybox->GetShader();
 		shader->Bind();
-		shader->SetMat4("u_View", m_SceneData->ViewMatrix);
-		shader->SetMat4("u_Projection", m_SceneData->ProjectionMatrix);
+		shader->SetMat4("u_View", 1, m_SceneData->ViewMatrix);
+		shader->SetMat4("u_Projection", 1, m_SceneData->ProjectionMatrix);
 		shader->SetFloat("u_Exposure", skybox->GetExposure());
 		shader->SetFloat("u_LOD", skybox->GetLOD());
 

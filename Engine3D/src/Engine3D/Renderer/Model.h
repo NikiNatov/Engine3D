@@ -5,6 +5,8 @@
 #include <assimp\Importer.hpp>
 #include <assimp\scene.h>
 
+#include "Engine3D\Renderer\Animation\Animation.h"
+
 namespace E3D
 {
 	struct ModelNode
@@ -27,11 +29,13 @@ namespace E3D
 
 	class Model
 	{
+		friend class Animator;
 	public:
 		Model();
 		Model(const std::string& filepath);
 		~Model();
 
+		void Update(Timestep ts);
 		void Render();
 
 		void LoadFromFile(const std::string& filepath);
@@ -42,9 +46,12 @@ namespace E3D
 		inline const std::string& GetFilepath() const { return m_Filepath; }
 		inline const std::string& GetName() const { return m_Name; }
 		inline const Ref<ModelNode>& GetRootNode() const { return m_RootNode; }
+		inline Bone& RootBone() { return m_RootBone; }
 	private:
 		Ref<Mesh> ProcessMesh(const aiMesh* mesh);
 		Ref<ModelNode> ProcessNode(const aiNode* node);
+		Ref<Animation> ProcessAnimation(const aiAnimation* animation);
+		bool BuildSkeleton(aiNode* rootNode, Bone& rootBone);
 	private:
 		std::vector<Ref<Mesh>> m_Meshes;
 		std::string m_Name;
@@ -54,5 +61,11 @@ namespace E3D
 
 		Assimp::Importer m_Importer;
 		const aiScene* m_Scene;
+
+		std::unordered_map<std::string, std::pair<int, glm::mat4>> m_BoneInfo;
+
+		Bone m_RootBone;
+		std::vector<Ref<Animation>> m_Animations;
+		Ref<Animator> m_Animator;
 	};
 }

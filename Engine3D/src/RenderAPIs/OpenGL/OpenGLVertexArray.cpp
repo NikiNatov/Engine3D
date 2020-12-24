@@ -51,7 +51,17 @@ namespace E3D
 		for (auto& element : layout)
 		{
 			glEnableVertexAttribArray(m_VertexAttributeIndex);
-			glVertexAttribPointer(m_VertexAttributeIndex, element.GetComponentCount(), DataTypeToOpenGLType(element.Type), (element.Normalized ? GL_TRUE : GL_FALSE), layout.GetStride(), (void*)element.Offset);
+			switch (element.Type)
+			{
+				case DataType::Int:
+				case DataType::Int2:
+				case DataType::Int3:
+				case DataType::Int4:
+					glVertexAttribIPointer(m_VertexAttributeIndex, element.GetComponentCount(), DataTypeToOpenGLType(element.Type), layout.GetStride(), (void*)element.Offset);
+					break;
+				default:
+					glVertexAttribPointer(m_VertexAttributeIndex, element.GetComponentCount(), DataTypeToOpenGLType(element.Type), (element.Normalized ? GL_TRUE : GL_FALSE), layout.GetStride(), (void*)element.Offset);
+			}
 			m_VertexAttributeIndex++;
 		}
 

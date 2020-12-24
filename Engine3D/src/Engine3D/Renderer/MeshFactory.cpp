@@ -40,7 +40,7 @@ namespace E3D
 				0, 1, 2, 2, 3, 0
 			};
 
-			Ref<Mesh> mesh = CreateRef<Mesh>(vertices, indices, material);
+			Ref<Mesh> mesh = Mesh::CreateStaticMesh(vertices, indices, material);
 			mesh->SetName("PlaneMesh");
 
 			return mesh;
@@ -146,7 +146,7 @@ namespace E3D
 				15, 23, 16
 			};
 
-			Ref<Mesh> mesh = CreateRef<Mesh>(vertices, indices, material);
+			Ref<Mesh> mesh = Mesh::CreateStaticMesh(vertices, indices, material);
 			mesh->SetName("CubeMesh");
 
 			return mesh;
@@ -196,7 +196,7 @@ namespace E3D
 				}
 			}
 
-			Ref<Mesh> mesh = CreateRef<Mesh>(vertices, indices, material);
+			Ref<Mesh> mesh = Mesh::CreateStaticMesh(vertices, indices, material);
 			mesh->SetName("GridMesh");
 
 			return mesh;
@@ -234,7 +234,7 @@ namespace E3D
 				0, 1, 2, 2, 3, 0
 			};
 
-			Ref<Mesh> mesh = CreateRef<Mesh>(vertices, indices, material);
+			Ref<Mesh> mesh = Mesh::CreateStaticMesh(vertices, indices, material);
 			mesh->SetName("QuadMesh");
 
 			return mesh;

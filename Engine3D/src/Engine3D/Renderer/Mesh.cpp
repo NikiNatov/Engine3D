@@ -1,58 +1,25 @@
 #include "pch.h"
 #include "Mesh.h"
 
-#include "Engine3D\Renderer\Buffer.h"
-#include "Engine3D\Renderer\Renderer.h"
+#include "Engine3D\Renderer\StaticMesh.h"
+#include "Engine3D\Renderer\AnimatedMesh.h"
 
 namespace E3D
 {
-	Mesh::Mesh(const Ref<VertexArray>& vertexArray, const Ref<Material>& material)
-		: m_VertexArray(vertexArray), m_Material(material)
+	Ref<Mesh> Mesh::CreateStaticMesh(const Ref<VertexArray>& vertexArray, const Ref<Material>& material)
 	{
+		return CreateRef<StaticMesh>(vertexArray, material);
 	}
-
-	Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices, const Ref<Material>& material)
+	Ref<Mesh> Mesh::CreateStaticMesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices, const Ref<Material>& material)
 	{
-		BufferLayout layout = {
-			{"a_Position",	DataType::Float3, false},
-			{"a_TexCoord",	DataType::Float2, false},
-			{"a_Normal",	DataType::Float3, false},
-			{"a_Tangent",	DataType::Float3, false},
-			{"a_Bitangent",	DataType::Float3, false}
-		};
-
-		m_VertexArray = VertexArray::Create();
-		m_VertexArray->Bind();
-
-		Ref<VertexBuffer> vbo = VertexBuffer::Create(vertices.data(), vertices.size() * sizeof(Vertex));
-		vbo->SetLayout(layout);
-
-		Ref<IndexBuffer> ibo = IndexBuffer::Create(indices.data(), indices.size());
-
-		m_VertexArray->AddVertexBuffer(vbo);
-		m_VertexArray->SetIndexBuffer(ibo);
-
-		m_Material = material;
+		return CreateRef<StaticMesh>(vertices, indices, material);
 	}
-
-	Mesh::Mesh(const Ref<Mesh>& other)
-		: m_VertexArray(other->m_VertexArray), m_Material(other->m_Material)
+	Ref<Mesh> Mesh::CreateAnimatedMesh(const Ref<VertexArray>& vertexArray, const Ref<Material>& material)
 	{
+		return CreateRef<AnimatedMesh>(vertexArray, material);
 	}
-
-	Mesh::~Mesh()
+	Ref<Mesh> Mesh::CreateAnimatedMesh(const std::vector<AnimatedVertex>& vertices, const std::vector<uint32_t>& indices, const Ref<Material>& material)
 	{
-
+		return CreateRef<AnimatedMesh>(vertices, indices, material);
 	}
-
-	void Mesh::Render()
-	{
-		m_Material->Bind();
-		m_VertexArray->Bind();
-		RenderCommand::DrawIndexed(m_VertexArray);
-		m_VertexArray->Unbind();
-		m_Material->Unbind();
-	}
-
-	
 }

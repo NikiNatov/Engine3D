@@ -84,7 +84,7 @@ namespace E3D
 
 		m_ComputeShader->Bind();
 		m_ComputeShader->SetInt("u_HDRMap", 0);
-		m_ComputeShader->SetMat4("u_Projection", captureProjection);
+		m_ComputeShader->SetMat4("u_Projection", 1, captureProjection);
 		
 		m_HDRMap->Bind(0);
 
@@ -92,7 +92,7 @@ namespace E3D
 
 		for (uint32_t i = 0; i < 6; i++)
 		{
-			m_ComputeShader->SetMat4("u_View", captureViews[i]);
+			m_ComputeShader->SetMat4("u_View", 1, captureViews[i]);
 
 			m_CubeMapFB->SetTextureTarget((TextureTarget)((uint32_t)TextureTarget::CubeMapPositiveX + i), 0);
 			
@@ -107,7 +107,7 @@ namespace E3D
 		// IRRADIANCE MAP ////////////////////////////////////////////////////////////////////////////////////////
 		m_IrradianceShader->Bind();
 		m_IrradianceShader->SetInt("u_SkyBox", 0);
-		m_IrradianceShader->SetMat4("u_Projection", captureProjection);
+		m_IrradianceShader->SetMat4("u_Projection", 1, captureProjection);
 
 		m_CubeMapFB->GetColorAttachment()->Bind(0);
 
@@ -115,7 +115,7 @@ namespace E3D
 
 		for (uint32_t i = 0; i < 6; i++)
 		{
-			m_IrradianceShader->SetMat4("u_View", captureViews[i]);
+			m_IrradianceShader->SetMat4("u_View", 1, captureViews[i]);
 
 			m_IrradianceMapFB->SetTextureTarget((TextureTarget)((uint32_t)TextureTarget::CubeMapPositiveX + i), 0);
 
@@ -131,7 +131,7 @@ namespace E3D
 
 		m_PrefilterShader->Bind();
 		m_PrefilterShader->SetInt("u_Skybox", 0);
-		m_PrefilterShader->SetMat4("u_Projection", captureProjection);
+		m_PrefilterShader->SetMat4("u_Projection", 1, captureProjection);
 
 		m_CubeMapFB->GetColorAttachment()->Bind(0);
 
@@ -149,7 +149,7 @@ namespace E3D
 			m_PrefilterShader->SetFloat("u_Roughness", roughness);
 			for (uint32_t i = 0; i < 6; ++i)
 			{
-				m_PrefilterShader->SetMat4("u_View", captureViews[i]);
+				m_PrefilterShader->SetMat4("u_View", 1, captureViews[i]);
 
 				m_PrefilterMapFB->SetTextureTarget((TextureTarget)((uint32_t)TextureTarget::CubeMapPositiveX + i), mip);
 

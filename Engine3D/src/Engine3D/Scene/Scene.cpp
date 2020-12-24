@@ -15,6 +15,8 @@
 #include "Engine3D\Core\Input.h"
 #include "Engine3D\Core\KeyCodes.h"
 
+#include "Engine3D\ResourceManager\ModelManager.h"
+
 namespace E3D
 {
 	Scene::Scene()
@@ -99,6 +101,9 @@ namespace E3D
 		m_Registry.view<ScriptComponent>().each([=](auto entity, auto& scriptComponent) {
 			scriptComponent.Instance->OnUpdate(ts);
 		});
+
+		for (auto& model : ModelManager::GetLoadedModels())
+			model.second->Update(ts);
 	}
 
 	void Scene::OnSceneEnd()

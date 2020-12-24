@@ -32,6 +32,7 @@ namespace E3D
 		case Scene::SceneState::Edit:
 		{
 			m_Scene->GetCamera().Update(ts);
+			m_Scene->OnUpdate(ts);
 			m_Scene->OnEditRender();
 			break;
 		}

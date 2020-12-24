@@ -282,7 +282,7 @@ namespace E3D
 						if (material["MetalnessMap"].as<std::string>() != "<NO TEXTURE>")
 							meshMaterial->SetMetalnessMap(TextureManager::GetTexture(material["MetalnessMap"].as<std::string>()));
 
-						mc.Mesh = CreateRef<Mesh>(mesh->GetVertexArray(), meshMaterial); // TODO: Material Instances
+						mc.Mesh = Mesh::CreateStaticMesh(mesh->GetVertexArray(), meshMaterial); // TODO: Material Instances
 						mc.Mesh->SetName(mesh->GetName());
 					}
 				}

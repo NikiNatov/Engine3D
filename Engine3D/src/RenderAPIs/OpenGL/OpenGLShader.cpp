@@ -65,9 +65,9 @@ namespace E3D
 	{
 		UploadUniformFloat4(name, data);
 	}
-	void OpenGLShader::SetMat4(const std::string& name, const glm::mat4& data)
+	void OpenGLShader::SetMat4(const std::string& name, int count, const glm::mat4& data)
 	{
-		UploadUniformMat4(name, data);
+		UploadUniformMat4(name, count, data);
 	}
 	void OpenGLShader::UploadUniformInt(const std::string& name, int data)
 	{
@@ -193,14 +193,14 @@ namespace E3D
 			glUniform4f(location, data.x, data.y, data.z, data.w);
 		}
 	}
-	void OpenGLShader::UploadUniformMat4(const std::string& name, const glm::mat4& data)
+	void OpenGLShader::UploadUniformMat4(const std::string& name, int count, const glm::mat4& data)
 	{
 		glUseProgram(m_ProgramID);
 
 		if (m_UniformCache.find(name) != m_UniformCache.end())
 		{
 			int location = m_UniformCache[name];
-			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(data));
+			glUniformMatrix4fv(location, count, GL_FALSE, glm::value_ptr(data));
 		}
 		else
 		{
@@ -213,7 +213,7 @@ namespace E3D
 			}
 
 			m_UniformCache[name] = location;
-			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(data));
+			glUniformMatrix4fv(location, count, GL_FALSE, glm::value_ptr(data));
 		}
 	}
 
